@@ -55,7 +55,7 @@ export default function Home() {
               transition={{ duration:0.9, delay:0.08, ease:E }}
               style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(42px, 6.5vw, 96px)',
+                fontSize: 'clamp(28px, 4.2vw, 64px)',
                 textTransform: 'uppercase',
                 lineHeight: 0.9,
                 letterSpacing: '-0.01em',

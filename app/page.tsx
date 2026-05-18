@@ -165,6 +165,140 @@ export default function Home() {
         </motion.div>
       </section>
 
+      {/* ══ WORK PREVIEW ═══════════════════════════════ */}
+      <section style={{ borderTop:'1px solid var(--white-08)', padding:'clamp(56px,8vw,100px) 0 0' }}>
+        <div className="cx">
+          {/* Section header */}
+          <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(24px,3vw,40px)' }}>
+            <Reveal>
+              <div>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'10px' }}>Selected Work</p>
+                <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,5vw,64px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>
+                  Work That Speaks.
+                </h2>
+              </div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Link href="/work" style={{
+                fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600,
+                letterSpacing:'0.28em', textTransform:'uppercase',
+                padding:'12px 28px', border:'1px solid var(--white-20)', color:'var(--white-40)',
+                display:'inline-flex', alignItems:'center', gap:'8px', whiteSpace:'nowrap',
+                transition:'border-color 300ms, color 300ms',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--white)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-40)'; }}
+              >View All Work →</Link>
+            </Reveal>
+          </div>
+
+          {/* Featured grid — 3 col */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'2px' }}>
+            {[
+              { cat:'Brand Reels', client:'Samay Raina',     title:'Brand Reel',         link:'https://www.instagram.com/p/DLzwCLPCRzS/', img:'https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=800&q=80' },
+              { cat:'Brand Reels', client:'Uorfi Javed',     title:'Brand Reel 1',        link:'https://www.instagram.com/p/DF1v6VrtsAY/', img:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80' },
+              { cat:'Brand Reels', client:'Santanu Hazarika', title:'Brand Reel 1',       link:'https://www.instagram.com/p/DGVWzIwI4Ns/', img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80' },
+              { cat:'Podcasts',    client:'NPCI',             title:'Podcast Episode 1',   link:'https://youtu.be/KHl8rzSUGWk',              img:'https://img.youtube.com/vi/KHl8rzSUGWk/hqdefault.jpg' },
+              { cat:'Product',     client:'Parachute',        title:'Influencer Holi Reel',link:'https://youtu.be/ECkslerq9Rk',              img:'https://img.youtube.com/vi/ECkslerq9Rk/hqdefault.jpg' },
+              { cat:'Product',     client:'Complan',          title:'Product Commercial',  link:'https://www.youtube.com/watch?v=df9Pco1Xuow',img:'https://img.youtube.com/vi/df9Pco1Xuow/hqdefault.jpg' },
+            ].map((p, i) => (
+              <motion.div key={i}
+                initial={{ opacity:0 }} whileInView={{ opacity:1 }}
+                viewport={{ once:true, margin:'-30px' }}
+                transition={{ duration:0.45, delay:i*0.06, ease:EASE }}
+              >
+                <a href={p.link} target="_blank" rel="noopener noreferrer"
+                  style={{ display:'block', textDecoration:'none', position:'relative', background:'#111' }}
+                >
+                  <div style={{ position:'relative', aspectRatio:'16/9', overflow:'hidden' }}>
+                    <img src={p.img} alt={p.title} loading="lazy"
+                      style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.85)' }}
+                      onMouseEnter={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1.05)'; el.style.filter='brightness(1)'; }}
+                      onMouseLeave={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; }}
+                    />
+                    <span style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'7px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'3px 8px', background:'rgba(9,9,8,0.75)', color:'var(--accent)' }}>{p.cat}</span>
+                    <span style={{ position:'absolute', bottom:'10px', right:'10px', width:'26px', height:'26px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.75)', color:'var(--white-60)' }}>
+                      <svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
+                    </span>
+                  </div>
+                  <div style={{ padding:'10px 12px 12px', borderTop:'1px solid var(--white-08)' }}>
+                    <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px' }}>{p.title}</p>
+                    <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-40)', margin:0 }}>{p.client}</p>
+                  </div>
+                </a>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ SERVICES PREVIEW ════════════════════════════ */}
+      <section style={{ padding:'clamp(56px,8vw,100px) 0 0', borderTop:'1px solid var(--white-08)' }}>
+        <div className="cx">
+          {/* Section header */}
+          <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(24px,3vw,40px)' }}>
+            <Reveal>
+              <div>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'10px' }}>What We Offer</p>
+                <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,5vw,64px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>
+                  Our Services.
+                </h2>
+              </div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <Link href="/services" style={{
+                fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600,
+                letterSpacing:'0.28em', textTransform:'uppercase',
+                padding:'12px 28px', border:'1px solid var(--white-20)', color:'var(--white-40)',
+                display:'inline-flex', alignItems:'center', gap:'8px', whiteSpace:'nowrap',
+                transition:'border-color 300ms, color 300ms',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--white)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-40)'; }}
+              >Explore Services →</Link>
+            </Reveal>
+          </div>
+
+          {/* 4×2 service cards */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:'1px', background:'var(--white-08)' }}>
+            {[
+              { n:'Brand Films',            num:'01', img:'https://images.unsplash.com/photo-1536240478700-b869ad10e128?w=600&q=80', d:'Cinematic narratives crafted to communicate identity and purpose.' },
+              { n:'Commercial & TVC',       num:'02', img:'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&q=80', d:'High-production commercials built for mass reach and premium placement.' },
+              { n:'Social & Reels',         num:'03', img:'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80', d:'Platform-native content engineered for scroll-stopping engagement.' },
+              { n:'Drone Cinematography',   num:'04', img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', d:'Licensed aerial filming delivering scale and movement.' },
+              { n:'Motion Graphics & 3D',   num:'05', img:'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80', d:'Motion design that adds dimension and depth to brand communication.' },
+              { n:'AI Visual Content',      num:'06', img:'https://images.unsplash.com/photo-1555255707-c07966088b7b?w=600&q=80', d:'AI-enabled storytelling that pushes creative boundaries.' },
+              { n:'Sound Design & Music',   num:'07', img:'https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=600&q=80', d:'Original scores and sonic branding that elevate emotion.' },
+              { n:'Editing & Color Grading',num:'08', img:'https://images.unsplash.com/photo-1574169208507-84376144848b?w=600&q=80', d:'Precision editing and color grading for perfect tone and finish.' },
+            ].map((s, i) => (
+              <motion.div key={s.n}
+                initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }}
+                viewport={{ once:true, margin:'-40px' }}
+                transition={{ duration:0.45, delay:(i%4)*0.07, ease:EASE }}
+                style={{ background:'var(--black)', position:'relative', overflow:'hidden', cursor:'pointer' }}
+              >
+                <div style={{ position:'absolute', inset:0, zIndex:0 }}>
+                  <img src={s.img} alt={s.n} loading="lazy"
+                    style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.22, transition:'opacity 500ms, transform 600ms' }}
+                  />
+                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.95) 35%, rgba(9,9,8,0.45) 100%)' }} />
+                </div>
+                <div style={{ position:'relative', zIndex:1, padding:'20px', minHeight:'200px', display:'flex', flexDirection:'column', justifyContent:'space-between' }}
+                  onMouseEnter={e => { const img = e.currentTarget.parentElement?.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.38';img.style.transform='scale(1.05)';} }}
+                  onMouseLeave={e => { const img = e.currentTarget.parentElement?.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.22';img.style.transform='scale(1)';} }}
+                >
+                  <span style={{ fontFamily:'var(--font-body)', fontSize:'11px', letterSpacing:'0.12em', color:'var(--white-20)', alignSelf:'flex-end' }}>{s.num}</span>
+                  <div>
+                    <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(12px,1.2vw,15px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'8px', lineHeight:1.1 }}>{s.n}</h3>
+                    <p style={{ fontFamily:'var(--font-body)', fontSize:'11px', lineHeight:1.7, color:'var(--white-40)', margin:0 }}>{s.d}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ AI × CINEMA ══════════════════════════════════ */}
       <section style={{ padding:'clamp(120px,16vw,240px) 0', borderTop:'1px solid var(--white-08)' }}>
         <div className="cx" style={{ maxWidth:'860px' }}>

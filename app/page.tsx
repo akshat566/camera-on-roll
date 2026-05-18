@@ -24,7 +24,7 @@ export default function Home() {
         position: 'relative', minHeight: '100svh', overflow: 'hidden',
         background: 'var(--black)', display: 'flex', alignItems: 'center',
       }}>
-        <div className="cx" style={{ paddingTop: 'var(--nav-h)', maxWidth: '900px' }}>
+        <div className="cx" style={{ paddingTop: 'var(--nav-h)' }}>
 
           <motion.p
             initial={{ opacity:0, x:-16 }} animate={{ opacity:1, x:0 }}
@@ -39,12 +39,13 @@ export default function Home() {
             transition={{ duration:0.9, delay:0.08, ease:E }}
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(36px, 5.5vw, 80px)',
+              fontSize: 'clamp(24px, 4.8vw, 72px)',
               textTransform: 'uppercase',
-              lineHeight: 0.92,
+              lineHeight: 0.95,
               letterSpacing: '-0.01em',
               color: 'var(--white)',
               marginBottom: '32px',
+              whiteSpace: 'nowrap',
             }}
           >
             Welcome to<br />Camera On Roll Production

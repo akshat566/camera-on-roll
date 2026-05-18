@@ -58,7 +58,7 @@ export default function Home() {
               transition={{ duration:0.7, ease:E }}
               style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.44em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'24px' }}
             >
-              AI-Powered Creative Studio
+              An AI-powered creative video studio built for modern brands. Built to take brands from ideation to execution.
             </motion.p>
 
             <motion.h1
@@ -74,7 +74,7 @@ export default function Home() {
                 marginBottom: '28px',
               }}
             >
-              Welcome to<br />Camera On Roll Production
+              Welcome to<br />Camera On Roll<br />Production
             </motion.h1>
 
             <motion.p
@@ -82,7 +82,7 @@ export default function Home() {
               transition={{ duration:0.8, delay:0.28, ease:E }}
               style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, lineHeight:1.85, color:'var(--white-40)', maxWidth:'400px', marginBottom:'44px' }}
             >
-              An AI-powered creative video studio built for modern brands. Built to take brands from ideation to execution.
+              We work at the intersection of creative direction, cinematic production, and strategic thinking to craft imagery that elevates how brands are perceived. From premium photography to narrative-driven films and AI-enabled visual storytelling, every project is approached with precision, intention, and a deep understanding of brand presence.
             </motion.p>
 
             <motion.div

@@ -35,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <AuthProvider>
       <html lang="en" className={`${anton.variable} ${inter.variable}`}>
         <body>
+          <div className="film-grain" aria-hidden="true" />
           <SmoothScroll>
             <Navbar />
             <main>{children}</main>

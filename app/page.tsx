@@ -24,71 +24,105 @@ export default function Home() {
         position: 'relative', minHeight: '100svh', overflow: 'hidden',
         background: 'var(--black)', display: 'flex', alignItems: 'center',
       }}>
-        <div className="cx" style={{ paddingTop: 'var(--nav-h)' }}>
+        <div className="cx" style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 'clamp(32px,5vw,80px)',
+          alignItems: 'center',
+          paddingTop: 'var(--nav-h)',
+          minHeight: '100svh',
+        }}>
 
-          <motion.p
-            initial={{ opacity:0, x:-16 }} animate={{ opacity:1, x:0 }}
-            transition={{ duration:0.7, ease:E }}
-            style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'28px' }}
-          >
-            A Creative Tech Studio Built For Modern Brands
-          </motion.p>
+          {/* Left — text */}
+          <div>
+            <motion.p
+              initial={{ opacity:0, x:-16 }} animate={{ opacity:1, x:0 }}
+              transition={{ duration:0.7, ease:E }}
+              style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'28px' }}
+            >
+              A Creative Tech Studio Built For Modern Brands To Take Them From Ideation To Execution.
+            </motion.p>
 
-          <motion.h1
-            initial={{ opacity:0, x:-24 }} animate={{ opacity:1, x:0 }}
-            transition={{ duration:0.9, delay:0.08, ease:E }}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(24px, 4.8vw, 72px)',
-              textTransform: 'uppercase',
-              lineHeight: 0.95,
-              letterSpacing: '-0.01em',
-              color: 'var(--white)',
-              marginBottom: '32px',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Welcome to<br />Camera On Roll Production
-          </motion.h1>
+            <motion.h1
+              initial={{ opacity:0, x:-24 }} animate={{ opacity:1, x:0 }}
+              transition={{ duration:0.9, delay:0.08, ease:E }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(22px, 3.4vw, 52px)',
+                textTransform: 'uppercase',
+                lineHeight: 0.92,
+                letterSpacing: '-0.01em',
+                color: 'var(--white)',
+                marginBottom: '28px',
+              }}
+            >
+              Welcome to<br />Camera On Roll Production
+            </motion.h1>
 
-          <motion.p
-            initial={{ opacity:0 }} animate={{ opacity:1 }}
-            transition={{ duration:0.8, delay:0.28, ease:E }}
-            style={{ fontFamily:'var(--font-body)', fontSize:'15px', fontWeight:400, lineHeight:1.85, color:'var(--white-40)', maxWidth:'580px', marginBottom:'44px' }}
-          >
-            We work at the intersection of creative direction, cinematic production, and strategic thinking to craft imagery that elevates how brands are perceived. From premium photography to narrative-driven films and AI-enabled visual storytelling, every project is approached with precision, intention, and a deep understanding of brand presence.
-          </motion.p>
+            <motion.p
+              initial={{ opacity:0 }} animate={{ opacity:1 }}
+              transition={{ duration:0.8, delay:0.28, ease:E }}
+              style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, lineHeight:1.85, color:'var(--white-40)', maxWidth:'440px', marginBottom:'36px' }}
+            >
+              We work at the intersection of creative direction, cinematic production, and strategic thinking to craft imagery that elevates how brands are perceived. From premium photography to narrative-driven films and AI-enabled visual storytelling, every project is approached with precision, intention, and a deep understanding of brand presence.
+            </motion.p>
 
+            <motion.div
+              initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
+              transition={{ duration:0.6, delay:0.44, ease:E }}
+              style={{ display:'flex', gap:'14px', flexWrap:'wrap' }}
+            >
+              <Link href="/contact" style={{
+                fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:700,
+                letterSpacing:'0.18em', textTransform:'uppercase',
+                padding:'14px 32px', background:'var(--accent)', color:'#ffffff',
+                display:'inline-flex', alignItems:'center',
+                transition:'opacity var(--t-base)',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.opacity='0.85')}
+              onMouseLeave={e => (e.currentTarget.style.opacity='1')}
+              >
+                Start a Project →
+              </Link>
+              <Link href="/work" style={{
+                fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:500,
+                letterSpacing:'0.18em', textTransform:'uppercase',
+                padding:'14px 32px', background:'transparent',
+                border:'1px solid var(--white-20)', color:'var(--white-70)',
+                display:'inline-flex', alignItems:'center',
+                transition:'border-color var(--t-base), color var(--t-base)',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent-dim)'; e.currentTarget.style.color='var(--white)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-70)'; }}
+              >
+                View Work →
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Right — video / cinematic visual */}
           <motion.div
-            initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
-            transition={{ duration:0.6, delay:0.44, ease:E }}
-            style={{ display:'flex', gap:'14px', flexWrap:'wrap' }}
+            initial={{ opacity:0, scale:0.96 }} animate={{ opacity:1, scale:1 }}
+            transition={{ duration:1.1, delay:0.18, ease:E }}
+            style={{ position:'relative', width:'100%', aspectRatio:'3/4', overflow:'hidden', borderRadius:'2px' }}
           >
-            <Link href="/contact" style={{
-              fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:700,
-              letterSpacing:'0.18em', textTransform:'uppercase',
-              padding:'16px 36px', background:'var(--accent)', color:'#ffffff',
-              display:'inline-flex', alignItems:'center',
-              transition:'opacity var(--t-base)',
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity='0.85')}
-            onMouseLeave={e => (e.currentTarget.style.opacity='1')}
+            <video
+              autoPlay muted loop playsInline
+              style={{ width:'100%', height:'100%', objectFit:'cover' }}
+              poster="https://images.unsplash.com/photo-1536240478700-b869ad10e128?w=1200&q=85"
             >
-              Start a Project
-            </Link>
-            <Link href="/work" style={{
-              fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:500,
-              letterSpacing:'0.18em', textTransform:'uppercase',
-              padding:'16px 36px', background:'transparent',
-              border:'1px solid var(--white-20)', color:'var(--white-70)',
-              display:'inline-flex', alignItems:'center',
-              transition:'border-color var(--t-base), color var(--t-base)',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent-dim)'; e.currentTarget.style.color='var(--white)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-70)'; }}
-            >
-              View Work
-            </Link>
+              <source src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+            </video>
+            {/* Pink tint overlay */}
+            <div style={{
+              position:'absolute', inset:0,
+              background:'linear-gradient(135deg, rgba(232,23,106,0.18) 0%, transparent 60%)',
+            }} />
+            {/* Bottom fade */}
+            <div style={{
+              position:'absolute', bottom:0, left:0, right:0, height:'40%',
+              background:'linear-gradient(to top, var(--black), transparent)',
+            }} />
           </motion.div>
 
         </div>

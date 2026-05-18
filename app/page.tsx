@@ -47,7 +47,7 @@ export default function Home() {
               transition={{ duration:0.7, ease:E }}
               style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.44em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'24px' }}
             >
-              An AI-powered creative video studio built for modern brands. Built to take brands from ideation to execution.
+              A Creative Tech Studio Built For Modern Brands To Take Them From Ideation To Execution.
             </motion.p>
 
             <motion.h1
@@ -63,7 +63,7 @@ export default function Home() {
                 marginBottom: '28px',
               }}
             >
-              Welcome to<br />Camera On Roll<br />Production
+              Welcome to<br />Camera On Roll Production
             </motion.h1>
 
             <motion.p

@@ -14,17 +14,6 @@ const WORK = [
   { id:6, cat:'Music Video',     title:'Afterglow',                 img:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=900&q=80' },
 ];
 
-const CLIENTS = [
-  "L'Or\u00e9al Paris",'Sony Liv','Maybelline','Engage \u00b7 ITC',
-  'Flipkart','Matrix','Tresemm\u00e9','Lavie World','Artize','Cornetto','Breezer','Sofy','Lotto',
-];
-
-const STATS = [
-  { v:'8+',   l:'Years' },
-  { v:'250+', l:'Projects' },
-  { v:'40+',  l:'Brands' },
-  { v:'20+',  l:'Artists' },
-];
 
 export default function Home() {
   return (
@@ -159,44 +148,7 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ══ 2. STUDIO INTRO ════════════════════════════ */}
-      <section className="section-pad" style={{ borderTop:'1px solid var(--white-08)' }}>
-        <div className="cx">
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,420px),1fr))', gap:'clamp(40px,6vw,96px)', alignItems:'start' }}>
-            <Reveal>
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'20px' }}>The Studio</p>
-              <h2 style={{ fontFamily:'var(--font-display)', textTransform:'uppercase', fontSize:'clamp(28px,3.5vw,52px)', lineHeight:0.92, letterSpacing:'-0.01em', color:'var(--white)' }}>
-                Cinema Meets<br />Intelligence.
-              </h2>
-            </Reveal>
-            <Reveal delay={0.14}>
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'15px', fontWeight:400, lineHeight:1.9, color:'var(--white-70)', marginBottom:'28px' }}>
-                Camera On Roll Production is a creative studio merging cinema, design, and artificial intelligence to produce content that connects, inspires, and delivers real impact. Founded in Mumbai — we partner with brands, artists, and visionaries who demand more than content. They demand culture.
-              </p>
-              <Link href="/about" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--accent)', display:'inline-flex', alignItems:'center', gap:'8px', transition:'gap var(--t-base)' }}
-                onMouseEnter={e => (e.currentTarget.style.gap='16px')}
-                onMouseLeave={e => (e.currentTarget.style.gap='8px')}
-              >
-                Our Story →
-              </Link>
-            </Reveal>
-          </div>
-
-          {/* Stats */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'1px', background:'var(--white-08)', marginTop:'clamp(48px,7vw,88px)', borderTop:'1px solid var(--white-08)' }}>
-            {STATS.map((s,i) => (
-              <Reveal key={s.l} delay={i*0.06}>
-                <div style={{ background:'var(--black)', padding:'clamp(20px,3vw,36px)', textAlign:'center' }}>
-                  <div style={{ fontFamily:'var(--font-display)', fontSize:'clamp(30px,4vw,54px)', textTransform:'uppercase', color:'var(--white)', lineHeight:1, marginBottom:'8px' }}>{s.v}</div>
-                  <div style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:500, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--white-40)' }}>{s.l}</div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ 3. SELECTED WORK ════════════════════════════ */}
+      {/* ══ 2. SELECTED WORK ════════════════════════════ */}
       <section className="section-pad" style={{ borderTop:'1px solid var(--white-08)' }}>
         <div className="cx">
           <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(36px,5vw,60px)' }}>
@@ -263,21 +215,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ 5. CLIENTS ══════════════════════════════════ */}
-      <section style={{ borderTop:'1px solid var(--white-08)', borderBottom:'1px solid var(--white-08)', overflow:'hidden', padding:'clamp(24px,3.5vw,44px) 0' }}>
-        <div className="cx" style={{ display:'flex', alignItems:'center', gap:'32px' }}>
-          <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--white-20)', flexShrink:0 }}>Trusted By</span>
-          <div style={{ overflow:'hidden', flex:1, minWidth:0 }}>
-            <div className="marquee">
-              {[...CLIENTS,...CLIENTS].map((c,i) => (
-                <span key={i} style={{ fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:500, letterSpacing:'0.14em', textTransform:'uppercase', color:'var(--white-40)', padding:'0 28px', flexShrink:0 }}>{c}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══ 6. ATOM TEASER ══════════════════════════════ */}
+      {/* ══ 4. ATOM TEASER ══════════════════════════════ */}
       <section className="section-pad" style={{ textAlign:'center' }}>
         <div className="cx">
           <Reveal>

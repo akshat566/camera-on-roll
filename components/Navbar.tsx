@@ -50,14 +50,7 @@ export function Navbar() {
       <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', gap: '32px' }}>
 
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, textDecoration: 'none' }}>
-          {/* Asterisk mark */}
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <line x1="14" y1="2" x2="14" y2="26" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round"/>
-            <line x1="2" y1="14" x2="26" y2="14" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round"/>
-            <line x1="5.1" y1="5.1" x2="22.9" y2="22.9" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round"/>
-            <line x1="22.9" y1="5.1" x2="5.1" y2="22.9" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round"/>
-          </svg>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none' }}>
           <span style={{
             fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600,
             letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--white)',

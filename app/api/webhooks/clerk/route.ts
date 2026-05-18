@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     const email = email_addresses?.[0]?.email_address;
     const fullName = [first_name, last_name].filter(Boolean).join(' ') || email?.split('@')[0];
 
-    const { error } = await supabaseAdmin.from('users').upsert({
+    const { error } = await (supabaseAdmin as any).from('users').upsert({
       clerk_id: id,
       email,
       full_name: fullName,
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
   if (type === 'user.deleted') {
     const { id } = data;
-    await supabaseAdmin.from('users').delete().eq('clerk_id', id);
+    await (supabaseAdmin as any).from('users').delete().eq('clerk_id', id);
   }
 
   return NextResponse.json({ success: true });

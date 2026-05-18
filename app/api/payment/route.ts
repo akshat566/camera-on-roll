@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Record in Supabase
-    const { error } = await supabaseAdmin.from('subscriptions').insert({
+    const { error } = await (supabaseAdmin as any).from('subscriptions').insert({
       user_id: userId,
       razorpay_order_id: order.id,
       plan,

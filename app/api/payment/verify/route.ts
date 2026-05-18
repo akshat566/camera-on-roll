@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Update subscription
-    await supabaseAdmin
+    await (supabaseAdmin as any)
       .from('subscriptions')
       .update({
         razorpay_payment_id,
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       .eq('razorpay_order_id', razorpay_order_id);
 
     // Insert payment record
-    await supabaseAdmin.from('payments').insert({
+    await (supabaseAdmin as any).from('payments').insert({
       user_id: userId,
       razorpay_payment_id,
       razorpay_order_id,
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Update user plan
-    await supabaseAdmin
+    await (supabaseAdmin as any)
       .from('users')
       .update({
         plan,

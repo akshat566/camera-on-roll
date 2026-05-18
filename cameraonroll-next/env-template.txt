@@ -1,0 +1,42 @@
+# ============================================
+# COPY THIS ENTIRE BLOCK INTO VERCEL
+# Project → Settings → Environment Variables → Import .env
+#
+# MARK THESE AS "SENSITIVE" IN VERCEL (secrets):
+#   CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET,
+#   SUPABASE_SERVICE_ROLE_KEY, RAZORPAY_KEY_SECRET, R2_SECRET_ACCESS_KEY
+#
+# DO NOT MARK SENSITIVE (used by browser):
+#   NEXT_PUBLIC_*, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_BUCKET_NAME,
+#   R2_PUBLIC_URL, RAZORPAY_KEY_ID
+# ============================================
+
+# ---- CLERK ----
+# https://dashboard.clerk.com → Your App → API Keys
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_YOUR_KEY_HERE       # NOT sensitive
+CLERK_SECRET_KEY=sk_test_YOUR_KEY_HERE                          # SENSITIVE
+
+# https://dashboard.clerk.com → Webhooks → Add Endpoint
+# Endpoint URL: https://YOUR_VERCEL_URL.vercel.app/api/webhooks/clerk
+# Events: user.created, user.updated, user.deleted
+CLERK_WEBHOOK_SECRET=whsec_YOUR_SECRET_HERE                    # SENSITIVE
+
+# ---- SUPABASE ----
+# https://supabase.com/dashboard → Your Project → Project Settings (gear) → API
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co       # NOT sensitive
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJYOUR_ANON_KEY_HERE           # NOT sensitive
+SUPABASE_SERVICE_ROLE_KEY=eyJYOUR_SERVICE_KEY_HERE              # SENSITIVE
+
+# ---- RAZORPAY ----
+# https://dashboard.razorpay.com → Make sure Test Mode is ON
+# Account & Settings → API Keys → Generate Key
+RAZORPAY_KEY_ID=rzp_test_YOUR_KEY_ID                            # NOT sensitive
+RAZORPAY_KEY_SECRET=YOUR_SECRET_HERE                            # SENSITIVE
+
+# ---- CLOUDFLARE R2 ----
+# https://dash.cloudflare.com → R2 Object Storage → Manage R2 API Tokens → Create
+R2_ACCOUNT_ID=YOUR_ACCOUNT_ID                                   # NOT sensitive
+R2_ACCESS_KEY_ID=YOUR_ACCESS_KEY                                # NOT sensitive
+R2_SECRET_ACCESS_KEY=YOUR_SECRET_KEY                            # SENSITIVE
+R2_BUCKET_NAME=atom-assets                                      # NOT sensitive
+R2_PUBLIC_URL=https://pub-YOUR_ID.r2.dev                        # NOT sensitive

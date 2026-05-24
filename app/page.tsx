@@ -204,17 +204,9 @@ const BTN_BASE: React.CSSProperties = {
 };
 
 export default function Home() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [videoOpen, setVideoOpen] = useState(false);
   const [workLayout, setWorkLayout] = useState<'grid'|'list'>('grid');
-  const [reelIdx, setReelIdx] = useState(0);
   const [modal, setModal] = useState<FeaturedProject | null>(null);
-
-  // Auto-advance hero showreel — one tile at a time, like a video reel
-  useEffect(() => {
-    const t = setInterval(() => setReelIdx(i => (i + 1) % SHOWREEL.length), 4200);
-    return () => clearInterval(t);
-  }, []);
 
   // Modal: ESC key + body scroll lock
   useEffect(() => {
@@ -270,60 +262,19 @@ export default function Home() {
 
       {/* ══ HERO ═══════════════════════════════════════ */}
       <section style={{ position:'relative', height:'100svh', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
-        {/* Full-bleed auto-advancing showreel — plays through our actual work */}
+        {/* Full-bleed showreel video */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <AnimatePresence mode="sync">
-            {SHOWREEL.map((s, i) => i === reelIdx && (
-              <motion.div key={i}
-                initial={{ opacity:0, scale:1.08 }}
-                animate={{ opacity:0.75, scale:1 }}
-                exit={{ opacity:0, scale:0.97 }}
-                transition={{ duration:1.3, ease:EASE }}
-                style={{ position:'absolute', inset:0 }}
-              >
-                <motion.img
-                  src={s.img} alt={s.title} loading="eager"
-                  animate={{ scale:[1, 1.12] }}
-                  transition={{ duration:5, ease:'linear' }}
-                  style={{ width:'100%', height:'100%', objectFit:'cover' }}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          <video
+            autoPlay loop muted playsInline
+            style={{ width:'100%', height:'100%', objectFit:'cover' }}
+          >
+            <source src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4" type="video/mp4" />
+          </video>
           <div style={{ position:'absolute', inset:0, background:'rgba(9,9,8,0.55)' }} />
           <div style={{ position:'absolute', top:0, left:0, right:0, height:'25%', background:'linear-gradient(to bottom, var(--black), transparent)' }} />
           <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, var(--black), transparent)' }} />
           <div style={{ position:'absolute', top:'20%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.10) 0%, transparent 70%)', filter:'blur(60px)' }} />
         </div>
-
-        {/* Bottom-left now-playing chip */}
-        <div style={{ position:'absolute', bottom:'30px', left:'var(--pad-x)', zIndex:2, display:'flex', alignItems:'center', gap:'14px' }}>
-          <AnimatePresence mode="wait">
-            <motion.div key={reelIdx}
-              initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-8 }}
-              transition={{ duration:0.4 }}
-              style={{ display:'flex', alignItems:'center', gap:'10px' }}
-            >
-              <span style={{ width:'6px', height:'6px', borderRadius:'50%', background:'var(--accent)', boxShadow:'0 0 10px var(--accent)' }} />
-              <span style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:700, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)' }}>{SHOWREEL[reelIdx].cat}</span>
-              <span style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.14em', textTransform:'uppercase', color:'var(--white)' }}>{SHOWREEL[reelIdx].client}</span>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Bottom-right progress dots */}
-        <div style={{ position:'absolute', bottom:'34px', right:'var(--pad-x)', zIndex:2, display:'flex', gap:'6px' }}>
-          {SHOWREEL.map((_, i) => (
-            <button key={i} onClick={() => setReelIdx(i)} aria-label={`Show ${i+1}`}
-              style={{
-                width: i === reelIdx ? '28px' : '12px', height:'2px',
-                background: i === reelIdx ? 'var(--accent)' : 'rgba(255,255,255,0.25)',
-                border:'none', cursor:'pointer',
-                transition:'width 350ms ease, background 350ms',
-              }} />
-          ))}
-        </div>
-        <video ref={videoRef} style={{ display:'none' }} />
 
         <div style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', maxWidth:'900px' }}>
           <motion.p initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}

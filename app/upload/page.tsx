@@ -2,41 +2,39 @@
 import { useState } from 'react';
 
 export default function UploadPage() {
-  const [akshatFile, setAkshatFile] = useState<File | null>(null);
-  const [ashnaFile, setAshnaFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [key, setKey] = useState('videos/showreel.mp4');
   const [uploading, setUploading] = useState(false);
-  const [result, setResult] = useState<{ akshat?: string; ashna?: string }>({});
+  const [result, setResult] = useState<string | null>(null);
 
-  const upload = async (file: File, key: string) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('key', key);
-
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (!res.ok) throw new Error('Upload failed');
-    const data = await res.json();
-    return data.url;
-  };
-
-  const handleUpload = async () => {
-    if (!akshatFile || !ashnaFile) {
-      alert('Please select both files');
+  const upload = async () => {
+    if (!file) {
+      alert('Please select a file');
       return;
     }
 
     setUploading(true);
-    setResult({});
+    setResult(null);
 
     try {
-      const akshatUrl = await upload(akshatFile, 'founders/akshat.jpg');
-      const ashnaUrl = await upload(ashnaFile, 'founders/ashna.jpg');
-      setResult({ akshat: akshatUrl, ashna: ashnaUrl });
-    } catch (error) {
-      alert('Upload failed. Check console for details.');
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('key', key);
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Upload failed');
+      }
+
+      const data = await res.json();
+      setResult(data.url);
+    } catch (error: any) {
+      alert('Upload failed: ' + error.message);
     } finally {
       setUploading(false);
     }
@@ -44,32 +42,32 @@ export default function UploadPage() {
 
   return (
     <div style={{ minHeight:'100vh', padding:'40px', background:'#090908', color:'#fff', fontFamily:'system-ui, sans-serif' }}>
-      <h1 style={{ fontSize:'32px', marginBottom:'32px' }}>Upload Founder Photos</h1>
+      <h1 style={{ fontSize:'32px', marginBottom:'32px' }}>Upload to R2</h1>
       
       <div style={{ display:'grid', gap:'24px', maxWidth:'500px' }}>
         <div>
-          <label style={{ display:'block', marginBottom:'8px', fontSize:'14px' }}>Akshat Bhardwaj</label>
+          <label style={{ display:'block', marginBottom:'8px', fontSize:'14px' }}>File</label>
           <input
             type="file"
-            accept="image/*"
-            onChange={e => setAkshatFile(e.target.files?.[0] || null)}
+            onChange={e => setFile(e.target.files?.[0] || null)}
             style={{ width:'100%', padding:'12px', background:'#111', border:'1px solid #333', color:'#fff' }}
           />
+          {file && <p style={{ fontSize:'12px', color:'#888', marginTop:'4px' }}>{file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)</p>}
         </div>
 
         <div>
-          <label style={{ display:'block', marginBottom:'8px', fontSize:'14px' }}>Ashna Chhabra</label>
+          <label style={{ display:'block', marginBottom:'8px', fontSize:'14px' }}>R2 Key (path)</label>
           <input
-            type="file"
-            accept="image/*"
-            onChange={e => setAshnaFile(e.target.files?.[0] || null)}
-            style={{ width:'100%', padding:'12px', background:'#111', border:'1px solid #333', color:'#fff' }}
+            type="text"
+            value={key}
+            onChange={e => setKey(e.target.value)}
+            style={{ width:'100%', padding:'12px', background:'#111', border:'1px solid #333', color:'#fff', fontSize:'14px' }}
           />
         </div>
 
         <button
-          onClick={handleUpload}
-          disabled={uploading}
+          onClick={upload}
+          disabled={uploading || !file}
           style={{
             padding:'14px 24px',
             background:'#e8176a',
@@ -77,24 +75,17 @@ export default function UploadPage() {
             border:'none',
             fontSize:'14px',
             fontWeight:600,
-            cursor:uploading ? 'not-allowed' : 'pointer',
-            opacity:uploading ? 0.6 : 1,
+            cursor:uploading || !file ? 'not-allowed' : 'pointer',
+            opacity:uploading || !file ? 0.6 : 1,
           }}
         >
           {uploading ? 'Uploading...' : 'Upload to R2'}
         </button>
 
-        {result.akshat && (
+        {result && (
           <div style={{ padding:'16px', background:'#111', border:'1px solid #333' }}>
-            <p style={{ fontSize:'12px', color:'#888', marginBottom:'4px' }}>Akshat URL:</p>
-            <code style={{ fontSize:'12px', wordBreak:'break-all' }}>{result.akshat}</code>
-          </div>
-        )}
-
-        {result.ashna && (
-          <div style={{ padding:'16px', background:'#111', border:'1px solid #333' }}>
-            <p style={{ fontSize:'12px', color:'#888', marginBottom:'4px' }}>Ashna URL:</p>
-            <code style={{ fontSize:'12px', wordBreak:'break-all' }}>{result.ashna}</code>
+            <p style={{ fontSize:'12px', color:'#888', marginBottom:'4px' }}>Uploaded URL:</p>
+            <code style={{ fontSize:'12px', wordBreak:'break-all' }}>{result}</code>
           </div>
         )}
       </div>

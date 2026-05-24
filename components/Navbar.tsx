@@ -95,11 +95,11 @@ export function Navbar() {
             <Link href="/contact" style={{
               fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
               letterSpacing: '0.14em', textTransform: 'uppercase',
-              padding: '10px 18px', background: 'var(--accent)', color: '#fff',
-              border: 'none', cursor: 'pointer', transition: 'opacity 200ms',
+              padding: '10px 18px', background: 'transparent', color: 'var(--accent)',
+              border: '1.5px solid var(--accent)', cursor: 'pointer', transition: 'all 200ms',
             }}
-            onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '0.85'}
-            onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '1'}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'var(--accent)'; (e.currentTarget as HTMLAnchorElement).style.color = '#fff'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
             >Work With Us</Link>
           </div>
 
@@ -151,8 +151,12 @@ export function Navbar() {
                   display: 'block', textAlign: 'center',
                   fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
                   letterSpacing: '0.18em', textTransform: 'uppercase',
-                  padding: '10px 16px', background: 'var(--accent)', color: '#fff',
-                }}>Work With Us</Link>
+                  padding: '10px 16px', background: 'transparent', color: 'var(--accent)',
+                  border: '1.5px solid var(--accent)', transition: 'all 200ms',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'var(--accent)'; (e.currentTarget as HTMLAnchorElement).style.color = '#fff'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
+                >Work With Us</Link>
               </div>
             </div>
           </motion.div>

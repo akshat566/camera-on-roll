@@ -273,7 +273,7 @@ export default function Home() {
             {SHOWREEL.map((s, i) => i === reelIdx && (
               <motion.div key={i}
                 initial={{ opacity:0, scale:1.08 }}
-                animate={{ opacity:0.55, scale:1 }}
+                animate={{ opacity:0.75, scale:1 }}
                 exit={{ opacity:0, scale:0.97 }}
                 transition={{ duration:1.3, ease:EASE }}
                 style={{ position:'absolute', inset:0 }}

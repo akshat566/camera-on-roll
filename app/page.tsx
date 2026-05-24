@@ -239,10 +239,10 @@ export default function Home() {
             <motion.video
               initial={{ scale:0.92 }} animate={{ scale:1 }} exit={{ scale:0.96 }}
               transition={{ duration:0.45, ease:EASE }}
-              autoPlay loop playsInline
-              style={{ width:'100%', height:'100%', objectFit:'cover' }}
+              autoPlay loop playsInline controls
+              style={{ width:'100%', height:'100%', objectFit:'contain' }}
             >
-              <source src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+              <source src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4" type="video/mp4" />
             </motion.video>
             <button onClick={() => setVideoOpen(false)} style={{
               position:'absolute', top:'28px', right:'28px', zIndex:10000,

@@ -277,32 +277,14 @@ export default function Home() {
         </div>
 
         <div style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', maxWidth:'900px' }}>
-          <motion.p initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
-            transition={{ duration:1, delay:0.2, ease:EASE }}
-            style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.5em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'clamp(16px,3vw,32px)' }}>
-            Cinema • AI • Future Visual Systems
-          </motion.p>
-
           <motion.h1 initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }}
             transition={{ duration:1.2, delay:0.4, ease:EASE }}
-            style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,5.5vw,72px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(16px,2vw,28px)', whiteSpace:'nowrap' }}>
+            style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,5.5vw,72px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(28px,3vw,48px)', whiteSpace:'nowrap' }}>
             Camera On Roll Production
           </motion.h1>
 
-          <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }}
-            transition={{ duration:1, delay:0.9, ease:EASE }}
-            style={{ fontFamily:'var(--font-body)', fontSize:'12px', fontWeight:500, letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', marginBottom:'clamp(24px,3vw,40px)' }}>
-            A creative tech studio built for modern brands
-          </motion.p>
-
-          <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }}
-            transition={{ duration:1, delay:1.1, ease:EASE }}
-            style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, lineHeight:1.85, color:'var(--white-70)', maxWidth:'640px', margin:'0 auto clamp(28px,3.5vw,48px)' }}>
-            We work at the intersection of creative direction, cinematic production, and strategic thinking to craft imagery that elevates how brands are perceived. From premium photography to narrative driven films and AI enabled visual storytelling, every project is approached with precision, intention, and a deep understanding of brand presence.
-          </motion.p>
-
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
-            transition={{ duration:0.8, delay:1.3, ease:EASE }}
+            transition={{ duration:0.8, delay:0.8, ease:EASE }}
             style={{ display:'flex', gap:'clamp(8px,1.5vw,14px)', justifyContent:'center', flexWrap:'wrap' }}>
 
             {/* Intro Video — opens fullscreen overlay */}

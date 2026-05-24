@@ -43,7 +43,7 @@ export function Navbar() {
         transition: 'background 600ms, backdrop-filter 600ms',
       }}
     >
-      <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 0, paddingRight: 0 }}>
 
         {/* Logo — chair icon + CAMERA ON ROLL wordmark + Production subscript */}
         <Link href="/" aria-label="Camera On Roll Production — Home"

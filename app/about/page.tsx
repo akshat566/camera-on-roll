@@ -25,7 +25,7 @@ export default function AboutPage() {
       <section style={{ paddingTop:'var(--nav-h)', borderBottom:'1px solid var(--white-08)' }}>
         <div className="cx" style={{ paddingTop:'clamp(48px,6vw,88px)', paddingBottom:'clamp(40px,5vw,72px)' }}>
           <Reveal>
-            <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'16px' }}>Who We Are</p>
+            <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>Who We Are</p>
             <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(34px,5.5vw,80px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', maxWidth:'760px' }}>
               Built to Create.<br />Driven to Elevate.
             </h1>
@@ -45,7 +45,7 @@ export default function AboutPage() {
             </Reveal>
             <Reveal delay={0.14}>
               <div style={{ paddingTop:'clamp(0px,2vw,32px)' }}>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'20px' }}>Founder</p>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'20px' }}>Founder</p>
                 <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(22px,2.8vw,40px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'28px', lineHeight:1 }}>Akshat Bhardwaj</h2>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'15px', lineHeight:1.9, color:'var(--white-70)', marginBottom:'20px' }}>
                   Camera On Roll Production was built from a simple but profound belief: that visual storytelling is the most powerful force in culture. Every brand, every artist, every vision deserves to be told with the craft of cinema.
@@ -54,7 +54,7 @@ export default function AboutPage() {
                   Akshat founded COR in Mumbai with a focus on cinematic quality for commercial work — applying the discipline, patience, and intention of filmmaking to every ad, every music video, every product film.
                 </p>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'15px', lineHeight:1.9, color:'var(--white-70)' }}>
-                  Today, COR merges that foundation with the power of AI through ATOM — creating a new category of studio operating at the intersection of art, technology, and intelligence.
+                  Today, COR merges that foundation with the power of AI — creating a new category of studio operating at the intersection of art, technology, and intelligence.
                 </p>
               </div>
             </Reveal>
@@ -70,7 +70,7 @@ export default function AboutPage() {
               <Reveal key={s.l} delay={i*0.07}>
                 <div style={{ background:'var(--black)', padding:'clamp(24px,3.5vw,48px) clamp(16px,2vw,32px)', textAlign:'center' }}>
                   <div style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,4vw,56px)', textTransform:'uppercase', color:'var(--white)', lineHeight:1, marginBottom:'8px' }}>{s.v}</div>
-                  <div style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:500, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--white-40)' }}>{s.l}</div>
+                  <div style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:500, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--white-70)' }}>{s.l}</div>
                 </div>
               </Reveal>
             ))}
@@ -82,16 +82,16 @@ export default function AboutPage() {
       <section className="section-pad" style={{ background:'var(--surface)', borderBottom:'1px solid var(--white-08)' }}>
         <div className="cx">
           <Reveal>
-            <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'16px' }}>What We Believe</p>
+            <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>What We Believe</p>
             <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,3.5vw,52px)', textTransform:'uppercase', lineHeight:0.92, color:'var(--white)', marginBottom:'clamp(40px,6vw,72px)' }}>Our Values.</h2>
           </Reveal>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(min(100%,320px),1fr))', gap:'1px', background:'var(--white-08)' }}>
             {VALUES.map((v, i) => (
               <Reveal key={v.n} delay={i*0.08}>
                 <div style={{ background:'var(--surface)', padding:'clamp(28px,3.5vw,44px)', height:'100%' }}>
-                  <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:500, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--gold)', marginBottom:'20px' }}>0{i+1}</p>
+                  <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:500, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'20px' }}>0{i+1}</p>
                   <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(15px,1.6vw,21px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'14px', lineHeight:1.1 }}>{v.n}</h3>
-                  <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', lineHeight:1.85, color:'var(--white-40)' }}>{v.d}</p>
+                  <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', lineHeight:1.85, color:'var(--white-70)' }}>{v.d}</p>
                 </div>
               </Reveal>
             ))}
@@ -102,7 +102,7 @@ export default function AboutPage() {
       {/* Clients marquee */}
       <div style={{ borderBottom:'1px solid var(--white-08)', overflow:'hidden', padding:'clamp(24px,3.5vw,40px) 0' }}>
         <div className="cx" style={{ display:'flex', alignItems:'center', gap:'32px' }}>
-          <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--white-20)', flexShrink:0 }}>Brands</span>
+          <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', flexShrink:0 }}>Brands</span>
           <div style={{ overflow:'hidden', flex:1, minWidth:0 }}>
             <div className="marquee">
               {[...CLIENTS,...CLIENTS].map((c,i) => (
@@ -125,12 +125,13 @@ export default function AboutPage() {
             <Link href="/contact" style={{
               fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600,
               letterSpacing:'0.2em', textTransform:'uppercase',
-              padding:'14px 32px', background:'var(--white)', color:'var(--black)',
-              display:'inline-flex', transition:'background var(--t-base)',
+              padding:'14px 32px', background:'var(--accent)', color:'#fff',
+              display:'inline-flex', alignItems:'center', gap:'8px',
+              transition:'box-shadow 400ms',
             }}
-            onMouseEnter={e => (e.currentTarget.style.background='var(--gold)')}
-            onMouseLeave={e => (e.currentTarget.style.background='var(--white)')}
-            >Get in Touch</Link>
+            onMouseEnter={e => { e.currentTarget.style.boxShadow='0 0 50px rgba(232,23,106,0.4)'; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow='none'; }}
+            >Get in Touch →</Link>
           </Reveal>
         </div>
       </section>

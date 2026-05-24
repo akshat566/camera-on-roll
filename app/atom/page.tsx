@@ -215,6 +215,94 @@ export default function AtomPage() {
         </motion.div>
       </section>
 
+      {/* ══ OUR AI ENGINE ═════════════════════════════ */}
+      <section className="section-pad" style={{ borderTop:'1px solid var(--white-08)', background:'var(--black)', minHeight:'100svh', display:'flex', alignItems:'center' }}>
+        <div className="cx" style={{ width:'100%' }}>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
+            {/* Left — copy + capability grid */}
+            <div>
+              <Reveal>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>Proprietary Tech</p>
+              </Reveal>
+              <Reveal delay={0.06}>
+                <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(36px,5vw,72px)', textTransform:'uppercase', lineHeight:0.92, letterSpacing:'-0.02em', color:'var(--white)', margin:'0 0 24px' }}>
+                  Our <span style={{ color:'var(--accent)' }}>AI</span> Engine
+                </h2>
+              </Reveal>
+              <Reveal delay={0.12}>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, lineHeight:1.85, color:'var(--white-70)', margin:'0 0 20px', maxWidth:'480px' }}>
+                  We&apos;ve built our own in-house generative AI platform for photo and video production — giving brands access to creative capabilities that didn&apos;t exist before. From photorealistic AI imagery to AI-enhanced video post-production, our technology accelerates timelines and expands creative possibilities.
+                </p>
+              </Reveal>
+              <Reveal delay={0.18}>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, lineHeight:1.85, color:'var(--white-70)', margin:'0 0 32px', maxWidth:'480px' }}>
+                  Trained on thousands of brand visuals and refined through real production cycles, our models understand aesthetics — not just pixels. This is AI that actually understands creative intent.
+                </p>
+              </Reveal>
+
+              {/* Capability cards */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'1px', background:'var(--white-08)' }}>
+                {[
+                  { icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                  ), title:'AI Photo Gen', desc:'Photorealistic product and lifestyle imagery generated at scale, in-brand.' },
+                  { icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5"><path d="M5 3l14 9-14 9V3z"/></svg>
+                  ), title:'AI Video Enhance', desc:'Frame interpolation, upscaling, and AI-driven color grading for any footage.' },
+                  { icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M4.93 19.07l4.24-4.24M14.83 9.17l4.24-4.24"/></svg>
+                  ), title:'Style Transfer', desc:'Apply any visual aesthetic or brand style consistently across entire content libraries.' },
+                  { icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                  ), title:'Generative Video', desc:'Text-to-video and image-to-video pipelines for campaign concepts and storyboards.' },
+                ].map((c, i) => (
+                  <Reveal key={c.title} delay={0.22 + i*0.05}>
+                    <div style={{ background:'var(--black)', padding:'clamp(20px,2.5vw,32px)', height:'100%', transition:'background var(--t-base)' }}
+                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background='var(--surface-2)')}
+                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background='var(--black)')}
+                    >
+                      <div style={{ marginBottom:'14px', display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', border:'1px solid var(--white-08)' }}>
+                        {c.icon}
+                      </div>
+                      <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(12px,1.1vw,15px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 8px', lineHeight:1.1 }}>{c.title}</h3>
+                      <p style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.75, color:'var(--white-40)', margin:0 }}>{c.desc}</p>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — image gallery */}
+            <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
+              <Reveal delay={0.1}>
+                <div style={{ position:'relative', overflow:'hidden', aspectRatio:'16/10' }}>
+                  <img src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=1200&q=80" alt="AI Photo Fashion" loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.35), transparent 60%)' }} />
+                  <span style={{ position:'absolute', top:'12px', right:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'6px 12px', background:'var(--accent)', color:'#fff' }}>Powered by COR AI</span>
+                  <span style={{ position:'absolute', bottom:'12px', left:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white)', background:'rgba(9,9,8,0.6)', padding:'4px 8px' }}>AI Photo · Fashion</span>
+                </div>
+              </Reveal>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4px' }}>
+                <Reveal delay={0.2}>
+                  <div style={{ position:'relative', overflow:'hidden', aspectRatio:'1/1' }}>
+                    <img src="https://images.unsplash.com/photo-1635776062764-e025521e3df3?w=800&q=80" alt="Generative Art" loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.35), transparent 60%)' }} />
+                    <span style={{ position:'absolute', bottom:'12px', left:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white)', background:'rgba(9,9,8,0.6)', padding:'4px 8px' }}>Generative Art</span>
+                  </div>
+                </Reveal>
+                <Reveal delay={0.3}>
+                  <div style={{ position:'relative', overflow:'hidden', aspectRatio:'1/1' }}>
+                    <img src="https://images.unsplash.com/photo-1574169208507-84376144848b?w=800&q=80" alt="AI Video Frame" loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.35), transparent 60%)' }} />
+                    <span style={{ position:'absolute', bottom:'12px', left:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white)', background:'rgba(9,9,8,0.6)', padding:'4px 8px' }}>AI Video Frame</span>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ══ CHAT ════════════════════════════════════ */}
       <section id="chat" className="section-pad" style={{ borderTop:'1px solid var(--white-08)', background:'var(--surface)' }}>
         <div className="cx">

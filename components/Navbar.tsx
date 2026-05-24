@@ -4,23 +4,19 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
-import { useSafeAuth } from '@/hooks/useSafeAuth';
+import { ChairLogo } from './ChairLogo';
 
 const LINKS = [
   { href: '/',         label: 'Home',        exact: true  },
   { href: '/work',     label: 'Work',        exact: false },
   { href: '/services', label: 'Our Services', exact: false },
   { href: '/about',    label: 'About Us',    exact: false },
-  { href: '/atom',     label: 'Atom',        exact: false },
+  { href: '/atom',     label: 'AI',          exact: false },
   { href: '/contact',  label: 'Contact',     exact: false },
 ];
 
-const CLERK_KEY = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
 export function Navbar() {
   const path = usePathname();
-  const { isSignedIn } = useSafeAuth();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState(false);
@@ -49,13 +45,33 @@ export function Navbar() {
     >
       <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', gap: '32px' }}>
 
-        {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none' }}>
-          <span style={{
-            fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600,
-            letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--white)',
-          }}>
-            Camera On Roll Production
+        {/* Logo — chair icon + CAMERA ON ROLL wordmark + Production subscript */}
+        <Link href="/" aria-label="Camera On Roll Production — Home"
+          style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, textDecoration: 'none', color: 'var(--white)', transition: 'color 250ms' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--white)'; }}
+        >
+          <ChairLogo size={28} />
+          <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
+            <span style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '15px', letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              color: 'inherit',
+              lineHeight: 1,
+            }}>
+              Camera on Roll
+            </span>
+            <span style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '8px', fontWeight: 500,
+              letterSpacing: '0.42em',
+              textTransform: 'uppercase',
+              color: 'var(--white-70)',
+              marginTop: '4px',
+            }}>
+              Production
+            </span>
           </span>
         </Link>
 
@@ -79,49 +95,32 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Auth — Desktop */}
-        {CLERK_KEY && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '16px' }}
-            className="hidden-mobile">
-            {!isSignedIn && (
-              <>
-                <SignInButton mode="modal">
-                  <button style={{
-                    fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
-                    letterSpacing: '0.14em', textTransform: 'uppercase',
-                    padding: '10px 18px', background: 'transparent',
-                    border: '1px solid var(--white-20)', color: 'var(--white-70)',
-                    cursor: 'pointer', transition: 'border-color 200ms, color 200ms',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent-dim)'; e.currentTarget.style.color = 'var(--accent)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; e.currentTarget.style.color = 'var(--white-70)'; }}
-                  >Sign In</button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button style={{
-                    fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
-                    letterSpacing: '0.14em', textTransform: 'uppercase',
-                    padding: '10px 18px', background: 'var(--accent)', color: '#fff',
-                    border: 'none', cursor: 'pointer', transition: 'opacity 200ms',
-                  }}
-                  onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'}
-                  onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.opacity = '1'}
-                  >Sign Up</button>
-                </SignUpButton>
-              </>
-            )}
-            {isSignedIn && (
-              <UserButton
-                appearance={{
-                  elements: {
-                    userButtonAvatarBox: { width: '32px', height: '32px' },
-                    userButtonPopoverCard: { background: 'var(--charcoal)', border: '1px solid var(--white-08)' },
-                  },
-                }}
-              />
-            )}
-          </div>
-        )}
+        {/* Search + Work With Us — Desktop */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '16px' }}
+          className="hidden-mobile">
+          <button
+            onClick={() => setSearch(s => !s)}
+            aria-label="Search"
+            style={{
+              width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'transparent', border: '1px solid var(--white-20)', color: 'var(--white-70)',
+              cursor: 'pointer', transition: 'border-color 200ms, color 200ms',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent-dim)'; e.currentTarget.style.color = 'var(--accent)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; e.currentTarget.style.color = 'var(--white-70)'; }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+          <Link href="/contact" style={{
+            fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            padding: '10px 18px', background: 'var(--accent)', color: '#fff',
+            border: 'none', cursor: 'pointer', transition: 'opacity 200ms',
+          }}
+          onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '0.85'}
+          onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '1'}
+          >Work With Us</Link>
+        </div>
 
         {/* Hamburger */}
         <button className="show-mobile" onClick={() => setOpen(!open)} aria-label="Toggle menu"
@@ -135,56 +134,72 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — minimal, compact, premium */}
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            style={{ background: 'rgba(9,9,8,0.97)', borderBottom: '1px solid var(--white-08)', backdropFilter: 'blur(20px)', overflow: 'hidden' }}
+            initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.22, 0.58, 0.32, 1] }}
+            style={{
+              position: 'absolute', top: '100%', right: 'var(--pad-x)',
+              minWidth: '240px',
+              background: 'rgba(9,9,8,0.96)', border: '1px solid var(--white-08)',
+              backdropFilter: 'blur(20px)', overflow: 'hidden',
+              boxShadow: '0 24px 60px rgba(0,0,0,0.5)',
+            }}
           >
-            <div className="cx" style={{ paddingTop: '24px', paddingBottom: '32px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{ padding: '8px 0', display: 'flex', flexDirection: 'column' }}>
               {LINKS.map(l => (
                 <Link key={l.href} href={l.href}
                   style={{
-                    fontFamily: 'var(--font-body)', fontSize: '12px', fontWeight: 500,
-                    letterSpacing: '0.14em', textTransform: 'uppercase',
-                    color: isActive(l) ? 'var(--white)' : 'var(--white-40)',
-                    padding: '14px 0', borderBottom: '1px solid var(--white-08)',
-                  }}>
+                    fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500,
+                    letterSpacing: '0.18em', textTransform: 'uppercase',
+                    color: isActive(l) ? 'var(--accent)' : 'var(--white-70)',
+                    padding: '12px 20px',
+                    transition: 'background 200ms, color 200ms',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.04)'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--white)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = isActive(l) ? 'var(--accent)' : 'var(--white-70)'; }}
+                >
                   {l.label}
                 </Link>
               ))}
-              {/* Mobile auth */}
-              {CLERK_KEY && (
-                <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-                  {!isSignedIn && (
-                    <>
-                      <SignInButton mode="modal">
-                        <button style={{
-                          flex: 1, padding: '14px',
-                          fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
-                          letterSpacing: '0.14em', textTransform: 'uppercase',
-                          background: 'transparent', border: '1px solid var(--white-20)', color: 'var(--white-70)',
-                        }}>Sign In</button>
-                      </SignInButton>
-                      <SignUpButton mode="modal">
-                        <button style={{
-                          flex: 1, padding: '14px',
-                          fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
-                          letterSpacing: '0.14em', textTransform: 'uppercase',
-                          background: 'var(--accent)', color: '#fff', border: 'none',
-                        }}>Sign Up</button>
-                      </SignUpButton>
-                    </>
-                  )}
-                  {isSignedIn && (
-                    <div style={{ padding: '14px', textAlign: 'center' }}>
-                      <UserButton />
-                    </div>
-                  )}
-                </div>
-              )}
+              <div style={{ borderTop: '1px solid var(--white-08)', marginTop: '4px', padding: '12px 20px' }}>
+                <Link href="/contact" style={{
+                  display: 'block', textAlign: 'center',
+                  fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
+                  letterSpacing: '0.18em', textTransform: 'uppercase',
+                  padding: '10px 16px', background: 'var(--accent)', color: '#fff',
+                }}>Work With Us</Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Search overlay */}
+      <AnimatePresence>
+        {search && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'absolute', top: '100%', left: 0, right: 0,
+              background: 'rgba(9,9,8,0.96)', borderBottom: '1px solid var(--white-08)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            <div className="cx" style={{ padding: '20px 0' }}>
+              <input
+                autoFocus
+                type="text"
+                placeholder="Search work, services, AI…"
+                style={{
+                  width: '100%', background: 'transparent', border: 'none',
+                  borderBottom: '1px solid var(--white-20)',
+                  fontFamily: 'var(--font-body)', fontSize: '14px', letterSpacing: '0.08em',
+                  color: 'var(--white)', padding: '10px 0', outline: 'none',
+                }}
+              />
             </div>
           </motion.div>
         )}

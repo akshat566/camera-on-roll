@@ -1,8 +1,9 @@
 ﻿import Link from 'next/link';
+import { ChairLogo } from './ChairLogo';
 
 const NAV = [
   { href: '/work',     label: 'Work' },
-  { href: '/atom',     label: 'Atom' },
+  { href: '/atom',     label: 'AI' },
   { href: '/services', label: 'Services' },
   { href: '/about',    label: 'About' },
   { href: '/contact',  label: 'Contact' },
@@ -16,12 +17,15 @@ export function Footer() {
 
         {/* Top row */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10 md:gap-0" style={{ marginBottom: '48px' }}>
-          <Link href="/">
-            <span className="block text-[13px] tracking-[0.06em] uppercase" style={{ fontFamily: 'var(--font-display)', color: 'var(--white)', lineHeight: 1 }}>
-              Camera <span style={{ color: 'var(--gold)' }}>On Roll</span>
-            </span>
-            <span className="block mt-[4px] text-[7px] tracking-[0.44em] uppercase" style={{ fontFamily: 'var(--font-body)', color: 'var(--white-40)', lineHeight: 1 }}>
-              Production · Mumbai
+          <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+            <ChairLogo size={28} style={{ color: 'var(--white)' }} />
+            <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '15px', letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--white)', lineHeight: 1 }}>
+                Camera <span style={{ color: 'var(--accent)' }}>On Roll</span>
+              </span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: '8px', fontWeight: 500, letterSpacing: '0.42em', textTransform: 'uppercase', color: 'var(--white-70)', marginTop: '4px' }}>
+                Production · Mumbai
+              </span>
             </span>
           </Link>
 

@@ -47,20 +47,36 @@ export function WorkWithUs() {
           <Reveal delay={0.15}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px,2.5vw,28px)' }}>
               <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Phone</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Akshat — Phone</p>
                 <a href="tel:+917791048704"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
-                >+91 7791048704</a>
+                >+91 77910 48704</a>
               </div>
               <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Email</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Akshat — Email</p>
                 <a href="mailto:akshat@cameraonrollproduction.com"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
                 >akshat@cameraonrollproduction.com</a>
+              </div>
+              <div>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Ashna — Phone</p>
+                <a href="tel:+919876543210"
+                  style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', transition: 'color 200ms' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
+                >+91 98765 43210</a>
+              </div>
+              <div>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Ashna — Email</p>
+                <a href="mailto:ashna@cameraonrollproduction.com"
+                  style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
+                >ashna@cameraonrollproduction.com</a>
               </div>
               <div>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Instagram</p>
@@ -125,7 +141,8 @@ export function WorkWithUs() {
                 {[
                   { name: 'name',    placeholder: 'Your Name *',        type: 'text',  span: 1, req: true  },
                   { name: 'company', placeholder: 'Company / Brand',     type: 'text',  span: 1, req: false },
-                  { name: 'email',   placeholder: 'Email Address *',     type: 'email', span: 2, req: true  },
+                  { name: 'email',   placeholder: 'Email Address *',     type: 'email', span: 1, req: true  },
+                  { name: 'phone',   placeholder: 'Phone Number *',      type: 'tel',   span: 1, req: true  },
                   { name: 'budget',  placeholder: 'Project Budget (optional)', type: 'text', span: 2, req: false },
                 ].map((f) => (
                   <input key={f.name} name={f.name} type={f.type} placeholder={f.placeholder} required={f.req}

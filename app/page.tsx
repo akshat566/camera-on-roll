@@ -325,8 +325,7 @@ export default function Home() {
         <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(20px,2.5vw,32px)', flexWrap:'wrap', gap:'12px' }}>
           <Reveal>
             <div>
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'8px' }}>Selected Work</p>
-              <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Work That Speaks.</h2>
+              <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Work.</h2>
             </div>
           </Reveal>
           <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
@@ -592,27 +591,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ WORK WITH US (Image 3 design) ════════════════ */}
+      {/* ══ WORK WITH US ════════════════ */}
       <section style={{ borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
-        {/* Top artwork strip — our own work montage */}
-        <div style={{ position:'relative', height:'clamp(180px,22vw,320px)', overflow:'hidden', display:'grid', gridTemplateColumns:`repeat(${FEATURED.length}, 1fr)`, gap:'2px', background:'var(--white-08)' }}>
-          {FEATURED.map((f, i) => (
-            <motion.div key={i}
-              initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
-              transition={{ duration:0.8, delay:i*0.08, ease:EASE }}
-              whileHover={{ scale:1.04 }}
-              style={{ position:'relative', overflow:'hidden', background:'var(--black)', cursor:'pointer' }}
-            >
-              <motion.img src={f.img} alt={f.title} loading="lazy"
-                animate={{ scale:[1, 1.06, 1] }} transition={{ duration:14 + i*1.5, repeat:Infinity, ease:'easeInOut' }}
-                style={{ width:'100%', height:'100%', objectFit:'cover', filter:'brightness(0.95) saturate(1.05)' }} />
-              <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.6), transparent 60%)' }} />
-              <span style={{ position:'absolute', bottom:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--white)' }}>{f.client}</span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Work With Us — two-column: title+contact LEFT, form RIGHT */}
         <WorkWithUs />
       </section>
 

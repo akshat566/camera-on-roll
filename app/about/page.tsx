@@ -95,7 +95,7 @@ export default function AboutPage() {
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'8px' }}>Founder & Director</p>
                 <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(22px,2.8vw,36px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'16px', lineHeight:1 }}>Akshat Bhardwaj</h3>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', lineHeight:1.85, color:'var(--white-70)' }}>
-                  Built COR with a singular focus: cinematic quality for commercial work. Applying the discipline, patience, and intention of filmmaking to every frame.
+                  Akshat Bhardwaj is the Founder, CEO and Producer at Camera On Roll Production. With experience across advertising and production, he has worked with multiple agencies and leading brands across campaigns, branded content, travel, fashion, automotive, and commercial productions. A videographer and producer by profession, he heads Camera On Roll Production and oversees projects across creative direction, filmmaking, production management, cinematography, drone operations, and end to end execution from concept to delivery.
                 </p>
               </div>
             </Reveal>
@@ -110,10 +110,10 @@ export default function AboutPage() {
                     onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
                   />
                 </div>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'8px' }}>Co-Founder</p>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'8px' }}>Co-Founder & Creative Director</p>
                 <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(22px,2.8vw,36px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'16px', lineHeight:1 }}>Ashna Chhabra</h3>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', lineHeight:1.85, color:'var(--white-70)' }}>
-                  Leading strategy and creative operations at COR. Bringing vision and structure to every production, ensuring brands find their voice through cinematic storytelling.
+                  Ashna is the Co-Founder and Creative Director at Camera On Roll Production, bringing together a strategy-first mindset shaped by her consulting background at KPMG and 7+ years of experience across production and advertising. She leads projects with a strong focus on cinematic storytelling, brand thinking, and impactful execution. Her expertise spans creative direction, campaign curation, styling, budget allocation, and end-to-end production, overseeing projects from concept to final delivery.
                 </p>
               </div>
             </Reveal>

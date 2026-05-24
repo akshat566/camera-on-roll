@@ -145,25 +145,28 @@ export default function ServicesPage() {
               onMouseEnter={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), inset 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
-                const img = el.querySelector('img'); if (img) { img.style.opacity='0.55'; img.style.transform='scale(1.08)'; }
+                const img = el.querySelector('.svc-img'); if (img) { (img as HTMLElement).style.opacity='0.65'; (img as HTMLElement).style.transform='scale(1.08)'; }
                 const num = el.querySelector('.svc-num') as HTMLElement | null; if (num) num.style.color='var(--accent)';
                 const icon = el.querySelector('.svc-icon') as HTMLElement | null; if (icon) icon.style.transform='scale(1.15) rotate(-3deg)';
+                const desc = el.querySelector('.svc-desc') as HTMLElement | null; if (desc) { desc.style.opacity='1'; desc.style.transform='translateY(0)'; }
               }}
               onMouseLeave={e => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.boxShadow = 'none';
-                const img = el.querySelector('img'); if (img) { img.style.opacity='0.25'; img.style.transform='scale(1)'; }
+                const img = el.querySelector('.svc-img'); if (img) { (img as HTMLElement).style.opacity='0.45'; (img as HTMLElement).style.transform='scale(1)'; }
                 const num = el.querySelector('.svc-num') as HTMLElement | null; if (num) num.style.color='var(--white-20)';
                 const icon = el.querySelector('.svc-icon') as HTMLElement | null; if (icon) icon.style.transform='scale(1) rotate(0)';
+                const desc = el.querySelector('.svc-desc') as HTMLElement | null; if (desc) { desc.style.opacity='0'; desc.style.transform='translateY(8px)'; }
               }}
             >
-              {/* Background image */}
+              {/* Background image — bright, no grayscale */}
               <div style={{ position:'absolute', inset:0, zIndex:0 }}>
                 <img
                   src={s.img} alt={s.n} loading="lazy"
-                  style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.25, filter:'grayscale(20%)', transition:'opacity 500ms, transform 700ms var(--ease-expo)' }}
+                  className="svc-img"
+                  style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.45, transition:'opacity 500ms, transform 700ms var(--ease-expo)' }}
                 />
-                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.95) 40%, rgba(9,9,8,0.5) 100%)' }} />
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.92) 30%, rgba(9,9,8,0.55) 100%)' }} />
               </div>
 
               {/* Card content */}
@@ -174,12 +177,12 @@ export default function ServicesPage() {
                   <span className="svc-num" style={{ fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:500, letterSpacing:'0.15em', color:'var(--white-20)', transition:'color 300ms' }}>{s.num}</span>
                 </div>
 
-                {/* Bottom: title + description */}
+                {/* Bottom: title always visible, description hidden until hover */}
                 <div>
                   <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.3vw,17px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'10px', lineHeight:1.1 }}>
                     {s.n}
                   </h2>
-                  <p style={{ fontFamily:'var(--font-body)', fontSize:'12px', fontWeight:400, lineHeight:1.75, color:'var(--white-70)', margin:0 }}>
+                  <p className="svc-desc" style={{ fontFamily:'var(--font-body)', fontSize:'12px', fontWeight:400, lineHeight:1.75, color:'var(--white-70)', margin:0, opacity:0, transform:'translateY(8px)', transition:'opacity 350ms, transform 350ms var(--ease-expo)' }}>
                     {s.d}
                   </p>
                 </div>

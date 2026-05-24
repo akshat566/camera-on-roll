@@ -145,16 +145,6 @@ export default function WorkPage() {
                 Our Work.
               </h1>
             </Reveal>
-            <Reveal delay={0.12}>
-              <p style={{
-                fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:400,
-                lineHeight:1.75, color:'var(--white-70)',
-                margin:'0 0 28px',
-              }}>
-                Films, campaigns, podcasts, and reels we&apos;ve crafted for brands, artists, and visionaries — across Instagram, YouTube, and broadcast.
-              </p>
-            </Reveal>
-
             {/* Filter — vertical stack of chips */}
             <Reveal delay={0.16}>
               <div style={{ borderTop:'1px solid var(--white-08)', paddingTop:'18px' }}>
@@ -324,12 +314,16 @@ export default function WorkPage() {
                       el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
                       const play = el.querySelector('.tile-play') as HTMLElement | null;
                       if (play) { play.style.opacity = '1'; play.style.transform = 'translate(-50%,-50%) scale(1)'; }
+                      const info = el.querySelector('.tile-info') as HTMLElement | null;
+                      if (info) { info.style.opacity = '1'; }
                     }}
                     onMouseLeave={e => {
                       const el = e.currentTarget as HTMLElement;
                       el.style.boxShadow = 'none';
                       const play = el.querySelector('.tile-play') as HTMLElement | null;
                       if (play) { play.style.opacity = '0'; play.style.transform = 'translate(-50%,-50%) scale(0.6)'; }
+                      const info = el.querySelector('.tile-info') as HTMLElement | null;
+                      if (info) { info.style.opacity = '0'; }
                     }}
                   >
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
@@ -366,7 +360,7 @@ export default function WorkPage() {
                       <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.85)', color:'var(--white)', transition:'background 250ms' }}>
                         <ArrowIcon />
                       </span>
-                      <div style={{ position:'absolute', bottom:'12px', left:'12px', right:'48px' }}>
+                      <div className="tile-info" style={{ position:'absolute', bottom:'12px', left:'12px', right:'48px', opacity:0, transition:'opacity 300ms' }}>
                         <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(12px,1.25vw,16px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px', lineHeight:1.1, letterSpacing:'0.01em' }}>{p.title}</p>
                         <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
                       </div>

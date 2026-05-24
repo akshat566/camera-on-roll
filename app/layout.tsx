@@ -1,22 +1,14 @@
 ﻿import type { Metadata } from "next";
-import { Anton, Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const anton = Anton({
+const geist = Geist({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-anton",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-inter",
+  variable: "--font-geist",
   display: "swap",
 });
 
@@ -33,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <html lang="en" className={`${anton.variable} ${inter.variable}`}>
+      <html lang="en" className={`${geist.variable}`}>
         <body>
           <div className="film-grain" aria-hidden="true" />
           <SmoothScroll>

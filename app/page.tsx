@@ -279,12 +279,18 @@ export default function Home() {
         <div style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', maxWidth:'900px' }}>
           <motion.h1 initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }}
             transition={{ duration:1.2, delay:0.4, ease:EASE }}
-            style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,5.5vw,72px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(28px,3vw,48px)', whiteSpace:'nowrap' }}>
+            style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,5.5vw,72px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(16px,2vw,28px)', whiteSpace:'nowrap' }}>
             Camera On Roll Production
           </motion.h1>
 
+          <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }}
+            transition={{ duration:1, delay:0.9, ease:EASE }}
+            style={{ fontFamily:'var(--font-body)', fontSize:'12px', fontWeight:500, letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', marginBottom:'clamp(24px,3vw,40px)' }}>
+            A creative tech studio built for modern brands
+          </motion.p>
+
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
-            transition={{ duration:0.8, delay:0.8, ease:EASE }}
+            transition={{ duration:0.8, delay:1.1, ease:EASE }}
             style={{ display:'flex', gap:'clamp(8px,1.5vw,14px)', justifyContent:'center', flexWrap:'wrap' }}>
 
             {/* Intro Video — opens fullscreen overlay */}

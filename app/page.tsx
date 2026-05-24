@@ -99,6 +99,9 @@ const FEATURED: FeaturedProject[] = [
   { cat:'Podcasts',    client:'TATA AIA',         title:'Podcast Episode 1',            link:'https://youtu.be/pXotTJIzbXw',              img:ytThumb('pXotTJIzbXw'), orientation:'h' as const, c:4, r:2 }, // wide H
 ];
 
+// Home page: show only 7 featured items
+const FEATURED_HOME = FEATURED.slice(0, 7);
+
 const SERVICES_DATA = [
   { n:'Brand & Influencer Reels', num:'01', img:'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80', d:'Platform-native reels and influencer content engineered for scroll-stopping engagement.' },
   { n:'Product / Commercials',    num:'02', img:'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&q=80', d:'High-production product films and commercials built for brand impact.' },
@@ -404,9 +407,9 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <Link href="/work" style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', padding:'10px 24px', border:'1px solid var(--white-20)', color:'var(--white-40)', display:'inline-flex', alignItems:'center', gap:'6px', transition:'border-color 300ms, color 300ms' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--white)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-40)'; }}>
+            <Link href="/work" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'12px 28px', background:'var(--accent)', color:'#fff', display:'inline-flex', alignItems:'center', gap:'8px', transition:'box-shadow 400ms' }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow='0 0 50px rgba(232,23,106,0.4)'; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow='none'; }}>
               View All Work →
             </Link>
           </div>
@@ -425,7 +428,7 @@ export default function Home() {
                 gridAutoFlow:'dense',
                 gap:'4px',
               }}>
-              {FEATURED.map((p, i) => {
+              {FEATURED_HOME.map((p, i) => {
                 const isV = p.orientation === 'v';
                 const ytId_ = ytId(p.link);
                 return (
@@ -468,7 +471,7 @@ export default function Home() {
           ) : (
             <motion.div key="list" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.25 }}
               style={{ padding:'0 var(--pad-x)', display:'flex', flexDirection:'column', gap:'1px', background:'var(--white-08)' }}>
-              {FEATURED.map((p, i) => {
+              {FEATURED_HOME.map((p, i) => {
                 const ytId_ = ytId(p.link);
                 return (
                 <motion.div key={i} initial={{ opacity:0, x:-10 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.35, delay:i*0.04, ease:EASE }}>

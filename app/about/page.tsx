@@ -86,7 +86,7 @@ export default function AboutPage() {
             <Reveal delay={0.1}>
               <div style={{ position:'relative' }}>
                 <div style={{ aspectRatio:'3/4', overflow:'hidden', background:'var(--surface)', marginBottom:'24px' }}>
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85" alt="Akshat Bhardwaj"
+                  <img src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/founders/akshat.jpg" alt="Akshat Bhardwaj"
                     loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', filter:'grayscale(10%)', transition:'transform 600ms' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
@@ -100,19 +100,20 @@ export default function AboutPage() {
               </div>
             </Reveal>
 
-            {/* Ashna - Placeholder */}
+            {/* Ashna */}
             <Reveal delay={0.2}>
               <div style={{ position:'relative' }}>
-                <div style={{ aspectRatio:'3/4', overflow:'hidden', background:'var(--surface)', marginBottom:'24px', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                  <div style={{ textAlign:'center', padding:'32px' }}>
-                    <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--white-40)', marginBottom:'8px' }}>Coming Soon</p>
-                    <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(24px,3vw,40px)', textTransform:'uppercase', color:'var(--white-20)', lineHeight:1 }}>Ashna Chhabra</p>
-                  </div>
+                <div style={{ aspectRatio:'3/4', overflow:'hidden', background:'var(--surface)', marginBottom:'24px' }}>
+                  <img src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/founders/ashna.jpg" alt="Ashna Chhabra"
+                    loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', filter:'grayscale(10%)', transition:'transform 600ms' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
+                  />
                 </div>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'8px' }}>Co-Founder</p>
                 <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(22px,2.8vw,36px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'16px', lineHeight:1 }}>Ashna Chhabra</h3>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', lineHeight:1.85, color:'var(--white-40)' }}>
-                  Details coming soon.
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', lineHeight:1.85, color:'var(--white-70)' }}>
+                  Leading strategy and creative operations at COR. Bringing vision and structure to every production, ensuring brands find their voice through cinematic storytelling.
                 </p>
               </div>
             </Reveal>

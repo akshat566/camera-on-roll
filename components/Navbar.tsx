@@ -43,7 +43,7 @@ export function Navbar() {
         transition: 'background 600ms, backdrop-filter 600ms',
       }}
     >
-      <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', gap: '32px' }}>
+      <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* Logo — chair icon + CAMERA ON ROLL wordmark + Production subscript */}
         <Link href="/" aria-label="Camera On Roll Production — Home"
@@ -75,63 +75,66 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '32px', marginLeft: 'auto' }}
-          className="hidden-mobile">
-          {LINKS.map(l => (
-            <Link key={l.href} href={l.href}
+        {/* Right side: nav + search + CTA + hamburger */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(16px, 2.5vw, 32px)' }}>
+          {/* Desktop nav */}
+          <nav style={{ display: 'flex', alignItems: 'center', gap: 'clamp(16px, 2vw, 28px)' }}
+            className="hidden-mobile">
+            {LINKS.map(l => (
+              <Link key={l.href} href={l.href}
+                style={{
+                  fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500,
+                  letterSpacing: '0.1em', textTransform: 'uppercase',
+                  color: isActive(l) ? 'var(--white)' : 'var(--white-40)',
+                  transition: 'color 200ms',
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={e => { if (!isActive(l)) (e.currentTarget as HTMLElement).style.color = 'var(--white-70)'; }}
+                onMouseLeave={e => { if (!isActive(l)) (e.currentTarget as HTMLElement).style.color = 'var(--white-40)'; }}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Search + Work With Us — Desktop */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+            className="hidden-mobile">
+            <button
+              onClick={() => setSearch(s => !s)}
+              aria-label="Search"
               style={{
-                fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 500,
-                letterSpacing: '0.1em', textTransform: 'uppercase',
-                color: isActive(l) ? 'var(--white)' : 'var(--white-40)',
-                transition: 'color 200ms',
-                whiteSpace: 'nowrap',
+                width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'transparent', border: '1px solid var(--white-20)', color: 'var(--white-70)',
+                cursor: 'pointer', transition: 'border-color 200ms, color 200ms',
               }}
-              onMouseEnter={e => { if (!isActive(l)) (e.currentTarget as HTMLElement).style.color = 'var(--white-70)'; }}
-              onMouseLeave={e => { if (!isActive(l)) (e.currentTarget as HTMLElement).style.color = 'var(--white-40)'; }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent-dim)'; e.currentTarget.style.color = 'var(--accent)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; e.currentTarget.style.color = 'var(--white-70)'; }}
             >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Search + Work With Us — Desktop */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginLeft: '16px' }}
-          className="hidden-mobile">
-          <button
-            onClick={() => setSearch(s => !s)}
-            aria-label="Search"
-            style={{
-              width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: 'transparent', border: '1px solid var(--white-20)', color: 'var(--white-70)',
-              cursor: 'pointer', transition: 'border-color 200ms, color 200ms',
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            </button>
+            <Link href="/contact" style={{
+              fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
+              letterSpacing: '0.14em', textTransform: 'uppercase',
+              padding: '10px 18px', background: 'var(--accent)', color: '#fff',
+              border: 'none', cursor: 'pointer', transition: 'opacity 200ms',
             }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--accent-dim)'; e.currentTarget.style.color = 'var(--accent)'; }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; e.currentTarget.style.color = 'var(--white-70)'; }}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          </button>
-          <Link href="/contact" style={{
-            fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 600,
-            letterSpacing: '0.14em', textTransform: 'uppercase',
-            padding: '10px 18px', background: 'var(--accent)', color: '#fff',
-            border: 'none', cursor: 'pointer', transition: 'opacity 200ms',
-          }}
-          onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '0.85'}
-          onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '1'}
-          >Work With Us</Link>
-        </div>
+            onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '0.85'}
+            onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.opacity = '1'}
+            >Work With Us</Link>
+          </div>
 
-        {/* Hamburger */}
-        <button className="show-mobile" onClick={() => setOpen(!open)} aria-label="Toggle menu"
-          style={{ marginLeft: 'auto', display: 'flex', flexDirection: 'column', gap: '5px', padding: '8px', background: 'none', border: 'none', cursor: 'pointer' }}>
-          <motion.span animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }} transition={{ duration: 0.22 }}
-            style={{ display: 'block', width: '22px', height: '1.5px', background: 'var(--white)' }} />
-          <motion.span animate={open ? { opacity: 0 } : { opacity: 1 }} transition={{ duration: 0.16 }}
-            style={{ display: 'block', width: '22px', height: '1.5px', background: 'var(--white)' }} />
-          <motion.span animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} transition={{ duration: 0.22 }}
-            style={{ display: 'block', width: '22px', height: '1.5px', background: 'var(--white)' }} />
-        </button>
+          {/* Hamburger */}
+          <button className="show-mobile" onClick={() => setOpen(!open)} aria-label="Toggle menu"
+            style={{ display: 'flex', flexDirection: 'column', gap: '5px', padding: '8px', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <motion.span animate={open ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }} transition={{ duration: 0.22 }}
+              style={{ display: 'block', width: '22px', height: '1.5px', background: 'var(--white)' }} />
+            <motion.span animate={open ? { opacity: 0 } : { opacity: 1 }} transition={{ duration: 0.16 }}
+              style={{ display: 'block', width: '22px', height: '1.5px', background: 'var(--white)' }} />
+            <motion.span animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} transition={{ duration: 0.22 }}
+              style={{ display: 'block', width: '22px', height: '1.5px', background: 'var(--white)' }} />
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer — minimal, compact, premium */}

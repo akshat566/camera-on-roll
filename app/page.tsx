@@ -146,26 +146,26 @@ function ClientBadge({ name, domain }: { name: string; domain: string }) {
   const [imgError, setImgError] = useState(false);
   return (
     <motion.div
-      whileHover={{ scale: 1.08, y: -4 }}
+      whileHover={{ scale: 1.04, y: -2 }}
       transition={{ duration: 0.3, ease: EASE }}
       style={{
         flexShrink: 0,
-        width: 'clamp(86px, 8vw, 116px)',
-        height: 'clamp(86px, 8vw, 116px)',
+        width: 'clamp(52px, 5vw, 72px)',
+        height: 'clamp(52px, 5vw, 72px)',
         borderRadius: '50%',
         background: '#fff',
-        border: '1.5px solid var(--white-08)',
+        border: '1px solid var(--white-08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '14px', overflow: 'hidden',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.35)',
+        padding: '8px', overflow: 'hidden',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
         transition: 'box-shadow 350ms, border-color 350ms',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 12px 36px rgba(232,23,106,0.4), 0 0 0 2px var(--accent)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 24px rgba(0,0,0,0.35)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(232,23,106,0.18)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; }}
     >
       {!imgError ? (
         <img
-          src={`https://logo.clearbit.com/${domain}?size=160`}
+          src={`https://logo.clearbit.com/${domain}?size=80`}
           alt={name}
           loading="lazy"
           onError={() => setImgError(true)}
@@ -174,7 +174,7 @@ function ClientBadge({ name, domain }: { name: string; domain: string }) {
       ) : (
         <span style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(10px, 0.95vw, 14px)',
+          fontSize: 'clamp(8px, 0.7vw, 11px)',
           letterSpacing: '0.02em', lineHeight: 1.05,
           textAlign: 'center', textTransform: 'uppercase',
           color: '#0a0a0a',
@@ -570,21 +570,21 @@ export default function Home() {
       </section>
 
       {/* ══ CLIENTS — single sliding marquee with real logos ═══ */}
-      <section style={{ padding:'clamp(56px,6vw,88px) 0', borderTop:'1px solid var(--white-08)' }}>
-        <div className="cx" style={{ marginBottom:'clamp(32px,3.5vw,48px)' }}>
+      <section style={{ padding:'clamp(24px,2.5vw,36px) 0', borderTop:'1px solid var(--white-08)' }}>
+        <div className="cx" style={{ marginBottom:'clamp(12px,1.2vw,18px)' }}>
           <Reveal>
-            <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'10px' }}>Trusted By</p>
-            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(40px,6.5vw,96px)', textTransform:'uppercase', lineHeight:0.86, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Clients</h2>
+            <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'6px' }}>Trusted By</p>
+            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.01em', color:'var(--white)', margin:0 }}>Clients</h2>
           </Reveal>
         </div>
 
         {/* Edge-to-edge marquee — one continuous sliding row */}
-        <div style={{ position:'relative', overflow:'hidden', padding:'clamp(16px,2vw,28px) 0' }}>
+        <div style={{ position:'relative', overflow:'hidden', padding:'clamp(6px,0.8vw,10px) 0' }}>
           {/* Edge fades for clean blend with background */}
-          <div aria-hidden="true" style={{ position:'absolute', top:0, bottom:0, left:0, width:'clamp(60px,8vw,160px)', background:'linear-gradient(to right, var(--black), transparent)', zIndex:2, pointerEvents:'none' }} />
-          <div aria-hidden="true" style={{ position:'absolute', top:0, bottom:0, right:0, width:'clamp(60px,8vw,160px)', background:'linear-gradient(to left, var(--black), transparent)', zIndex:2, pointerEvents:'none' }} />
+          <div aria-hidden="true" style={{ position:'absolute', top:0, bottom:0, left:0, width:'clamp(40px,5vw,80px)', background:'linear-gradient(to right, var(--black), transparent)', zIndex:2, pointerEvents:'none' }} />
+          <div aria-hidden="true" style={{ position:'absolute', top:0, bottom:0, right:0, width:'clamp(40px,5vw,80px)', background:'linear-gradient(to left, var(--black), transparent)', zIndex:2, pointerEvents:'none' }} />
 
-          <div className="marquee" style={{ gap:'clamp(20px,2vw,36px)', paddingLeft:'clamp(20px,2vw,36px)' }}>
+          <div className="marquee" style={{ gap:'clamp(10px,1vw,16px)', paddingLeft:'clamp(10px,1vw,16px)' }}>
             {[...CLIENTS, ...CLIENTS].map((c, i) => (
               <ClientBadge key={`${c.name}-${i}`} name={c.name} domain={c.domain} />
             ))}

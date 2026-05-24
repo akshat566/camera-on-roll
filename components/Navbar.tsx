@@ -45,34 +45,13 @@ export function Navbar() {
     >
       <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 0, paddingRight: 0 }}>
 
-        {/* Logo — chair icon + CAMERA ON ROLL wordmark + Production subscript */}
+        {/* Logo — chair icon only */}
         <Link href="/" aria-label="Camera On Roll Production — Home"
-          style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0, textDecoration: 'none', color: 'var(--white)', transition: 'color 250ms' }}
+          style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none', color: 'var(--white)', transition: 'color 250ms' }}
           onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--white)'; }}
         >
           <ChairLogo size={28} />
-          <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>
-            <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '15px', letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              color: 'inherit',
-              lineHeight: 1,
-            }}>
-              Camera on Roll
-            </span>
-            <span style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '8px', fontWeight: 500,
-              letterSpacing: '0.42em',
-              textTransform: 'uppercase',
-              color: 'var(--white-70)',
-              marginTop: '4px',
-            }}>
-              Production
-            </span>
-          </span>
         </Link>
 
         {/* Right side: nav + search + CTA + hamburger */}

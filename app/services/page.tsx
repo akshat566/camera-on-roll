@@ -112,9 +112,8 @@ export default function ServicesPage() {
           {/* Left */}
           <div style={{ paddingRight:'clamp(24px,4vw,64px)' }}>
             <Reveal>
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>What We Offer</p>
               <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(44px,7vw,96px)', textTransform:'uppercase', lineHeight:0.85, letterSpacing:'-0.02em', color:'var(--white)' }}>
-                Our Services.
+                Our Services
               </h1>
             </Reveal>
           </div>

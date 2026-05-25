@@ -117,7 +117,7 @@ export default function WorkPage() {
     <>
       {/* ── HEADER + GALLERY: split layout, full-bleed, title sticky on left ── */}
       <section id="grid" style={{ paddingTop:'calc(var(--nav-h) + clamp(16px,2vw,28px))', paddingBottom:'clamp(40px,5vw,72px)', paddingLeft:'clamp(20px,3vw,40px)', paddingRight:'clamp(20px,3vw,40px)' }}>
-        <div className="work-split" style={{ display:'grid', gridTemplateColumns:'minmax(260px, 320px) 1fr', gap:'clamp(28px,3.5vw,56px)', alignItems:'start', maxWidth:'100%' }}>
+        <div className="work-split" style={{ display:'grid', gridTemplateColumns:'minmax(200px, 260px) 1fr', gap:'clamp(28px,3.5vw,56px)', alignItems:'start', maxWidth:'100%' }}>
 
           {/* ── LEFT: title block — sticky so it sits in the centre of the gallery while scrolling ── */}
           <aside style={{
@@ -154,11 +154,10 @@ export default function WorkPage() {
                 <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
                   {CATS.map(c => {
                     const isActive = active === c;
-                    const count = c === 'All' ? PROJECTS.length : PROJECTS.filter(p => p.cat === c).length;
                     return (
                       <button key={c} onClick={() => setActive(c)}
                         style={{
-                          display:'flex', alignItems:'center', justifyContent:'space-between',
+                          display:'flex', alignItems:'center', justifyContent:'flex-start',
                           fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700,
                           letterSpacing:'0.22em', textTransform:'uppercase',
                           padding:'10px 14px',
@@ -174,21 +173,10 @@ export default function WorkPage() {
                         onMouseLeave={e => { if (!isActive) { e.currentTarget.style.borderColor='var(--white-08)'; e.currentTarget.style.color='var(--white-70)'; }}}
                       >
                         <span>{c}</span>
-                        <span style={{
-                          fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:700,
-                          padding:'2px 7px', minWidth:'18px', textAlign:'center',
-                          background: isActive ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.06)',
-                          color: isActive ? '#fff' : 'var(--white-40)',
-                          letterSpacing:'0.04em',
-                          lineHeight:1.4,
-                        }}>{count > 0 ? count : '·'}</span>
                       </button>
                     );
                   })}
                 </div>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--white-40)', margin:'16px 0 0' }}>
-                  {filtered.length} {filtered.length === 1 ? 'Project' : 'Projects'} <span style={{ color:'var(--white-20)' }}>·</span> Sort: <span style={{ color:'var(--white)' }}>Latest</span>
-                </p>
               </div>
             </Reveal>
           </aside>

@@ -54,11 +54,11 @@ export function WorkWithUs() {
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
                 >+91 77910 48704</a>
                 <span style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--white-20)', margin: '0 6px' }}> / </span>
-                <a href="tel:+919876543210"
+                <a href="tel:+919910797771"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
-                >+91 98765 43210</a>
+                >+91 99107 97771</a>
               </div>
               <div>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Email IDs</p>

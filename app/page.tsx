@@ -480,14 +480,12 @@ export default function Home() {
                   const el = e.currentTarget as HTMLElement;
                   el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), inset 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
                   const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.55';img.style.transform='scale(1.1)';}
-                  const num = el.querySelector('.svc-num') as HTMLElement; if(num) num.style.color='var(--accent)';
                   const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='1';
                 }}
                 onMouseLeave={e => {
                   const el = e.currentTarget as HTMLElement;
                   el.style.boxShadow = 'none';
                   const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.22';img.style.transform='scale(1)';}
-                  const num = el.querySelector('.svc-num') as HTMLElement; if(num) num.style.color='var(--white-30)';
                   const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='0';
                 }}>
                 <div style={{ position:'absolute', inset:0, zIndex:0 }}>
@@ -495,8 +493,7 @@ export default function Home() {
                     style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.22, transition:'opacity 500ms, transform 600ms' }} />
                   <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.94) 35%, rgba(9,9,8,0.35) 100%)' }} />
                 </div>
-                <div style={{ position:'relative', zIndex:1, padding:'22px', minHeight:'210px', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
-                  <span className="svc-num" style={{ fontFamily:'var(--font-body)', fontSize:'11px', letterSpacing:'0.12em', color:'var(--white-30)', alignSelf:'flex-end', transition:'color 300ms' }}>{s.num}</span>
+                <div style={{ position:'relative', zIndex:1, padding:'22px', minHeight:'210px', display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
                   <div>
                     <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.25vw,16px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'10px', lineHeight:1.1 }}>{s.n}</h3>
                     <p className="svc-desc" style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.7, color:'var(--white-70)', margin:0, opacity:0, transition:'opacity 300ms' }}>{s.d}</p>

@@ -455,13 +455,10 @@ export default function Home() {
       </section>
 
       {/* ══ SERVICES PREVIEW ═══════════════════════════ */}
-      <section style={{ padding:'clamp(40px,5vw,60px) 0 0', borderTop:'1px solid var(--white-08)' }}>
+      <section style={{ padding:'clamp(40px,5vw,60px) 0 0', borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
         <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(20px,2.5vw,32px)', flexWrap:'wrap', gap:'12px' }}>
           <Reveal>
-            <div>
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'8px' }}>What We Offer</p>
-              <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Services.</h2>
-            </div>
+            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Services.</h2>
           </Reveal>
           <Reveal delay={0.1}>
             <Link href="/services" style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', padding:'10px 24px', border:'1px solid var(--white-20)', color:'var(--white-40)', display:'inline-flex', alignItems:'center', gap:'6px', transition:'border-color 300ms, color 300ms' }}
@@ -480,14 +477,18 @@ export default function Home() {
                 whileHover={{ y:-10, scale:1.035, zIndex:5, transition:{ duration:0.4, ease:POP_EASE } }}
                 style={{ background:'var(--black)', position:'relative', overflow:'hidden', cursor:'pointer', height:'100%', transition:'box-shadow 400ms' }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), inset 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
-                  const img = (e.currentTarget as HTMLElement).querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.55';img.style.transform='scale(1.1)';}
-                  const num = (e.currentTarget as HTMLElement).querySelector('.svc-num') as HTMLElement; if(num) num.style.color='var(--accent)';
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), inset 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
+                  const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.55';img.style.transform='scale(1.1)';}
+                  const num = el.querySelector('.svc-num') as HTMLElement; if(num) num.style.color='var(--accent)';
+                  const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='1';
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                  const img = (e.currentTarget as HTMLElement).querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.22';img.style.transform='scale(1)';}
-                  const num = (e.currentTarget as HTMLElement).querySelector('.svc-num') as HTMLElement; if(num) num.style.color='var(--white-30)';
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.boxShadow = 'none';
+                  const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.22';img.style.transform='scale(1)';}
+                  const num = el.querySelector('.svc-num') as HTMLElement; if(num) num.style.color='var(--white-30)';
+                  const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='0';
                 }}>
                 <div style={{ position:'absolute', inset:0, zIndex:0 }}>
                   <img src={s.img} alt={s.n} loading="lazy"
@@ -498,7 +499,7 @@ export default function Home() {
                   <span className="svc-num" style={{ fontFamily:'var(--font-body)', fontSize:'11px', letterSpacing:'0.12em', color:'var(--white-30)', alignSelf:'flex-end', transition:'color 300ms' }}>{s.num}</span>
                   <div>
                     <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.25vw,16px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'10px', lineHeight:1.1 }}>{s.n}</h3>
-                    <p style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.7, color:'var(--white-70)', margin:0 }}>{s.d}</p>
+                    <p className="svc-desc" style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.7, color:'var(--white-70)', margin:0, opacity:0, transition:'opacity 300ms' }}>{s.d}</p>
                   </div>
                 </div>
               </motion.div>

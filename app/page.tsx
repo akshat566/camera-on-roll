@@ -110,8 +110,8 @@ const FEATURED: FeaturedProject[] = (() => {
   ];
 })();
 
-// Home page: show only 7 featured items
-const FEATURED_HOME = FEATURED.slice(0, 7);
+// Home page: show only 8 featured items
+const FEATURED_HOME = FEATURED.slice(0, 8);
 
 const SERVICES_DATA = [
   { n:'Brand & Influencer Reels', num:'01', img:'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=600&q=80', d:'Platform-native reels and influencer content engineered for scroll-stopping engagement.' },
@@ -411,6 +411,7 @@ export default function Home() {
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
                       {inferPlatform(p.link) === 'r2' ? (
                         <video src={p.link} preload="metadata" muted playsInline
+                          onLoadedMetadata={e => { const el = e.currentTarget as HTMLVideoElement; try { el.currentTime = 0.5; } catch {} }}
                           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.85)' }}
                           onMouseEnter={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1.06)'; el.style.filter='brightness(1)'; el.play().catch(()=>{}); }}
                           onMouseLeave={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; el.pause(); el.currentTime=0.5; }}
@@ -451,6 +452,7 @@ export default function Home() {
                     <div style={{ aspectRatio:'16/9', overflow:'hidden' }}>
                       {inferPlatform(p.link) === 'r2' ? (
                         <video src={p.link} preload="metadata" muted playsInline
+                          onLoadedMetadata={e => { const el = e.currentTarget as HTMLVideoElement; try { el.currentTime = 0.5; } catch {} }}
                           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 400ms', filter:'brightness(0.8)' }}
                           onMouseEnter={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1.04)'; }}
                           onMouseLeave={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1)'; }}

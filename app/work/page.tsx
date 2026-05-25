@@ -353,6 +353,7 @@ export default function WorkPage() {
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
                       {p.platform === 'r2' ? (
                         <video src={p.link} preload="metadata" muted playsInline
+                          onLoadedMetadata={e => { const el = e.currentTarget as HTMLVideoElement; try { el.currentTime = 0.5; } catch {} }}
                           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 700ms var(--ease-expo), filter 400ms', filter:'brightness(0.85)' }}
                           onMouseEnter={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1.08)'; el.style.filter='brightness(1.0) saturate(1.05)'; el.play().catch(()=>{}); }}
                           onMouseLeave={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; el.pause(); el.currentTime = 0.5; }}

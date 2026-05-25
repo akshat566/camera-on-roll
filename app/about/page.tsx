@@ -18,7 +18,7 @@ export default function AboutPage() {
         <div className="cx">
           <Reveal>
             <div style={{ textAlign:'center', marginBottom:'clamp(28px,4vw,48px)' }}>
-              <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'12px' }}>Leadership</p>
+              <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'12px' }}>Meet the Founders</p>
               <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4vw,56px)', textTransform:'uppercase', lineHeight:0.92, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>
                 The Founders
               </h2>

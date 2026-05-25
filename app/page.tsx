@@ -380,8 +380,22 @@ export default function Home() {
                     gridRow:    `span ${p.r}`,
                   }}>
                   <button onClick={() => setModal(p)} style={{ display:'block', height:'100%', textDecoration:'none', background:'#111', position:'relative', transition:'box-shadow 350ms', border:'none', padding:0, cursor:'pointer', width:'100%' }}
-                    onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+                    onMouseEnter={e => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
+                      const info = el.querySelector('.tile-info') as HTMLElement | null;
+                      if (info) info.style.opacity = '1';
+                      const cat = el.querySelector('.tile-cat') as HTMLElement | null;
+                      if (cat) cat.style.opacity = '1';
+                    }}
+                    onMouseLeave={e => {
+                      const el = e.currentTarget as HTMLElement;
+                      el.style.boxShadow = 'none';
+                      const info = el.querySelector('.tile-info') as HTMLElement | null;
+                      if (info) info.style.opacity = '0';
+                      const cat = el.querySelector('.tile-cat') as HTMLElement | null;
+                      if (cat) cat.style.opacity = '0';
+                    }}
                   >
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
                       <img src={p.img} alt={p.title} loading="lazy"
@@ -391,13 +405,11 @@ export default function Home() {
                         onMouseLeave={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; }}
                       />
                       <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.85) 0%, transparent 45%)' }} />
-                      <span style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 9px', background:'rgba(9,9,8,0.8)', color:'var(--accent)' }}>{p.cat}</span>
-                      {/* Vertical/Horizontal marker */}
-                      <span style={{ position:'absolute', top:'10px', right:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', padding:'4px 8px', background:'rgba(9,9,8,0.8)', color:'var(--white-70)' }}>{isV ? '9:16' : '16:9'}</span>
-                      <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.8)', color:'var(--white)' }}>
+                      <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 9px', background:'rgba(9,9,8,0.8)', color:'var(--accent)', opacity:0, transition:'opacity 300ms' }}>{p.cat}</span>
+                      <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.85)', color:'var(--white)', border:'1px solid var(--accent)', transition:'all 250ms' }}>
                         <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
                       </span>
-                      <div style={{ position:'absolute', bottom:'12px', left:'12px', right:'48px' }}>
+                      <div className="tile-info" style={{ position:'absolute', bottom:'12px', left:'12px', right:'48px', opacity:0, transition:'opacity 300ms' }}>
                         <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(12px,1.3vw,17px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px', lineHeight:1.1, letterSpacing:'0.01em' }}>{p.title}</p>
                         <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
                       </div>

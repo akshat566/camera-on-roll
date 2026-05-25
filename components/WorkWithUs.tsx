@@ -47,23 +47,13 @@ export function WorkWithUs() {
           <Reveal delay={0.15}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px,2.5vw,28px)' }}>
               <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Akshat — Phone</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Contact Numbers</p>
                 <a href="tel:+917791048704"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
                 >+91 77910 48704</a>
-              </div>
-              <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Akshat — Email</p>
-                <a href="mailto:akshat@cameraonrollproduction.com"
-                  style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
-                >akshat@cameraonrollproduction.com</a>
-              </div>
-              <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Ashna — Phone</p>
+                <span style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'var(--white-20)', margin: '0 6px' }}> / </span>
                 <a href="tel:+919876543210"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
@@ -71,7 +61,13 @@ export function WorkWithUs() {
                 >+91 98765 43210</a>
               </div>
               <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Ashna — Email</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Email IDs</p>
+                <a href="mailto:akshat@cameraonrollproduction.com"
+                  style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
+                >akshat@cameraonrollproduction.com</a>
+                <br />
                 <a href="mailto:ashna@cameraonrollproduction.com"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}

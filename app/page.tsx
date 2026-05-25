@@ -330,13 +330,13 @@ export default function Home() {
           </Reveal>
           <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
             {/* Layout toggle */}
-            <div style={{ display:'flex', border:'1px solid var(--white-08)', overflow:'hidden' }}>
+            <div style={{ display:'flex', border:'1px solid var(--accent)', overflow:'hidden' }}>
               {(['grid','list'] as const).map(l => (
                 <button key={l} onClick={() => setWorkLayout(l)} style={{
-                  padding:'8px 14px', background: workLayout===l ? 'var(--accent)' : 'transparent',
-                  color: workLayout===l ? '#fff' : 'var(--white-30)', border:'none', cursor:'pointer',
+                  padding:'8px 14px', background: 'transparent',
+                  color: workLayout===l ? 'var(--accent)' : 'var(--white-30)', border:'none', cursor:'pointer',
                   display:'flex', alignItems:'center', justifyContent:'center',
-                  transition:'background 200ms, color 200ms',
+                  transition:'color 200ms',
                 }}>
                   {l==='grid'
                     ? <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><rect x="0" y="0" width="6" height="6" rx="1"/><rect x="10" y="0" width="6" height="6" rx="1"/><rect x="0" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>
@@ -345,9 +345,9 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <Link href="/work" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'12px 28px', background:'var(--accent)', color:'#fff', display:'inline-flex', alignItems:'center', gap:'8px', transition:'box-shadow 400ms' }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow='0 0 50px rgba(232,23,106,0.4)'; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow='none'; }}>
+            <Link href="/work" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'12px 28px', background:'transparent', color:'var(--accent)', border:'1px solid var(--accent)', display:'inline-flex', alignItems:'center', gap:'8px', transition:'all 300ms' }}
+              onMouseEnter={e => { e.currentTarget.style.background='var(--accent)'; e.currentTarget.style.color='#fff'; e.currentTarget.style.boxShadow='0 0 40px rgba(232,23,106,0.3)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.boxShadow='none'; }}>
               View All Work →
             </Link>
           </div>

@@ -304,6 +304,8 @@ export default function WorkPage() {
                       if (play) { play.style.opacity = '1'; play.style.transform = 'translate(-50%,-50%) scale(1)'; }
                       const info = el.querySelector('.tile-info') as HTMLElement | null;
                       if (info) { info.style.opacity = '1'; }
+                      const cat = el.querySelector('.tile-cat') as HTMLElement | null;
+                      if (cat) { cat.style.opacity = '1'; }
                     }}
                     onMouseLeave={e => {
                       const el = e.currentTarget as HTMLElement;
@@ -312,6 +314,8 @@ export default function WorkPage() {
                       if (play) { play.style.opacity = '0'; play.style.transform = 'translate(-50%,-50%) scale(0.6)'; }
                       const info = el.querySelector('.tile-info') as HTMLElement | null;
                       if (info) { info.style.opacity = '0'; }
+                      const cat = el.querySelector('.tile-cat') as HTMLElement | null;
+                      if (cat) { cat.style.opacity = '0'; }
                     }}
                   >
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
@@ -343,9 +347,8 @@ export default function WorkPage() {
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ marginLeft:'3px' }}><path d="M8 5v14l11-7z"/></svg>
                       </div>
 
-                      <span style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 9px', background:'rgba(9,9,8,0.8)', color:'var(--accent)' }}>{p.cat}</span>
-                      <span style={{ position:'absolute', top:'10px', right:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', padding:'4px 8px', background:'rgba(9,9,8,0.8)', color:'var(--white-70)' }}>{isV ? '9:16' : '16:9'}</span>
-                      <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.85)', color:'var(--white)', transition:'background 250ms' }}>
+                      <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 9px', background:'rgba(9,9,8,0.8)', color:'var(--accent)', opacity:0, transition:'opacity 300ms' }}>{p.cat}</span>
+                      <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.85)', color:'var(--white)', border:'1px solid var(--accent)', transition:'all 250ms' }}>
                         <ArrowIcon />
                       </span>
                       <div className="tile-info" style={{ position:'absolute', bottom:'12px', left:'12px', right:'48px', opacity:0, transition:'opacity 300ms' }}>

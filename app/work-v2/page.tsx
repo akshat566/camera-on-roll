@@ -191,7 +191,7 @@ export default function WorkV2Page() {
               letterSpacing: '-0.01em',
             }}
           >
-            Case Studies
+            Our Work
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -206,7 +206,7 @@ export default function WorkV2Page() {
               margin: '12px 0 0',
             }}
           >
-            {filtered.length} of {ALL_V2_PROJECTS.length} projects — select a project to view
+            SELECT A PROJECT TO VIEW
           </motion.p>
 
           {/* Category filters */}
@@ -214,32 +214,33 @@ export default function WorkV2Page() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: E }}
-            style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '20px' }}
+            style={{ display: 'flex', flexWrap: 'nowrap', gap: '6px', marginTop: '20px', overflowX: 'auto', paddingBottom: '4px' }}
           >
             {['All', ...V2_CATEGORIES].map(cat => {
               const isActive = activeCat === cat;
-              const count = cat === 'All' ? ALL_V2_PROJECTS.length : ALL_V2_PROJECTS.filter(p => p.cat === cat).length;
               return (
                 <button
                   key={cat}
                   onClick={() => setActiveCat(cat)}
                   style={{
                     fontFamily: 'var(--font-body)',
-                    fontSize: '10px',
+                    fontSize: '9px',
                     fontWeight: 600,
-                    letterSpacing: '0.18em',
+                    letterSpacing: '0.15em',
                     textTransform: 'uppercase',
-                    padding: '6px 14px',
+                    padding: '5px 12px',
                     border: isActive ? '1px solid var(--accent)' : '1px solid var(--white-12)',
                     background: isActive ? 'rgba(232,23,106,0.08)' : 'transparent',
                     color: isActive ? 'var(--accent)' : 'var(--white-50)',
                     cursor: 'pointer',
                     transition: 'all 200ms ease',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
                   }}
                   onMouseEnter={e => { if (!isActive) { e.currentTarget.style.borderColor = 'var(--white-30)'; e.currentTarget.style.color = 'var(--white-80)'; }}}
                   onMouseLeave={e => { if (!isActive) { e.currentTarget.style.borderColor = 'var(--white-12)'; e.currentTarget.style.color = 'var(--white-50)'; }}}
                 >
-                  {cat} <span style={{ opacity: 0.5, marginLeft: '4px' }}>{count}</span>
+                  {cat}
                 </button>
               );
             })}
@@ -251,7 +252,8 @@ export default function WorkV2Page() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+              gridAutoFlow: 'dense',
               gap: 'clamp(8px, 1.2vw, 16px)',
             }}
           >
@@ -277,6 +279,7 @@ export default function WorkV2Page() {
                       overflow: 'hidden',
                       background: '#111',
                       aspectRatio: project.orientation === 'v' ? '9 / 16' : '16 / 9',
+                      gridColumn: project.orientation === 'h' ? 'span 2' : 'span 1',
                     }}
                   >
                     {/* Poster image */}

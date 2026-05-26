@@ -20,7 +20,8 @@ results.forEach(r => {
 
   let cat = 'Portfolio';
   const lower = r.key.toLowerCase();
-  if (lower.includes('fashion')) cat = 'Fashion';
+  if (lower.includes('default')) cat = 'AI Videos';
+  else if (lower.includes('fashion')) cat = 'Fashion';
   else if (lower.includes('product')) cat = 'Product';
   else if (lower.includes('podcast')) cat = 'Podcasts';
   else if (lower.includes('event')) cat = 'Events';
@@ -29,7 +30,7 @@ results.forEach(r => {
   else if (lower.includes('mood')) cat = 'Moodshots';
   else if (lower.includes('ad') || lower.includes('digital')) cat = 'Brand Reels';
   else if (lower.includes('bubble') || lower.includes('drink') || lower.includes('balloon')) cat = 'Product';
-  else if (lower.includes('snap') || lower.includes('vidssave') || lower.includes('default')) cat = 'Brand Reels';
+  else if (lower.includes('snap') || lower.includes('vidssave')) cat = 'Brand Reels';
 
   oldProjects.push({
     id: id++,

@@ -17,6 +17,10 @@ function ytId(link: string): string | null {
   return m ? m[1] : null;
 }
 
+function isImageUrl(url: string): boolean {
+  return /\.(jpe?g|png|webp|gif|bmp)(\?.*)?$/i.test(url);
+}
+
 const CATS = [...CATEGORIES, 'AI Driven'] as const;
 
 /* PROJECTS data is centralised in lib/work-data.ts */
@@ -435,11 +439,12 @@ export default function WorkPage() {
   );
 }
 
-/** Fullscreen-capable inline player modal for YouTube + Instagram links. */
+/** Fullscreen-capable inline player modal for YouTube + Instagram + Photo links. */
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
   const embed = getEmbedUrl(project);
   const playerRef = useRef<HTMLDivElement>(null);
   const isV = project.orientation === 'v';
+  const isImage = isImageUrl(project.link);
 
   const goFullscreen = () => {
     const el = playerRef.current;
@@ -454,22 +459,24 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
   return (
     <motion.div
       initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      transition={{ duration:0.25 }}
+      transition={{ duration:0.3 }}
       onClick={onClose}
       style={{
         position:'fixed', inset:0, zIndex:100,
-        background:'rgba(9,9,8,0.92)', backdropFilter:'blur(14px)',
+        background:'rgba(9,9,8,0.94)', backdropFilter:'blur(16px)',
         display:'flex', alignItems:'center', justifyContent:'center',
         padding:'clamp(16px, 4vw, 64px)',
       }}
     >
       <motion.div
-        initial={{ scale:0.94, y:20, opacity:0 }} animate={{ scale:1, y:0, opacity:1 }} exit={{ scale:0.96, opacity:0 }}
-        transition={{ duration:0.35, ease:E }}
+        initial={{ scale:0.92, y:24, opacity:0 }}
+        animate={{ scale:1, y:0, opacity:1 }}
+        exit={{ scale:0.95, y:12, opacity:0 }}
+        transition={{ duration:0.4, ease:E }}
         onClick={e => e.stopPropagation()}
         style={{
           position:'relative',
-          width: isV ? 'min(420px, 100%)' : 'min(1100px, 100%)',
+          width: isImage ? 'min(1000px, 92vw)' : (isV ? 'min(420px, 100%)' : 'min(1100px, 100%)'),
           maxHeight: '90vh',
           display:'flex', flexDirection:'column', gap:'12px',
         }}
@@ -478,12 +485,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', flexWrap:'wrap' }}>
           <div>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:700, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 4px' }}>
-              {project.cat}{project.platform === 'youtube' ? ' · YouTube' : project.platform === 'instagram' ? ' · Instagram' : ''}
+              {project.cat}{isImage ? ' · Photo' : project.platform === 'youtube' ? ' · YouTube' : project.platform === 'instagram' ? ' · Instagram' : ''}
             </p>
             <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2vw,26px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px', lineHeight:1.05, letterSpacing:'0.01em' }}>{project.title}</h3>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{project.client}</p>
           </div>
           <div style={{ display:'flex', gap:'8px' }}>
+            {!isImage && (
             <button onClick={goFullscreen} aria-label="Fullscreen"
               style={{ width:'40px', height:'40px', display:'inline-flex', alignItems:'center', justifyContent:'center', background:'transparent', border:'1px solid var(--white-20)', color:'var(--white-70)', cursor:'pointer', transition:'all 200ms' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--accent)'; }}
@@ -493,12 +501,13 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
                 <path d="M3 9V5a2 2 0 0 1 2-2h4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M21 15v4a2 2 0 0 1-2 2h-4"/>
               </svg>
             </button>
+            )}
             <a href={project.link} target="_blank" rel="noopener noreferrer" aria-label="Open original"
               style={{ display:'inline-flex', alignItems:'center', gap:'8px', padding:'0 16px', height:'40px', background:'transparent', border:'1px solid var(--white-20)', color:'var(--white-70)', fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.22em', textTransform:'uppercase', textDecoration:'none', cursor:'pointer', transition:'all 200ms' }}
               onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--accent)'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-70)'; }}
             >
-              Open Original
+              {isImage ? 'View Full Size' : 'Open Original'}
               <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
             </a>
             <button onClick={onClose} aria-label="Close"
@@ -511,7 +520,45 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           </div>
         </div>
 
-        {/* Player — aspect ratio follows orientation */}
+        {/* Media display — video, embed, or photo */}
+        {isImage ? (
+          <motion.div
+            initial={{ opacity:0, scale:0.96 }}
+            animate={{ opacity:1, scale:1 }}
+            transition={{ duration:0.5, delay:0.1, ease:E }}
+            ref={playerRef}
+            style={{
+              position:'relative',
+              width:'100%',
+              maxHeight:'78vh',
+              background:'linear-gradient(135deg, #111 0%, #0a0a0a 100%)',
+              border:'1px solid var(--white-08)',
+              boxShadow:'0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(232,23,106,0.18)',
+              overflow:'hidden',
+              borderRadius:'2px',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+            }}
+          >
+            <img
+              src={project.link}
+              alt={project.title}
+              loading="eager"
+              style={{
+                maxWidth:'100%',
+                maxHeight:'78vh',
+                objectFit:'contain',
+                display:'block',
+                transition:'transform 0.6s cubic-bezier(0.22, 0.58, 0.32, 1)',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.02)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
+            />
+            {/* Subtle vignette overlay */}
+            <div style={{ position:'absolute', inset:0, pointerEvents:'none', boxShadow:'inset 0 0 80px rgba(0,0,0,0.3)' }} />
+          </motion.div>
+        ) : (
         <div ref={playerRef} style={{
           position:'relative',
           width:'100%',
@@ -540,6 +587,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             </div>
           )}
         </div>
+        )}
 
         {/* Hint footer */}
         <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--white-40)', margin:0, textAlign:'center' }}>

@@ -155,7 +155,6 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 export default function WorkV2Page() {
   const [modal, setModal] = useState<Project | null>(null);
   const [activeCat, setActiveCat] = useState<string>('All');
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
     if (activeCat === 'All') return ALL_V2_PROJECTS;
@@ -248,115 +247,129 @@ export default function WorkV2Page() {
           </motion.div>
         </div>
 
-        {/* Visual grid — poster thumbnails */}
+        {/* Visual grid — masonry style (matches og work page) */}
         <div style={{ maxWidth: '1400px', margin: '0 auto', marginTop: 'clamp(24px,3vw,40px)' }}>
           <div
+            className="work-masonry"
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-              gap: '6px',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridAutoFlow: 'dense',
+              gap: '3px',
             }}
           >
             <AnimatePresence>
               {filtered.map((project, i) => {
-                const isHovered = hoveredId === project.id;
-                const isImage = isImageUrl(project.link);
+                const isV = project.orientation === 'v';
+                const isH = project.orientation === 'h';
+                const colSpan = isV ? 1 : (isH ? 2 : 1);
+                const aspect = isV ? '3/4' : (isH ? '2/1' : '1/1');
                 return (
                   <motion.div
                     key={project.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.5), ease: E }}
-                    whileHover={{ y: -6, scale: 1.02, zIndex: 5, transition: { duration: 0.35, ease: POP_EASE } }}
-                    onMouseEnter={() => setHoveredId(project.id)}
-                    onMouseLeave={() => setHoveredId(null)}
-                    onClick={() => setModal(project)}
-                    style={{
-                      position: 'relative',
-                      cursor: 'pointer',
-                      borderRadius: '4px',
-                      overflow: 'hidden',
-                      background: '#111',
-                      aspectRatio: '3 / 4',
-                    }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.45, delay: (i % 4) * 0.07, ease: E }}
+                    whileHover={{ y: -8, scale: 1.02, zIndex: 5, transition: { duration: 0.35, ease: POP_EASE } }}
+                    style={{ gridColumn: `span ${colSpan}`, aspectRatio: aspect, position: 'relative' }}
                   >
-                    {/* Poster image */}
-                    <img
-                      src={project.poster}
-                      alt={project.title}
-                      loading="lazy"
+                    <button
+                      type="button"
+                      onClick={() => setModal(project)}
+                      aria-label={`Play ${project.title}`}
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        display: 'block',
-                        transition: 'transform 600ms cubic-bezier(0.22, 0.58, 0.32, 1), filter 400ms ease',
-                        transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-                        filter: isHovered ? 'brightness(0.7)' : 'brightness(0.85)',
+                        display: 'block', width: '100%', height: '100%', padding: 0, border: 'none',
+                        textAlign: 'left', textDecoration: 'none', position: 'relative',
+                        background: '#111', cursor: 'pointer', transition: 'box-shadow 350ms',
                       }}
-                    />
+                      onMouseEnter={e => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
+                        const play = el.querySelector('.tile-play') as HTMLElement | null;
+                        if (play) { play.style.opacity = '1'; play.style.transform = 'translate(-50%,-50%) scale(1)'; }
+                        const info = el.querySelector('.tile-info') as HTMLElement | null;
+                        if (info) { info.style.opacity = '1'; }
+                        const cat = el.querySelector('.tile-cat') as HTMLElement | null;
+                        if (cat) { cat.style.opacity = '1'; }
+                      }}
+                      onMouseLeave={e => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.boxShadow = 'none';
+                        const play = el.querySelector('.tile-play') as HTMLElement | null;
+                        if (play) { play.style.opacity = '0'; play.style.transform = 'translate(-50%,-50%) scale(0.6)'; }
+                        const info = el.querySelector('.tile-info') as HTMLElement | null;
+                        if (info) { info.style.opacity = '0'; }
+                        const cat = el.querySelector('.tile-cat') as HTMLElement | null;
+                        if (cat) { cat.style.opacity = '0'; }
+                      }}
+                    >
+                      <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', background: 'linear-gradient(135deg, #1a0a10 0%, #0d0d0c 50%, #1a0a10 100%)' }}>
+                        <img
+                          src={project.poster}
+                          alt={project.title}
+                          loading="lazy"
+                          style={{
+                            width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+                            transition: 'transform 700ms var(--ease-expo), filter 400ms',
+                            filter: 'brightness(0.85)',
+                          }}
+                          onMouseEnter={e => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            el.style.transform = 'scale(1.12)';
+                            el.style.filter = 'brightness(1.05) saturate(1.1)';
+                          }}
+                          onMouseLeave={e => {
+                            const el = e.currentTarget as HTMLImageElement;
+                            el.style.transform = 'scale(1)';
+                            el.style.filter = 'brightness(0.85)';
+                          }}
+                        />
+                        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(9,9,8,0.85) 0%, transparent 45%)' }} />
 
-                    {/* Bottom gradient + text overlay */}
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, transparent 70%)',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-end',
-                      padding: 'clamp(12px, 1.5vw, 20px)',
-                      gap: '4px',
-                    }}>
-                      <p style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '9px',
-                        fontWeight: 700,
-                        letterSpacing: '0.2em',
-                        textTransform: 'uppercase',
-                        color: 'var(--accent)',
-                        margin: 0,
-                        opacity: isHovered ? 1 : 0.8,
-                        transition: 'opacity 300ms ease',
-                      }}>
-                        {project.cat}{isImage ? ' · Photo' : ''}
-                      </p>
-                      <h3 style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(13px, 1.4vw, 18px)',
-                        textTransform: 'uppercase',
-                        color: '#fff',
-                        margin: 0,
-                        lineHeight: 1.15,
-                        letterSpacing: '0.01em',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {project.title}
-                      </h3>
-                      <p style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '9px',
-                        letterSpacing: '0.15em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.5)',
-                        margin: 0,
-                      }}>
-                        {project.client}
-                      </p>
-                    </div>
+                        {/* Big play badge */}
+                        <div className="tile-play" style={{
+                          position: 'absolute', top: '50%', left: '50%',
+                          transform: 'translate(-50%,-50%) scale(0.6)',
+                          width: '56px', height: '56px', borderRadius: '50%',
+                          background: 'var(--accent)', color: '#fff',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          opacity: 0, pointerEvents: 'none',
+                          boxShadow: '0 0 40px rgba(232,23,106,0.6)',
+                          transition: 'opacity 300ms, transform 400ms var(--ease-expo)',
+                        }}>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ marginLeft: '3px' }}><path d="M8 5v14l11-7z"/></svg>
+                        </div>
 
-                    {/* Hover border accent */}
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      border: isHovered ? '1px solid var(--accent)' : '1px solid transparent',
-                      borderRadius: '4px',
-                      pointerEvents: 'none',
-                      transition: 'border-color 300ms ease',
-                      boxShadow: isHovered ? '0 0 30px rgba(232,23,106,0.15)' : 'none',
-                    }} />
+                        {/* Category badge */}
+                        <span className="tile-cat" style={{
+                          position: 'absolute', top: '10px', left: '10px',
+                          fontFamily: 'var(--font-body)', fontSize: '8px', fontWeight: 700,
+                          letterSpacing: '0.24em', textTransform: 'uppercase',
+                          padding: '4px 9px', background: 'rgba(9,9,8,0.8)', color: 'var(--accent)',
+                          opacity: 0, transition: 'opacity 300ms',
+                        }}>
+                          {project.cat}
+                        </span>
+
+                        {/* Arrow icon */}
+                        <span style={{
+                          position: 'absolute', bottom: '12px', right: '12px',
+                          width: '28px', height: '28px',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          background: 'rgba(9,9,8,0.85)', color: 'var(--white)',
+                          border: '1px solid var(--accent)', transition: 'all 250ms',
+                        }}>
+                          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
+                        </span>
+
+                        {/* Info overlay */}
+                        <div className="tile-info" style={{ position: 'absolute', bottom: '12px', left: '12px', right: '48px', opacity: 0, transition: 'opacity 300ms' }}>
+                          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(12px,1.25vw,16px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.1, letterSpacing: '0.01em' }}>{project.title}</p>
+                          <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
+                        </div>
+                      </div>
+                    </button>
                   </motion.div>
                 );
               })}

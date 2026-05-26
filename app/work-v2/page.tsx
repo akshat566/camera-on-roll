@@ -153,10 +153,8 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
 export default function WorkV2Page() {
   const [modal, setModal] = useState<Project | null>(null);
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [activeCat, setActiveCat] = useState<string>('All');
-  const listRef = useRef<HTMLDivElement>(null);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   const filtered = useMemo(() => {
     if (activeCat === 'All') return ALL_V2_PROJECTS;
@@ -172,14 +170,9 @@ export default function WorkV2Page() {
     return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKey); };
   }, [modal]);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    setMousePos({ x: e.clientX, y: e.clientY });
-  };
-
   return (
     <>
       <section
-        onMouseMove={handleMouseMove}
         style={{ paddingTop: 'calc(var(--nav-h) + 32px)', paddingBottom: '80px', paddingLeft: 'clamp(20px,4vw,64px)', paddingRight: 'clamp(20px,4vw,64px)', minHeight: '100vh' }}
       >
         {/* Page header */}
@@ -253,135 +246,122 @@ export default function WorkV2Page() {
           </motion.div>
         </div>
 
-        {/* Project list — Animal editorial style */}
-        <div ref={listRef} style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', marginTop: 'clamp(24px,3vw,40px)' }}>
-          <AnimatePresence mode="wait">
-            {filtered.map((project, i) => {
-            const isHovered = hoveredId === project.id;
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.06, ease: E }}
-                onMouseEnter={() => setHoveredId(project.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                onClick={() => setModal(project)}
-                style={{
-                  position: 'relative',
-                  cursor: 'pointer',
-                  borderBottom: '1px solid var(--white-08)',
-                  padding: 'clamp(20px,2.5vw,32px) 0',
-                  transition: 'background 300ms ease',
-                  background: isHovered ? 'rgba(232,23,106,0.03)' : 'transparent',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '16px', flexWrap: 'wrap' }}>
-                  {/* Left: title */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <h2
-                      style={{
-                        fontFamily: 'var(--font-display)',
-                        fontSize: 'clamp(22px,3.2vw,42px)',
-                        textTransform: 'uppercase',
-                        color: isHovered ? 'var(--accent)' : 'var(--white)',
-                        margin: 0,
-                        lineHeight: 1.1,
-                        letterSpacing: '0.01em',
-                        transition: 'color 300ms ease',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                      }}
-                    >
-                      {project.title}
-                    </h2>
-                  </div>
-
-                  {/* Right: category + arrow */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '10px',
-                        letterSpacing: '0.2em',
-                        textTransform: 'uppercase',
-                        color: 'var(--white-40)',
-                        transition: 'color 300ms ease',
-                      }}
-                    >
-                      {project.cat}
-                    </span>
-                    <motion.div
-                      animate={{ x: isHovered ? 4 : 0, opacity: isHovered ? 1 : 0.4 }}
-                      transition={{ duration: 0.25, ease: E }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: isHovered ? 'var(--accent)' : 'var(--white-40)' }}>
-                        <path d="M2 12L12 2M12 2H5M12 2V9"/>
-                      </svg>
-                    </motion.div>
-                  </div>
-                </div>
-
-                {/* Subtle index number */}
-                <span
-                  style={{
-                    position: 'absolute',
-                    left: '0',
-                    top: '50%',
-                    transform: 'translate(-100%, -50%) translateX(-16px)',
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '10px',
-                    letterSpacing: '0.15em',
-                    color: 'var(--white-20)',
-                    display: 'none', // hidden on mobile, shown via CSS
-                  }}
-                  className="case-index"
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-              </motion.div>
-            );
-          })}
-          </AnimatePresence>
-        </div>
-      </section>
-
-      {/* Floating hover thumbnail — follows cursor */}
-      <AnimatePresence>
-        {hoveredId !== null && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.92 }}
-            transition={{ duration: 0.2, ease: E }}
+        {/* Visual grid — poster thumbnails */}
+        <div style={{ maxWidth: '1400px', margin: '0 auto', marginTop: 'clamp(24px,3vw,40px)' }}>
+          <div
             style={{
-              position: 'fixed',
-              left: Math.min(mousePos.x + 24, typeof window !== 'undefined' ? window.innerWidth - 320 : mousePos.x + 24),
-              top: mousePos.y - 100,
-              width: '280px',
-              height: '180px',
-              zIndex: 50,
-              pointerEvents: 'none',
-              borderRadius: '4px',
-              overflow: 'hidden',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,23,106,0.15)',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+              gap: 'clamp(8px, 1.2vw, 16px)',
             }}
           >
-            {(() => {
-              const p = ALL_V2_PROJECTS.find(item => item.id === hoveredId);
-              if (!p) return null;
-              return (
-                <img
-                  src={p.poster}
-                  alt={p.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-              );
-            })()}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <AnimatePresence mode="wait">
+              {filtered.map((project, i) => {
+                const isHovered = hoveredId === project.id;
+                const isImage = isImageUrl(project.link);
+                return (
+                  <motion.div
+                    key={project.id}
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.6), ease: E }}
+                    onMouseEnter={() => setHoveredId(project.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                    onClick={() => setModal(project)}
+                    style={{
+                      position: 'relative',
+                      cursor: 'pointer',
+                      borderRadius: '4px',
+                      overflow: 'hidden',
+                      background: '#111',
+                      aspectRatio: project.orientation === 'v' ? '9 / 16' : '16 / 9',
+                    }}
+                  >
+                    {/* Poster image */}
+                    <img
+                      src={project.poster}
+                      alt={project.title}
+                      loading="lazy"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                        transition: 'transform 600ms cubic-bezier(0.22, 0.58, 0.32, 1), filter 400ms ease',
+                        transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                        filter: isHovered ? 'brightness(0.7)' : 'brightness(0.85)',
+                      }}
+                    />
+
+                    {/* Bottom gradient + text overlay */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, transparent 70%)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'flex-end',
+                      padding: 'clamp(12px, 1.5vw, 20px)',
+                      gap: '4px',
+                    }}>
+                      <p style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '9px',
+                        fontWeight: 700,
+                        letterSpacing: '0.2em',
+                        textTransform: 'uppercase',
+                        color: 'var(--accent)',
+                        margin: 0,
+                        opacity: isHovered ? 1 : 0.8,
+                        transition: 'opacity 300ms ease',
+                      }}>
+                        {project.cat}{isImage ? ' · Photo' : ''}
+                      </p>
+                      <h3 style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(13px, 1.4vw, 18px)',
+                        textTransform: 'uppercase',
+                        color: '#fff',
+                        margin: 0,
+                        lineHeight: 1.15,
+                        letterSpacing: '0.01em',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {project.title}
+                      </h3>
+                      <p style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '9px',
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                        color: 'rgba(255,255,255,0.5)',
+                        margin: 0,
+                      }}>
+                        {project.client}
+                      </p>
+                    </div>
+
+                    {/* Hover border accent */}
+                    <div style={{
+                      position: 'absolute',
+                      inset: 0,
+                      border: isHovered ? '1px solid var(--accent)' : '1px solid transparent',
+                      borderRadius: '4px',
+                      pointerEvents: 'none',
+                      transition: 'border-color 300ms ease',
+                      boxShadow: isHovered ? '0 0 30px rgba(232,23,106,0.15)' : 'none',
+                    }} />
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
 
       {/* Modal */}
       <AnimatePresence>

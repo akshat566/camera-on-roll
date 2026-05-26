@@ -208,14 +208,16 @@ input, textarea, select { font: inherit; color: inherit; }
 }
 
 /* ─── Masonry grid responsiveness ─────────────── */
+/* 4-col desktop → 2-col tablet → 1-col mobile */
 @media (max-width: 1024px) {
   .work-masonry {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
-@media (max-width: 640px) {
+@media (max-width: 560px) {
   .work-masonry {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2px !important;
   }
   .work-masonry > * {
     grid-column: span 1 !important;

@@ -66,8 +66,8 @@ export default function WorkPage() {
   return (
     <>
       {/* ── HEADER + GALLERY: split layout, full-bleed, title sticky on left ── */}
-      <section id="grid" style={{ paddingTop:'calc(var(--nav-h) + clamp(16px,2vw,28px))', paddingBottom:'clamp(40px,5vw,72px)', paddingLeft:'clamp(20px,3vw,40px)', paddingRight:'clamp(20px,3vw,40px)' }}>
-        <div className="work-split" style={{ display:'grid', gridTemplateColumns:'minmax(200px, 260px) 1fr', gap:'clamp(28px,3.5vw,56px)', alignItems:'start', maxWidth:'100%' }}>
+      <section id="grid" style={{ paddingTop:'calc(var(--nav-h) + 8px)', paddingBottom:'24px', paddingLeft:'clamp(16px,2.5vw,32px)', paddingRight:'clamp(16px,2.5vw,32px)' }}>
+        <div className="work-split" style={{ display:'grid', gridTemplateColumns:'minmax(180px, 220px) 1fr', gap:'clamp(16px,2vw,32px)', alignItems:'start', maxWidth:'100%' }}>
 
           {/* ── LEFT: title block — sticky so it sits in the centre of the gallery while scrolling ── */}
           <aside style={{
@@ -256,20 +256,21 @@ export default function WorkPage() {
               transition={{ duration:0.35, ease:E }}
               style={{
                 display:'grid',
-                /* 3-col responsive — true aspect ratios per tile */
-                gridTemplateColumns:'repeat(3, 1fr)',
+                /* 4-col compact — fits all tiles on one page */
+                gridTemplateColumns:'repeat(4, 1fr)',
                 gridAutoFlow:'dense',
-                gap:'6px',
+                gap:'3px',
               }}
               className="work-masonry"
             >
               {filtered.map((p, i) => {
                 const isV = p.orientation === 'v';
                 const isH = p.orientation === 'h';
-                // Column span: vertical = 1 col (tall), horizontal = 2 cols (wide), square = 1 col
+                // Compact spans for one-page fit:
+                // Vertical → 1 col × 3/4 aspect (compact portrait)
+                // Horizontal → 2 col × 2/1 aspect (panoramic, less height)
                 const colSpan = isV ? 1 : (isH ? 2 : 1);
-                // True CSS aspect ratio
-                const aspect = isV ? '9/16' : (isH ? '16/9' : '1/1');
+                const aspect = isV ? '3/4' : (isH ? '2/1' : '1/1');
                 return (
                 <motion.div key={p.id}
                   initial={{ opacity:0, scale:0.96 }} animate={{ opacity:1, scale:1 }}

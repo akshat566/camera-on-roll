@@ -330,9 +330,9 @@ export default function Home() {
       </section>
 
       {/* ══ WORK PREVIEW ═══════════════════════════════ */}
-      <section style={{ borderTop:'1px solid var(--white-08)', padding:'clamp(40px,5vw,60px) 0 0' }}>
+      <section style={{ borderTop:'1px solid var(--white-08)', padding:'clamp(20px,2.5vw,32px) 0 0' }}>
         {/* Header */}
-        <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(20px,2.5vw,32px)', flexWrap:'wrap', gap:'12px' }}>
+        <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(10px,1.2vw,18px)', flexWrap:'wrap', gap:'12px' }}>
           <Reveal>
             <div>
               <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Work.</h2>
@@ -370,10 +370,10 @@ export default function Home() {
               style={{
                 padding:'0 var(--pad-x)',
                 display:'grid',
-                /* Responsive masonry: 3-col desktop, 2-col tablet, 1-col mobile */
-                gridTemplateColumns:'repeat(3, 1fr)',
+                /* 4-col compact grid — fits all tiles on one page */
+                gridTemplateColumns:'repeat(4, 1fr)',
                 gridAutoFlow:'dense',
-                gap:'6px',
+                gap:'3px',
               }}
               className="work-masonry"
             >
@@ -381,10 +381,11 @@ export default function Home() {
                 const ytId_ = ytId(p.link);
                 const isV = p.orientation === 'v';
                 const isH = p.orientation === 'h';
-                // Column span based on orientation for visual rhythm
+                // Compact spans for one-page fit:
+                // Vertical (portrait)  → 1 col × 3/4 aspect (like a photo, not full 9:16)
+                // Horizontal (landscape) → 2 col × 2/1 aspect (panoramic, less height)
                 const colSpan = isV ? 1 : (isH ? 2 : 1);
-                // True aspect ratio via CSS
-                const aspect = isV ? '9/16' : (isH ? '16/9' : '1/1');
+                const aspect = isV ? '3/4' : (isH ? '2/1' : '1/1');
                 return (
                 <motion.div key={i}
                   initial={{ opacity:0, scale:0.96 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true, margin:'-40px' }}

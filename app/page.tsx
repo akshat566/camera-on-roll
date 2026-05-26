@@ -90,17 +90,16 @@ type FeaturedProject = {
 };
 
 // Featured 8 projects — sourced from the central catalog in lib/work-data.ts.
-// Layout spans (c × r) are picked here per item to keep the bento maze visually rhythmic.
-const HOME_LAYOUT: Array<{ c: number; r: number }> = [
-  { c:2, r:3 }, // 1: hero V
-  { c:4, r:2 }, // 2: wide H
-  { c:2, r:2 }, // 3: V
-  { c:4, r:2 }, // 4: wide H
-  { c:2, r:3 }, // 5: hero V
-  { c:4, r:2 }, // 6: wide H
-  { c:2, r:2 }, // 7: V
-  { c:4, r:2 }, // 8: wide H
-];
+// Layout spans adapt dynamically to each video's orientation for proper aspect ratios.
+// 4-column grid gives cleaner proportions:
+// Vertical (9:16) → 1 col × 3 rows  (portrait ~1:1.7, close to 9:16)
+// Horizontal (16:9) → 2 cols × 2 rows (landscape ~2:1, close to 16:9)
+function getHomeLayout(orientation: 'v' | 'h', index: number): { c: number; r: number } {
+  if (orientation === 'v') {
+    return { c: 1, r: 3 };
+  }
+  return { c: 2, r: 2 };
+}
 const FEATURED: FeaturedProject[] = FEATURED_HOME_DATA.map((proj, i) => ({
   cat: proj.cat,
   client: proj.client,
@@ -108,8 +107,7 @@ const FEATURED: FeaturedProject[] = FEATURED_HOME_DATA.map((proj, i) => ({
   link: proj.link,
   img: proj.poster,
   orientation: proj.orientation,
-  c: HOME_LAYOUT[i]?.c ?? 2,
-  r: HOME_LAYOUT[i]?.r ?? 2,
+  ...getHomeLayout(proj.orientation, i),
 }));
 
 const FEATURED_HOME = FEATURED.slice(0, 8);
@@ -372,9 +370,9 @@ export default function Home() {
               style={{
                 padding:'0 var(--pad-x)',
                 display:'grid',
-                /* 6-col bento maze — each tile uses its own c/r span for variety */
-                gridTemplateColumns:'repeat(6, 1fr)',
-                gridAutoRows:'clamp(86px, 8.5vw, 130px)',
+                /* 4-col bento — aspect-ratio matched to video orientation */
+                gridTemplateColumns:'repeat(4, 1fr)',
+                gridAutoRows:'clamp(100px, 10vw, 160px)',
                 gridAutoFlow:'dense',
                 gap:'4px',
               }}>
@@ -409,7 +407,7 @@ export default function Home() {
                       if (cat) cat.style.opacity = '0';
                     }}
                   >
-                    <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
+                    <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden', background:'linear-gradient(135deg, #1a0a10 0%, #0d0d0c 50%, #1a0a10 100%)' }}>
                       <img src={p.img} alt={p.title} loading="lazy"
                           onError={(e) => {
                             if (ytId_ && !e.currentTarget.dataset.fallback) {

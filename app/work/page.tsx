@@ -257,17 +257,18 @@ export default function WorkPage() {
               style={{
                 display:'grid',
                 gridTemplateColumns:'repeat(6, 1fr)',
-                gridAutoRows:'clamp(80px, 7vw, 120px)',
+                gridAutoRows:'clamp(100px, 10vw, 160px)',
                 gridAutoFlow:'dense',
                 gap:'4px',
               }}
             >
               {filtered.map((p, i) => {
                 const isV = p.orientation === 'v';
-                // Verticals: 1col×2row (small) or 2col×3row (hero) for variety
-                // Horizontals: 2col×2row (small) or 4col×2row (wide)
-                const c = isV ? (i % 5 === 0 ? 2 : 1) : (i % 3 === 0 ? 4 : 2);
-                const r = isV ? (c === 2 ? 3 : 2) : 2;
+                // Consistent spans based on orientation for clean layout:
+                // Vertical (9:16) → 2 cols × 4 rows  (portrait ~0.56, close to 9:16)
+                // Horizontal (16:9) → 3 cols × 2 rows (landscape ~1.7, close to 16:9)
+                const c = isV ? 2 : 3;
+                const r = isV ? 4 : 2;
                 return (
                 <motion.div key={p.id}
                   initial={{ opacity:0, scale:0.96 }} animate={{ opacity:1, scale:1 }}
@@ -298,7 +299,7 @@ export default function WorkPage() {
                       if (cat) { cat.style.opacity = '0'; }
                     }}
                   >
-                    <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
+                    <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden', background:'linear-gradient(135deg, #1a0a10 0%, #0d0d0c 50%, #1a0a10 100%)' }}>
                       <img src={p.poster} alt={p.title} loading="lazy"
                         onError={(e) => {
                           const id = p.platform === 'youtube' ? ytId(p.link) : null;

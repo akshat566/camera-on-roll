@@ -22,8 +22,8 @@ export const ALL_PROJECTS: Project[] = [
     cat: 'Brand Reels',
     title: 'Samay Raina',
     client: 'Camera On Roll',
-    link: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/I ❤️ Knorr Ramen. (Poora Europe trip ka kharcha nikal gaya doston)#Knorr #KnorrKoreanRamen #AD # (1).mp4',
-    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/I ❤️ Knorr Ramen. (Poora Europe trip ka kharcha nikal gaya doston)#Knorr #KnorrKoreanRamen #AD # (1).mp4.jpg',
+    link: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/I%20%E2%9D%A4%EF%B8%8F%20Knorr%20Ramen.%20(Poora%20Europe%20trip%20ka%20kharcha%20nikal%20gaya%20doston)%23Knorr%20%23KnorrKoreanRamen%20%23AD%20%23%20(1).mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/I%20%E2%9D%A4%EF%B8%8F%20Knorr%20Ramen.%20(Poora%20Europe%20trip%20ka%20kharcha%20nikal%20gaya%20doston)%23Knorr%20%23KnorrKoreanRamen%20%23AD%20%23%20(1).mp4.jpg',
     platform: 'r2',
     orientation: 'v',
     tags: ''

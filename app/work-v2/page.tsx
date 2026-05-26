@@ -5,6 +5,7 @@ import { getEmbedUrl, type Project } from '@/lib/work-data';
 import { ALL_V2_PROJECTS, V2_CATEGORIES } from '@/lib/work-v2-data';
 
 const E = [0.22, 0.58, 0.32, 1] as const;
+const POP_EASE = [0.34, 1.56, 0.64, 1] as const;
 
 function isImageUrl(url: string): boolean {
   return /\.(jpe?g|png|webp|gif|bmp)(\?.*)?$/i.test(url);
@@ -253,22 +254,21 @@ export default function WorkV2Page() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-              gridAutoFlow: 'dense',
-              gap: 'clamp(8px, 1.2vw, 16px)',
+              gap: '6px',
             }}
           >
-            <AnimatePresence mode="wait">
+            <AnimatePresence>
               {filtered.map((project, i) => {
                 const isHovered = hoveredId === project.id;
                 const isImage = isImageUrl(project.link);
                 return (
                   <motion.div
                     key={project.id}
-                    layout
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.6), ease: E }}
+                    transition={{ duration: 0.4, delay: Math.min(i * 0.02, 0.5), ease: E }}
+                    whileHover={{ y: -6, scale: 1.02, zIndex: 5, transition: { duration: 0.35, ease: POP_EASE } }}
                     onMouseEnter={() => setHoveredId(project.id)}
                     onMouseLeave={() => setHoveredId(null)}
                     onClick={() => setModal(project)}
@@ -278,8 +278,7 @@ export default function WorkV2Page() {
                       borderRadius: '4px',
                       overflow: 'hidden',
                       background: '#111',
-                      aspectRatio: project.orientation === 'v' ? '9 / 16' : '16 / 9',
-                      gridColumn: project.orientation === 'h' ? 'span 2' : 'span 1',
+                      aspectRatio: '3 / 4',
                     }}
                   >
                     {/* Poster image */}

@@ -224,6 +224,12 @@ input, textarea, select { font: inherit; color: inherit; }
   }
 }
 
+/* ─── Case Studies v2 index numbers ──────────── */
+.case-index { display: none; }
+@media (min-width: 1024px) {
+  .case-index { display: block !important; }
+}
+
 /* ─── Mobile tap ─────────────────────────────── */
 @media (hover: none) {
   * { -webkit-tap-highlight-color: transparent; }

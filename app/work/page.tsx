@@ -1,116 +1,26 @@
 ﻿'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Reveal } from '@/components/Reveal';
+import { ALL_PROJECTS, CATEGORIES, OWNERS, getEmbedUrl, type Project } from '@/lib/work-data';
 
 const E = [0.22, 0.58, 0.32, 1] as const;
 /** Bounce-out easing for hover pop. */
 const POP_EASE = [0.34, 1.56, 0.64, 1] as const;
 
-/**
- * YouTube thumbnail. `maxresdefault.jpg` is true 16:9 (1280×720) when available;
- * `hqdefault.jpg` is 4:3 (480×360) so it letterboxes inside 16:9 containers.
- * We prefer maxres and use `mqdefault.jpg` (always exists, 16:9) as a runtime fallback via onError.
- */
-function ytThumb(id: string) {
-  return `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
-}
 function ytFallbackThumb(id: string) {
   return `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
 }
 
-/** Extract a YouTube video ID from any common URL shape. */
 function ytId(link: string): string | null {
   const m = link.match(/(?:youtu\.be\/|v=|\/embed\/)([\w-]{6,})/);
   return m ? m[1] : null;
 }
-/** Extract an Instagram post / reel shortcode from a URL. */
-function igShortcode(link: string): string | null {
-  const m = link.match(/instagram\.com\/(?:p|reel|tv)\/([\w-]+)/);
-  return m ? m[1] : null;
-}
-/** Build an autoplay embed URL for a project link. */
-function getEmbed(link: string, platform: 'youtube' | 'instagram' | 'r2'): string | null {
-  if (platform === 'youtube') {
-    const id = ytId(link);
-    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1` : null;
-  }
-  if (platform === 'instagram') {
-    const sc = igShortcode(link);
-    return sc ? `https://www.instagram.com/p/${sc}/embed/` : null;
-  }
-  return null; // r2: handled directly via <video>
-}
 
-const CATS = ['All', 'Fashion', 'Product', 'Cinematography', 'Brand Reels', 'Podcasts', 'AI Driven'];
+const CATS = [...CATEGORIES, 'AI Driven'] as const;
 
-type Project = {
-  id: number;
-  cat: string;
-  title: string;
-  client: string;
-  link: string;
-  thumb: string;
-  platform: 'youtube' | 'instagram' | 'r2';
-  /** v = portrait 9:16 (reels), h = landscape 16:9 (yt) */
-  orientation: 'v' | 'h';
-};
-
-const R2 = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/work';
-
-/** Build an R2 video URL with a poster-frame fragment. */
-function r2Vid(folder: 'horizontal' | 'vertical', name: string) {
-  return `${R2}/${folder}/${name}`;
-}
-
-const PROJECTS: Project[] = [
-  // ── Horizontal (16:9) ───────────────────────────────────────
-  // Fashion
-  { id:1,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 1',           link:r2Vid('horizontal','1.mp4_-_fashion_set_1_.mp4'),                                          thumb:r2Vid('horizontal','1.mp4_-_fashion_set_1_.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  { id:2,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 2',           link:r2Vid('horizontal','3.mp4_-_fashion_set_2_.mp4'),                                          thumb:r2Vid('horizontal','3.mp4_-_fashion_set_2_.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  { id:3,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 3',           link:r2Vid('horizontal','4.mp4_-_fashion_set_3_.mp4'),                                          thumb:r2Vid('horizontal','4.mp4_-_fashion_set_3_.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  { id:4,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 4',           link:r2Vid('horizontal','6.mp4_-_fashion_set_4.mp4'),                                           thumb:r2Vid('horizontal','6.mp4_-_fashion_set_4.mp4')+'#t=0.5',                                           platform:'r2', orientation:'h' },
-  { id:5,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 5',           link:r2Vid('horizontal','8.mp4_-_fashion_set_5.mp4'),                                           thumb:r2Vid('horizontal','8.mp4_-_fashion_set_5.mp4')+'#t=0.5',                                           platform:'r2', orientation:'h' },
-  { id:6,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 5 · Cont.',   link:r2Vid('horizontal','10.mp4_-_more_shots_of_fashion_set_5_.mp4'),                           thumb:r2Vid('horizontal','10.mp4_-_more_shots_of_fashion_set_5_.mp4')+'#t=0.5',                           platform:'r2', orientation:'h' },
-  { id:7,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 6',           link:r2Vid('horizontal','21.mp4_-_fashion_set_6.mp4'),                                          thumb:r2Vid('horizontal','21.mp4_-_fashion_set_6.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  { id:8,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 7',           link:r2Vid('horizontal','24.mp4_-_fashion_sets_7_.mp4'),                                        thumb:r2Vid('horizontal','24.mp4_-_fashion_sets_7_.mp4')+'#t=0.5',                                        platform:'r2', orientation:'h' },
-  { id:9,  cat:'Fashion',        client:'Camera On Roll', title:'Fashion Set 8',           link:r2Vid('horizontal','30.mp4_-_fashion_set_8.mp4'),                                          thumb:r2Vid('horizontal','30.mp4_-_fashion_set_8.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  // Product
-  { id:10, cat:'Product',        client:'Camera On Roll', title:'Bubble Shot',             link:r2Vid('horizontal','11.mp4_-_bubble_shot_.mp4'),                                           thumb:r2Vid('horizontal','11.mp4_-_bubble_shot_.mp4')+'#t=0.5',                                           platform:'r2', orientation:'h' },
-  { id:11, cat:'Product',        client:'Japonico',       title:'Drinks · Bartender',      link:r2Vid('horizontal','12.mp4_-_4_drinks_shot,_bartender_shuffling_shot,_JAPONICO_shots.mp4'),thumb:r2Vid('horizontal','12.mp4_-_4_drinks_shot,_bartender_shuffling_shot,_JAPONICO_shots.mp4')+'#t=0.5',platform:'r2', orientation:'h' },
-  { id:12, cat:'Product',        client:'Camera On Roll', title:'Product Shot · Open',     link:r2Vid('horizontal','15.mp4_-_pick_any_product_shot_in_the_first_10_seconds,_dont_need_models.mp4'),thumb:r2Vid('horizontal','15.mp4_-_pick_any_product_shot_in_the_first_10_seconds,_dont_need_models.mp4')+'#t=0.5',platform:'r2', orientation:'h' },
-  { id:13, cat:'Product',        client:'Camera On Roll', title:'Product Shot',            link:r2Vid('horizontal','20.mp4_-_product_shot.mp4'),                                           thumb:r2Vid('horizontal','20.mp4_-_product_shot.mp4')+'#t=0.5',                                           platform:'r2', orientation:'h' },
-  { id:14, cat:'Product',        client:'Camera On Roll', title:'Bubble Shot · Alt',       link:r2Vid('horizontal','22.mp4_-_bubble_shot_.mp4'),                                           thumb:r2Vid('horizontal','22.mp4_-_bubble_shot_.mp4')+'#t=0.5',                                           platform:'r2', orientation:'h' },
-  { id:15, cat:'Product',        client:'Camera On Roll', title:'Product Detail',          link:r2Vid('horizontal','27.mp4_-_product_shot_0.11_onwards_.mp4'),                             thumb:r2Vid('horizontal','27.mp4_-_product_shot_0.11_onwards_.mp4')+'#t=0.5',                             platform:'r2', orientation:'h' },
-  { id:16, cat:'Product',        client:'Camera On Roll', title:'Mascara · Closeup',       link:r2Vid('horizontal','28.mp4_-_initial_5-10_seconds,_product,_mascara,_closeup.mp4'),       thumb:r2Vid('horizontal','28.mp4_-_initial_5-10_seconds,_product,_mascara,_closeup.mp4')+'#t=0.5',       platform:'r2', orientation:'h' },
-  { id:17, cat:'Product',        client:'Camera On Roll', title:'Balloon Setup',           link:r2Vid('horizontal','29.mp4_-_need_one_balloon_setup_shot.mp4'),                            thumb:r2Vid('horizontal','29.mp4_-_need_one_balloon_setup_shot.mp4')+'#t=0.5',                            platform:'r2', orientation:'h' },
-  // Cinematography
-  { id:18, cat:'Cinematography', client:'Camera On Roll', title:'Reverse Walking · B&W',   link:r2Vid('horizontal','7.mp4_-_i_like_the_reverse_walking_b&w_shot_.mp4'),                    thumb:r2Vid('horizontal','7.mp4_-_i_like_the_reverse_walking_b&w_shot_.mp4')+'#t=0.5',                    platform:'r2', orientation:'h' },
-  { id:19, cat:'Cinematography', client:'Camera On Roll', title:'Studio Talk',             link:r2Vid('horizontal','9.mp4_-_see_if_you_wanna_take_the_talking_bit.mp4'),                  thumb:r2Vid('horizontal','9.mp4_-_see_if_you_wanna_take_the_talking_bit.mp4')+'#t=0.5',                  platform:'r2', orientation:'h' },
-  { id:20, cat:'Cinematography', client:'Camera On Roll', title:'Outdoor · Indian Set',    link:r2Vid('horizontal','13.mp4_-_outdoor_indian_set_1_.mp4'),                                  thumb:r2Vid('horizontal','13.mp4_-_outdoor_indian_set_1_.mp4')+'#t=0.5',                                  platform:'r2', orientation:'h' },
-  { id:21, cat:'Cinematography', client:'Camera On Roll', title:'Outdoor Set 2',           link:r2Vid('horizontal','14.mp4_-_outdoor_set_2_.mp4'),                                         thumb:r2Vid('horizontal','14.mp4_-_outdoor_set_2_.mp4')+'#t=0.5',                                         platform:'r2', orientation:'h' },
-  { id:22, cat:'Cinematography', client:'Camera On Roll', title:'Outdoor Set 3',           link:r2Vid('horizontal','16.mp4_-_outdoor_set_3.mp4'),                                          thumb:r2Vid('horizontal','16.mp4_-_outdoor_set_3.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  { id:23, cat:'Cinematography', client:'Camera On Roll', title:'Spotlight',               link:r2Vid('horizontal','18.mp4_-_0.2_seconds,_spotlight_on_face.mp4'),                         thumb:r2Vid('horizontal','18.mp4_-_0.2_seconds,_spotlight_on_face.mp4')+'#t=0.5',                         platform:'r2', orientation:'h' },
-  { id:24, cat:'Cinematography', client:'Camera On Roll', title:'Mood Moment',             link:r2Vid('horizontal','25.mp4_-_any_moodshot_.mp4'),                                          thumb:r2Vid('horizontal','25.mp4_-_any_moodshot_.mp4')+'#t=0.5',                                          platform:'r2', orientation:'h' },
-  { id:25, cat:'Cinematography', client:'Camera On Roll', title:'Moodshot',                link:r2Vid('horizontal','26.mp4_-_moodshot.mp4'),                                               thumb:r2Vid('horizontal','26.mp4_-_moodshot.mp4')+'#t=0.5',                                               platform:'r2', orientation:'h' },
-  { id:26, cat:'Cinematography', client:'Camera On Roll', title:'Kids',                    link:r2Vid('horizontal','31-_one_kids_shot_.mp4'),                                              thumb:r2Vid('horizontal','31-_one_kids_shot_.mp4')+'#t=0.5',                                              platform:'r2', orientation:'h' },
-  // Podcasts
-  { id:27, cat:'Podcasts',       client:'Camera On Roll', title:'Podcast Setup',           link:r2Vid('horizontal','2.mp4_-_podcast_setup.mp4'),                                           thumb:r2Vid('horizontal','2.mp4_-_podcast_setup.mp4')+'#t=0.5',                                           platform:'r2', orientation:'h' },
-  // ── Vertical (9:16) ────────────────────────────────────────
-  { id:28, cat:'Brand Reels',    client:'Camera On Roll', title:'Blur to Colour',          link:r2Vid('vertical','0.3_blur_to_coloured_transition.mp4'),                                   thumb:r2Vid('vertical','0.3_blur_to_coloured_transition.mp4')+'#t=0.5',                                   platform:'r2', orientation:'v' },
-  { id:29, cat:'Brand Reels',    client:'Camera On Roll', title:'Interior · Colour 1',     link:r2Vid('vertical','coloured_shot_option_for_interiors.mp4'),                                thumb:r2Vid('vertical','coloured_shot_option_for_interiors.mp4')+'#t=0.5',                                platform:'r2', orientation:'v' },
-  { id:30, cat:'Brand Reels',    client:'Camera On Roll', title:'Interior · Colour 2',     link:r2Vid('vertical','coloured_shot_options_for_interior.mp4'),                                thumb:r2Vid('vertical','coloured_shot_options_for_interior.mp4')+'#t=0.5',                                platform:'r2', orientation:'v' },
-  { id:31, cat:'Brand Reels',    client:'Camera On Roll', title:'Digital Ad',              link:r2Vid('vertical','digital_ad_.mp4'),                                                       thumb:r2Vid('vertical','digital_ad_.mp4')+'#t=0.5',                                                       platform:'r2', orientation:'v' },
-  { id:32, cat:'Brand Reels',    client:'Camera On Roll', title:'Event Reel 1',            link:r2Vid('vertical','event_-_take_some_famous_face_.mp4'),                                    thumb:r2Vid('vertical','event_-_take_some_famous_face_.mp4')+'#t=0.5',                                    platform:'r2', orientation:'v' },
-  { id:33, cat:'Brand Reels',    client:'Camera On Roll', title:'Event Reel 2',            link:r2Vid('vertical','event_reel_-_take_a_famous_persons_face_.mp4'),                          thumb:r2Vid('vertical','event_reel_-_take_a_famous_persons_face_.mp4')+'#t=0.5',                          platform:'r2', orientation:'v' },
-  { id:34, cat:'Fashion',        client:'Camera On Roll', title:'Fashion Reel',            link:r2Vid('vertical','fashion_set.mp4'),                                                       thumb:r2Vid('vertical','fashion_set.mp4')+'#t=0.5',                                                       platform:'r2', orientation:'v' },
-  { id:35, cat:'Brand Reels',    client:'Camera On Roll', title:'Interior',                link:r2Vid('vertical','interior.mp4'),                                                          thumb:r2Vid('vertical','interior.mp4')+'#t=0.5',                                                          platform:'r2', orientation:'v' },
-  { id:36, cat:'Brand Reels',    client:'Camera On Roll', title:'Interior · B&W to Colour',link:r2Vid('vertical','interiors_-_need_b&w_to_coloured_shot.mp4'),                             thumb:r2Vid('vertical','interiors_-_need_b&w_to_coloured_shot.mp4')+'#t=0.5',                             platform:'r2', orientation:'v' },
-  { id:37, cat:'Brand Reels',    client:'Camera On Roll', title:'Kids · Dance',            link:r2Vid('vertical','kid_and_mom_dancing_shot_-_set_8.mp4'),                                  thumb:r2Vid('vertical','kid_and_mom_dancing_shot_-_set_8.mp4')+'#t=0.5',                                  platform:'r2', orientation:'v' },
-  { id:38, cat:'Brand Reels',    client:'Camera On Roll', title:'Wardrobe Transition',     link:r2Vid('vertical','need_this_clothes_changing_transition.mp4'),                             thumb:r2Vid('vertical','need_this_clothes_changing_transition.mp4')+'#t=0.5',                             platform:'r2', orientation:'v' },
-  { id:39, cat:'Brand Reels',    client:'Camera On Roll', title:'Outdoor Reel',            link:r2Vid('vertical','outdoor_set_.mp4'),                                                      thumb:r2Vid('vertical','outdoor_set_.mp4')+'#t=0.5',                                                      platform:'r2', orientation:'v' },
-  { id:40, cat:'Brand Reels',    client:'Camera On Roll', title:'Outdoor Mood',            link:r2Vid('vertical','outdoor_shoot_moodshot.mp4'),                                            thumb:r2Vid('vertical','outdoor_shoot_moodshot.mp4')+'#t=0.5',                                            platform:'r2', orientation:'v' },
-];
+/* PROJECTS data is centralised in lib/work-data.ts */
+const PROJECTS = ALL_PROJECTS;
 
 const YT_PLAYLISTS = [
   { label:'All AI Videos', count:'Full Archive', img:'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80', href:'https://youtube.com/playlist?list=PLG-syaA8JTVSuD4tT7jowF09G74Hrhhbt&si=_AEGU_Ndq0CAnlDF' },
@@ -129,9 +39,17 @@ function ArrowIcon() {
 }
 
 export default function WorkPage() {
-  const [active, setActive] = useState('All');
+  const [active, setActive] = useState<string>('All');
+  const [owner, setOwner] = useState<string>('All');
   const [modal, setModal] = useState<Project | null>(null);
-  const filtered = active === 'All' ? PROJECTS : PROJECTS.filter(p => p.cat === active);
+  const filtered = useMemo(() => {
+    const ownerMap: Record<string, string> = { 'Ashna': 'ashna', 'Akshat': 'akshat', 'External': 'external' };
+    return PROJECTS.filter(p => {
+      if (active !== 'All' && active !== 'AI Driven' && p.cat !== active) return false;
+      if (owner !== 'All' && p.owner !== ownerMap[owner]) return false;
+      return true;
+    });
+  }, [active, owner]);
 
   // Lock page scroll + ESC-to-close while modal is open
   useEffect(() => {
@@ -205,6 +123,36 @@ export default function WorkPage() {
                         onMouseLeave={e => { if (!isActive) { e.currentTarget.style.borderColor='var(--white-08)'; e.currentTarget.style.color='var(--white-70)'; }}}
                       >
                         <span>{c}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {/* Owner filter — segregation by director */}
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:700, letterSpacing:'0.36em', textTransform:'uppercase', color:'var(--white-40)', margin:'22px 0 12px' }}>
+                  Director
+                </p>
+                <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
+                  {OWNERS.map(o => {
+                    const isActive = owner === o;
+                    return (
+                      <button key={o} onClick={() => setOwner(o)}
+                        style={{
+                          display:'flex', alignItems:'center', justifyContent:'flex-start',
+                          fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700,
+                          letterSpacing:'0.22em', textTransform:'uppercase',
+                          padding:'10px 14px',
+                          border: isActive ? '1px solid var(--accent)' : '1px solid var(--white-08)',
+                          background: isActive ? 'var(--accent)' : 'transparent',
+                          color: isActive ? '#fff' : 'var(--white-70)',
+                          cursor:'pointer',
+                          boxShadow: isActive ? '0 0 22px rgba(232,23,106,0.3)' : 'none',
+                          transition:'all 220ms',
+                          textAlign:'left',
+                        }}
+                        onMouseEnter={e => { if (!isActive) { e.currentTarget.style.borderColor='var(--white-40)'; e.currentTarget.style.color='var(--white)'; }}}
+                        onMouseLeave={e => { if (!isActive) { e.currentTarget.style.borderColor='var(--white-08)'; e.currentTarget.style.color='var(--white-70)'; }}}
+                      >
+                        <span>{o === 'All' ? 'All Directors' : `${o}'s Work`}</span>
                       </button>
                     );
                   })}
@@ -351,27 +299,18 @@ export default function WorkPage() {
                     }}
                   >
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
-                      {p.platform === 'r2' ? (
-                        <video src={p.link} preload="metadata" muted playsInline
-                          onLoadedMetadata={e => { const el = e.currentTarget as HTMLVideoElement; try { el.currentTime = 0.5; } catch {} }}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 700ms var(--ease-expo), filter 400ms', filter:'brightness(0.85)' }}
-                          onMouseEnter={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1.08)'; el.style.filter='brightness(1.0) saturate(1.05)'; el.play().catch(()=>{}); }}
-                          onMouseLeave={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; el.pause(); el.currentTime = 0.5; }}
-                        />
-                      ) : (
-                        <img src={p.thumb} alt={p.title} loading="lazy"
-                          onError={(e) => {
-                            const id = p.platform === 'youtube' ? ytId(p.link) : null;
-                            if (id && !e.currentTarget.dataset.fallback) {
-                              e.currentTarget.dataset.fallback = '1';
-                              e.currentTarget.src = ytFallbackThumb(id);
-                            }
-                          }}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 700ms var(--ease-expo), filter 400ms', filter:'brightness(0.85)' }}
-                          onMouseEnter={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1.12)'; el.style.filter='brightness(1.05) saturate(1.1)'; }}
-                          onMouseLeave={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; }}
-                        />
-                      )}
+                      <img src={p.poster} alt={p.title} loading="lazy"
+                        onError={(e) => {
+                          const id = p.platform === 'youtube' ? ytId(p.link) : null;
+                          if (id && !e.currentTarget.dataset.fallback) {
+                            e.currentTarget.dataset.fallback = '1';
+                            e.currentTarget.src = ytFallbackThumb(id);
+                          }
+                        }}
+                        style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 700ms var(--ease-expo), filter 400ms', filter:'brightness(0.85)' }}
+                        onMouseEnter={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1.12)'; el.style.filter='brightness(1.05) saturate(1.1)'; }}
+                        onMouseLeave={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; }}
+                      />
                       <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.85) 0%, transparent 45%)' }} />
 
                       {/* Big play badge that fades in on hover */}
@@ -495,7 +434,7 @@ export default function WorkPage() {
 
 /** Fullscreen-capable inline player modal for YouTube + Instagram links. */
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  const embed = getEmbed(project.link, project.platform);
+  const embed = getEmbedUrl(project);
   const playerRef = useRef<HTMLDivElement>(null);
   const isV = project.orientation === 'v';
 
@@ -536,7 +475,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:'12px', flexWrap:'wrap' }}>
           <div>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:700, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 4px' }}>
-              {project.cat} · {project.platform === 'youtube' ? 'YouTube' : 'Instagram'}
+              {project.cat}{project.platform === 'youtube' ? ' · YouTube' : project.platform === 'instagram' ? ' · Instagram' : ''}
             </p>
             <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2vw,26px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px', lineHeight:1.05, letterSpacing:'0.01em' }}>{project.title}</h3>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{project.client}</p>

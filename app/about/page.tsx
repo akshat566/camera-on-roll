@@ -30,7 +30,7 @@ export default function AboutPage() {
             <Reveal delay={0.1}>
               <div style={{ textAlign:'center' }}>
                 <div style={{ aspectRatio:'4/5', maxWidth:'320px', margin:'0 auto 20px', overflow:'hidden', background:'var(--surface)', border:'1px solid var(--white-08)' }}>
-                  <img src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/founders/akshat.jpg" alt="Akshat Bhardwaj"
+                  <img src="/akshat.jpeg" alt="Akshat Bhardwaj"
                     loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', filter:'grayscale(10%)', transition:'transform 600ms' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}

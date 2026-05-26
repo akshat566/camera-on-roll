@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ChairLogo } from './ChairLogo';
 
 const LINKS = [
   { href: '/',         label: 'Home',        exact: true  },
@@ -40,13 +39,15 @@ export function Navbar() {
     >
       <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 0, paddingRight: 0 }}>
 
-        {/* Logo — chair icon only */}
+        {/* Logo — full wordmark */}
         <Link href="/" aria-label="Camera On Roll Production — Home"
-          style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none', color: 'var(--white)', transition: 'color 250ms' }}
-          onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--accent)'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = 'var(--white)'; }}
+          style={{ display: 'flex', alignItems: 'center', flexShrink: 0, textDecoration: 'none' }}
         >
-          <ChairLogo size={28} />
+          <img src="/logo.png" alt="Camera On Roll Production"
+            style={{ height: 'clamp(32px, 4vw, 44px)', width: 'auto', display: 'block', objectFit: 'contain', transition: 'opacity 200ms' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.85'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
+          />
         </Link>
 
         {/* Right side: nav + CTA */}

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { Reveal } from '@/components/Reveal';
+import { FEATURED_HOME as FEATURED_HOME_DATA, getEmbedUrl } from '@/lib/work-data';
 import { WorkWithUs } from '@/components/WorkWithUs';
 
 const EASE = [0.76, 0, 0.24, 1] as const;
@@ -88,29 +89,29 @@ type FeaturedProject = {
   r: number;
 };
 
-const FEATURED: FeaturedProject[] = (() => {
-  const v = (name: string) => r2v('vertical', name);
-  const h = (name: string) => r2v('horizontal', name);
-  return [
-    // Pair 1 — hero V + hero H
-    { cat:'Fashion',        client:'Camera On Roll', title:'Fashion Reel',         link:v('fashion_set.mp4'),                       img:v('fashion_set.mp4')+'#t=0.5',                       orientation:'v' as const, c:2, r:3 },
-    { cat:'Product',        client:'Japonico',       title:'Drinks · Bartender',   link:h('12.mp4_-_4_drinks_shot,_bartender_shuffling_shot,_JAPONICO_shots.mp4'), img:h('12.mp4_-_4_drinks_shot,_bartender_shuffling_shot,_JAPONICO_shots.mp4')+'#t=0.5', orientation:'h' as const, c:4, r:2 },
-    { cat:'Brand Reels',    client:'Camera On Roll', title:'Outdoor Mood',         link:v('outdoor_shoot_moodshot.mp4'),            img:v('outdoor_shoot_moodshot.mp4')+'#t=0.5',            orientation:'v' as const, c:2, r:2 },
-    { cat:'Podcasts',       client:'Camera On Roll', title:'Podcast Setup',        link:h('2.mp4_-_podcast_setup.mp4'),             img:h('2.mp4_-_podcast_setup.mp4')+'#t=0.5',             orientation:'h' as const, c:2, r:2 },
-    // Pair 2
-    { cat:'Brand Reels',    client:'Camera On Roll', title:'Event Reel',           link:v('event_-_take_some_famous_face_.mp4'),    img:v('event_-_take_some_famous_face_.mp4')+'#t=0.5',    orientation:'v' as const, c:2, r:3 },
-    { cat:'Product',        client:'Camera On Roll', title:'Mascara · Closeup',    link:h('28.mp4_-_initial_5-10_seconds,_product,_mascara,_closeup.mp4'), img:h('28.mp4_-_initial_5-10_seconds,_product,_mascara,_closeup.mp4')+'#t=0.5', orientation:'h' as const, c:4, r:2 },
-    { cat:'Brand Reels',    client:'Camera On Roll', title:'Kids · Dance',         link:v('kid_and_mom_dancing_shot_-_set_8.mp4'),  img:v('kid_and_mom_dancing_shot_-_set_8.mp4')+'#t=0.5',  orientation:'v' as const, c:2, r:2 },
-    { cat:'Cinematography', client:'Camera On Roll', title:'Reverse Walking · B&W',link:h('7.mp4_-_i_like_the_reverse_walking_b&w_shot_.mp4'), img:h('7.mp4_-_i_like_the_reverse_walking_b&w_shot_.mp4')+'#t=0.5', orientation:'h' as const, c:4, r:2 },
-    // Pair 3
-    { cat:'Brand Reels',    client:'Camera On Roll', title:'Wardrobe Transition', link:v('need_this_clothes_changing_transition.mp4'),img:v('need_this_clothes_changing_transition.mp4')+'#t=0.5',orientation:'v' as const, c:2, r:3 },
-    { cat:'Product',        client:'Camera On Roll', title:'Bubble Shot',         link:h('11.mp4_-_bubble_shot_.mp4'),             img:h('11.mp4_-_bubble_shot_.mp4')+'#t=0.5',             orientation:'h' as const, c:2, r:2 },
-    { cat:'Brand Reels',    client:'Camera On Roll', title:'Digital Ad',          link:v('digital_ad_.mp4'),                       img:v('digital_ad_.mp4')+'#t=0.5',                       orientation:'v' as const, c:2, r:2 },
-    { cat:'Cinematography', client:'Camera On Roll', title:'Outdoor Set',         link:h('14.mp4_-_outdoor_set_2_.mp4'),           img:h('14.mp4_-_outdoor_set_2_.mp4')+'#t=0.5',           orientation:'h' as const, c:4, r:2 },
-  ];
-})();
+// Featured 8 projects — sourced from the central catalog in lib/work-data.ts.
+// Layout spans (c × r) are picked here per item to keep the bento maze visually rhythmic.
+const HOME_LAYOUT: Array<{ c: number; r: number }> = [
+  { c:2, r:3 }, // 1: hero V
+  { c:4, r:2 }, // 2: wide H
+  { c:2, r:2 }, // 3: V
+  { c:4, r:2 }, // 4: wide H
+  { c:2, r:3 }, // 5: hero V
+  { c:4, r:2 }, // 6: wide H
+  { c:2, r:2 }, // 7: V
+  { c:4, r:2 }, // 8: wide H
+];
+const FEATURED: FeaturedProject[] = FEATURED_HOME_DATA.map((proj, i) => ({
+  cat: proj.cat,
+  client: proj.client,
+  title: proj.title,
+  link: proj.link,
+  img: proj.poster,
+  orientation: proj.orientation,
+  c: HOME_LAYOUT[i]?.c ?? 2,
+  r: HOME_LAYOUT[i]?.r ?? 2,
+}));
 
-// Home page: show only 8 featured items
 const FEATURED_HOME = FEATURED.slice(0, 8);
 
 const SERVICES_DATA = [
@@ -409,21 +410,15 @@ export default function Home() {
                     }}
                   >
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden' }}>
-                      {inferPlatform(p.link) === 'r2' ? (
-                        <video src={p.link} preload="metadata" muted playsInline
-                          onLoadedMetadata={e => { const el = e.currentTarget as HTMLVideoElement; try { el.currentTime = 0.5; } catch {} }}
+                      <img src={p.img} alt={p.title} loading="lazy"
+                          onError={(e) => {
+                            if (ytId_ && !e.currentTarget.dataset.fallback) {
+                              e.currentTarget.dataset.fallback = '1';
+                              e.currentTarget.src = ytFallbackThumb(ytId_);
+                            }
+                          }}
                           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.85)' }}
-                          onMouseEnter={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1.06)'; el.style.filter='brightness(1)'; el.play().catch(()=>{}); }}
-                          onMouseLeave={e => { const el = e.currentTarget as HTMLVideoElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; el.pause(); el.currentTime=0.5; }}
                         />
-                      ) : (
-                        <img src={p.img} alt={p.title} loading="lazy"
-                          onError={ytId_ ? (e => { (e.currentTarget as HTMLImageElement).src = ytFallbackThumb(ytId_!); }) : undefined}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.85)' }}
-                          onMouseEnter={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1.06)'; el.style.filter='brightness(1)'; }}
-                          onMouseLeave={e => { const el = e.currentTarget as HTMLImageElement; el.style.transform='scale(1)'; el.style.filter='brightness(0.85)'; }}
-                        />
-                      )}
                       <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.85) 0%, transparent 45%)' }} />
                       <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 9px', background:'rgba(9,9,8,0.8)', color:'var(--accent)', opacity:0, transition:'opacity 300ms' }}>{p.cat}</span>
                       <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.85)', color:'var(--white)', border:'1px solid var(--accent)', transition:'all 250ms' }}>
@@ -450,21 +445,15 @@ export default function Home() {
                     onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#111'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='var(--black)'; }}>
                     <div style={{ aspectRatio:'16/9', overflow:'hidden' }}>
-                      {inferPlatform(p.link) === 'r2' ? (
-                        <video src={p.link} preload="metadata" muted playsInline
-                          onLoadedMetadata={e => { const el = e.currentTarget as HTMLVideoElement; try { el.currentTime = 0.5; } catch {} }}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 400ms', filter:'brightness(0.8)' }}
-                          onMouseEnter={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1.04)'; }}
-                          onMouseLeave={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1)'; }}
+                      <img src={p.img} alt={p.title} loading="lazy"
+                          onError={(e) => {
+                            if (ytId_ && !e.currentTarget.dataset.fallback) {
+                              e.currentTarget.dataset.fallback = '1';
+                              e.currentTarget.src = ytFallbackThumb(ytId_);
+                            }
+                          }}
+                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.85)' }}
                         />
-                      ) : (
-                        <img src={p.img} alt={p.title} loading="lazy"
-                          onError={ytId_ ? (e => { (e.currentTarget as HTMLImageElement).src = ytFallbackThumb(ytId_!); }) : undefined}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 400ms', filter:'brightness(0.8)' }}
-                          onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.04)'; }}
-                          onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
-                        />
-                      )}
                     </div>
                     <div style={{ padding:'0 28px' }}>
                       <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--accent)', display:'block', marginBottom:'6px' }}>{p.cat}</span>
@@ -649,7 +638,7 @@ export default function Home() {
 /** Fullscreen-capable inline player modal for YouTube + Instagram links. */
 function ProjectModal({ project, onClose }: { project: FeaturedProject; onClose: () => void }) {
   const platform = inferPlatform(project.link);
-  const embed = getEmbed(project.link, platform);
+  const embed = getEmbedUrl({ ...project, platform, owner: 'akshat', id: '_', poster: project.img } as any);
   const playerRef = useRef<HTMLDivElement>(null);
   const isV = project.orientation === 'v';
 

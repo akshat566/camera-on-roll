@@ -207,6 +207,21 @@ input, textarea, select { font: inherit; color: inherit; }
   .show-mobile   { display: flex !important; }
 }
 
+/* ─── Masonry grid responsiveness ─────────────── */
+@media (max-width: 1024px) {
+  .work-masonry {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 640px) {
+  .work-masonry {
+    grid-template-columns: 1fr !important;
+  }
+  .work-masonry > * {
+    grid-column: span 1 !important;
+  }
+}
+
 /* ─── Mobile tap ─────────────────────────────── */
 @media (hover: none) {
   * { -webkit-tap-highlight-color: transparent; }

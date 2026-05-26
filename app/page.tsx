@@ -363,36 +363,42 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Grid layout */}
+        {/* Grid layout — true aspect ratio per tile (9:16, 16:9, 1:1) */}
         <AnimatePresence mode="wait">
           {workLayout === 'grid' ? (
             <motion.div key="grid" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.25 }}
               style={{
                 padding:'0 var(--pad-x)',
                 display:'grid',
-                /* 4-col bento — aspect-ratio matched to video orientation */
-                gridTemplateColumns:'repeat(4, 1fr)',
-                gridAutoRows:'clamp(100px, 10vw, 160px)',
+                /* Responsive masonry: 3-col desktop, 2-col tablet, 1-col mobile */
+                gridTemplateColumns:'repeat(3, 1fr)',
                 gridAutoFlow:'dense',
-                gap:'4px',
-              }}>
+                gap:'6px',
+              }}
+              className="work-masonry"
+            >
               {FEATURED_HOME.map((p, i) => {
-                const isV = p.orientation === 'v';
                 const ytId_ = ytId(p.link);
+                const isV = p.orientation === 'v';
+                const isH = p.orientation === 'h';
+                // Column span based on orientation for visual rhythm
+                const colSpan = isV ? 1 : (isH ? 2 : 1);
+                // True aspect ratio via CSS
+                const aspect = isV ? '9/16' : (isH ? '16/9' : '1/1');
                 return (
                 <motion.div key={i}
                   initial={{ opacity:0, scale:0.96 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true, margin:'-40px' }}
-                  transition={{ duration:0.5, delay:(i%4)*0.08, ease:EASE }}
-                  whileHover={{ y:-10, scale:1.035, zIndex:5, transition:{ duration:0.4, ease:POP_EASE } }}
+                  transition={{ duration:0.5, delay:(i%3)*0.1, ease:EASE }}
+                  whileHover={{ y:-8, scale:1.02, zIndex:5, transition:{ duration:0.35, ease:POP_EASE } }}
                   style={{
                     position:'relative',
-                    gridColumn: `span ${p.c}`,
-                    gridRow:    `span ${p.r}`,
+                    gridColumn: `span ${colSpan}`,
+                    aspectRatio: aspect,
                   }}>
-                  <button onClick={() => setModal(p)} style={{ display:'block', height:'100%', textDecoration:'none', background:'#111', position:'relative', transition:'box-shadow 350ms', border:'none', padding:0, cursor:'pointer', width:'100%' }}
+                  <button onClick={() => setModal(p)} style={{ display:'block', width:'100%', height:'100%', textDecoration:'none', background:'#111', position:'relative', transition:'box-shadow 350ms', border:'none', padding:0, cursor:'pointer', borderRadius:'2px', overflow:'hidden' }}
                     onMouseEnter={e => {
                       const el = e.currentTarget as HTMLElement;
-                      el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
+                      el.style.boxShadow = '0 20px 60px rgba(232,23,106,0.35), 0 0 0 1px rgba(232,23,106,0.5)';
                       const info = el.querySelector('.tile-info') as HTMLElement | null;
                       if (info) info.style.opacity = '1';
                       const cat = el.querySelector('.tile-cat') as HTMLElement | null;
@@ -415,15 +421,12 @@ export default function Home() {
                               e.currentTarget.src = ytFallbackThumb(ytId_);
                             }
                           }}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.85)' }}
+                          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.9)' }}
                         />
-                      <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.85) 0%, transparent 45%)' }} />
-                      <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 9px', background:'rgba(9,9,8,0.8)', color:'var(--accent)', opacity:0, transition:'opacity 300ms' }}>{p.cat}</span>
-                      <span style={{ position:'absolute', bottom:'12px', right:'12px', width:'28px', height:'28px', display:'flex', alignItems:'center', justifyContent:'center', background:'rgba(9,9,8,0.85)', color:'var(--white)', border:'1px solid var(--accent)', transition:'all 250ms' }}>
-                        <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
-                      </span>
-                      <div className="tile-info" style={{ position:'absolute', bottom:'12px', left:'12px', right:'48px', opacity:0, transition:'opacity 300ms' }}>
-                        <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(12px,1.3vw,17px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px', lineHeight:1.1, letterSpacing:'0.01em' }}>{p.title}</p>
+                      <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.85) 0%, rgba(9,9,8,0.15) 50%, transparent 100%)' }} />
+                      <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 10px', background:'rgba(9,9,8,0.85)', color:'var(--accent)', opacity:0, transition:'opacity 300ms', borderRadius:'2px', border:'1px solid rgba(232,23,106,0.3)' }}>{p.cat}</span>
+                      <div className="tile-info" style={{ position:'absolute', bottom:'14px', left:'14px', right:'14px', opacity:0, transition:'opacity 300ms' }}>
+                        <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 4px', lineHeight:1.1, letterSpacing:'0.01em', textShadow:'0 2px 8px rgba(0,0,0,0.6)' }}>{p.title}</p>
                         <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
                       </div>
                     </div>

@@ -256,25 +256,26 @@ export default function WorkPage() {
               transition={{ duration:0.35, ease:E }}
               style={{
                 display:'grid',
-                gridTemplateColumns:'repeat(6, 1fr)',
-                gridAutoRows:'clamp(100px, 10vw, 160px)',
+                /* 3-col responsive — true aspect ratios per tile */
+                gridTemplateColumns:'repeat(3, 1fr)',
                 gridAutoFlow:'dense',
-                gap:'4px',
+                gap:'6px',
               }}
+              className="work-masonry"
             >
               {filtered.map((p, i) => {
                 const isV = p.orientation === 'v';
-                // Consistent spans based on orientation for clean layout:
-                // Vertical (9:16) → 2 cols × 4 rows  (portrait ~0.56, close to 9:16)
-                // Horizontal (16:9) → 3 cols × 2 rows (landscape ~1.7, close to 16:9)
-                const c = isV ? 2 : 3;
-                const r = isV ? 4 : 2;
+                const isH = p.orientation === 'h';
+                // Column span: vertical = 1 col (tall), horizontal = 2 cols (wide), square = 1 col
+                const colSpan = isV ? 1 : (isH ? 2 : 1);
+                // True CSS aspect ratio
+                const aspect = isV ? '9/16' : (isH ? '16/9' : '1/1');
                 return (
                 <motion.div key={p.id}
                   initial={{ opacity:0, scale:0.96 }} animate={{ opacity:1, scale:1 }}
-                  transition={{ duration:0.45, delay:(i%6)*0.06, ease:E }}
-                  whileHover={{ y:-10, scale:1.035, zIndex:5, transition: { duration: 0.4, ease: POP_EASE } }}
-                  style={{ gridColumn:`span ${c}`, gridRow:`span ${r}`, position:'relative' }}
+                  transition={{ duration:0.45, delay:(i%4)*0.07, ease:E }}
+                  whileHover={{ y:-8, scale:1.02, zIndex:5, transition: { duration: 0.35, ease: POP_EASE } }}
+                  style={{ gridColumn:`span ${colSpan}`, aspectRatio: aspect, position:'relative' }}
                 >
                   <button type="button" onClick={() => setModal(p)} aria-label={`Play ${p.title} — ${p.client}`}
                     style={{ display:'block', width:'100%', height:'100%', padding:0, border:'none', textAlign:'left', textDecoration:'none', position:'relative', background:'#111', cursor:'pointer', transition:'box-shadow 350ms' }}

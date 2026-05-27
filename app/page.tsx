@@ -55,29 +55,6 @@ function inferPlatform(link: string): 'youtube' | 'instagram' | 'r2' {
 const R2_BASE = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/work';
 const r2v = (folder: 'horizontal'|'vertical', name: string) => `${R2_BASE}/${folder}/${name}`;
 
-function Tilt({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = ref.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width - 0.5) * 16;
-    const y = ((e.clientY - r.top) / r.height - 0.5) * 16;
-    el.style.transform = `perspective(900px) rotateY(${x}deg) rotateX(${-y}deg) scale3d(1.02,1.02,1.02)`;
-    el.style.zIndex = '2';
-  };
-  const onLeave = () => {
-    if (!ref.current) return;
-    ref.current.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)';
-    ref.current.style.zIndex = '1';
-  };
-  return (
-    <div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}
-      style={{ transition:'transform 200ms ease', transformStyle:'preserve-3d', position:'relative', ...style }}>
-      {children}
-    </div>
-  );
-}
-
 // 12 items with explicit col/row spans → packs into a 6-col bento "maze".
 // Verticals (v) get tall portrait spans; horizontals (h) get wide landscape spans.
 // One vertical & one horizontal "hero" tile lead each pair for visual rhythm.
@@ -756,9 +733,9 @@ export default function Home() {
                 const aspect = isV ? '3/4' : (isH ? '2/1' : '1/1');
                 return (
                 <motion.div key={i}
-                  initial={{ opacity:0, scale:0.96 }} whileInView={{ opacity:1, scale:1 }} viewport={{ once:true, margin:'-40px' }}
-                  transition={{ duration:0.5, delay:(i%3)*0.1, ease:EASE }}
-                  whileHover={{ y:-8, scale:1.02, zIndex:5, transition:{ duration:0.35, ease:POP_EASE } }}
+                  initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-40px' }}
+                  transition={{ duration:0.5, delay:(i%3)*0.08, ease:EASE }}
+                  whileHover={{ y:-6, zIndex:5, transition:{ duration:0.3, ease:POP_EASE } }}
                   style={{
                     position:'relative',
                     gridColumn: `span ${colSpan}`,
@@ -859,36 +836,33 @@ export default function Home() {
 
         <div style={{ padding:'0 var(--pad-x)', display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:'1px', background:'var(--white-08)' }}>
           {SERVICES_DATA.map((s, i) => (
-            <Tilt key={s.n}>
-              <motion.div initial={{ opacity:0, y:12 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-30px' }}
-                transition={{ duration:0.4, delay:(i%4)*0.07, ease:EASE }}
-                whileHover={{ y:-10, scale:1.035, zIndex:5, transition:{ duration:0.4, ease:POP_EASE } }}
-                style={{ background:'var(--black)', position:'relative', overflow:'hidden', cursor:'pointer', height:'100%', transition:'box-shadow 400ms' }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), inset 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
-                  const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.55';img.style.transform='scale(1.1)';}
-                  const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='1';
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.boxShadow = 'none';
-                  const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.22';img.style.transform='scale(1)';}
-                  const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='0';
-                }}>
-                <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-                  <img src={s.img} alt={s.n} loading="lazy"
-                    style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.22, transition:'opacity 500ms, transform 600ms' }} />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.94) 35%, rgba(9,9,8,0.35) 100%)' }} />
+            <motion.div key={s.n} initial={{ opacity:0, y:12 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-30px' }}
+              transition={{ duration:0.4, delay:(i%4)*0.07, ease:EASE }}
+              style={{ background:'var(--black)', position:'relative', overflow:'hidden', cursor:'pointer', height:'100%' }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.35), inset 0 0 0 1.5px rgba(232,23,106,0.6)';
+                const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.95';img.style.transform='scale(1.08)';}
+                const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='1';
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLElement;
+                el.style.boxShadow = 'none';
+                const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.55';img.style.transform='scale(1)';}
+                const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='0';
+              }}>
+              <div style={{ position:'absolute', inset:0, zIndex:0 }}>
+                <img src={s.img} alt={s.n} loading="lazy"
+                  style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.55, transition:'opacity 500ms, transform 600ms' }} />
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.82) 25%, rgba(9,9,8,0.15) 75%)' }} />
+              </div>
+              <div style={{ position:'relative', zIndex:1, padding:'22px', minHeight:'210px', display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
+                <div>
+                  <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.25vw,16px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'10px', lineHeight:1.1 }}>{s.n}</h3>
+                  <p className="svc-desc" style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.7, color:'var(--white-70)', margin:0, opacity:0, transition:'opacity 300ms' }}>{s.d}</p>
                 </div>
-                <div style={{ position:'relative', zIndex:1, padding:'22px', minHeight:'210px', display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
-                  <div>
-                    <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.25vw,16px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'10px', lineHeight:1.1 }}>{s.n}</h3>
-                    <p className="svc-desc" style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.7, color:'var(--white-70)', margin:0, opacity:0, transition:'opacity 300ms' }}>{s.d}</p>
-                  </div>
-                </div>
-              </motion.div>
-            </Tilt>
+              </div>
+            </motion.div>
           ))}
         </div>
       </section>

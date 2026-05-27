@@ -18,12 +18,12 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     }
 
     const lenis = new Lenis({
-      duration: 0.8,
+      duration: 0.5,
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: 1.2,
-      touchMultiplier: 1.8,
-      lerp: 0.18,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 2.0,
+      lerp: 0.25,
       syncTouch: false,
       orientation: 'vertical',
       gestureOrientation: 'vertical',

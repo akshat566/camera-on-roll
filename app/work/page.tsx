@@ -267,11 +267,11 @@ export default function WorkV2Page() {
                 return (
                   <motion.div
                     key={project.id}
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.45, delay: (i % 4) * 0.07, ease: E }}
-                    whileHover={{ y: -8, scale: 1.02, zIndex: 5, transition: { duration: 0.35, ease: POP_EASE } }}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.4, delay: (i % 4) * 0.05, ease: E }}
+                    whileHover={{ y: -6, zIndex: 5, transition: { duration: 0.3, ease: POP_EASE } }}
                     style={{ gridColumn: `span ${colSpan}`, aspectRatio: aspect, position: 'relative' }}
                   >
                     <button

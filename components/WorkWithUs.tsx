@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { Reveal } from '@/components/Reveal';
 
 /**
@@ -9,6 +9,44 @@ import { Reveal } from '@/components/Reveal';
  */
 export function WorkWithUs() {
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get('name') as string,
+      company: formData.get('company') as string,
+      email: formData.get('email') as string,
+      phone: formData.get('phone') as string,
+      budget: formData.get('budget') as string,
+      message: formData.get('message') as string,
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong. Please try again.');
+      } else {
+        setSent(true);
+        form.reset();
+      }
+    } catch {
+      setError('Network error. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="cx" style={{ position: 'relative', padding: 'clamp(48px,6vw,80px) 0 clamp(56px,6vw,80px)' }}>
@@ -73,6 +111,12 @@ export function WorkWithUs() {
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
                 >ashna@cameraonrollproduction.com</a>
+                <br />
+                <a href="mailto:welcometo101world@gmail.com"
+                  style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
+                >welcometo101world@gmail.com</a>
               </div>
               <div>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Instagram</p>
@@ -131,7 +175,7 @@ export function WorkWithUs() {
               </div>
             ) : (
               <form
-                onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+                onSubmit={handleSubmit}
                 style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}
               >
                 {[
@@ -142,40 +186,50 @@ export function WorkWithUs() {
                   { name: 'budget',  placeholder: 'Project Budget (optional)', type: 'text', span: 2, req: false },
                 ].map((f) => (
                   <input key={f.name} name={f.name} type={f.type} placeholder={f.placeholder} required={f.req}
+                    disabled={loading}
                     style={{
                       gridColumn: `span ${f.span}`,
                       background: 'transparent', border: '1px solid var(--white-20)',
                       fontFamily: 'var(--font-body)', fontSize: '12px', letterSpacing: '0.04em',
                       color: 'var(--white)', padding: '14px 16px', outline: 'none',
                       transition: 'border-color 200ms',
+                      opacity: loading ? 0.5 : 1,
                     }}
                     onFocus={e => { e.currentTarget.style.borderColor = 'var(--accent)'; }}
                     onBlur={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; }}
                   />
                 ))}
                 <textarea name="message" placeholder="Tell us about your project… *" required rows={5}
+                  disabled={loading}
                   style={{
                     gridColumn: 'span 2',
                     background: 'transparent', border: '1px solid var(--white-20)',
                     fontFamily: 'var(--font-body)', fontSize: '12px', letterSpacing: '0.04em',
                     color: 'var(--white)', padding: '14px 16px', outline: 'none', resize: 'vertical',
                     transition: 'border-color 200ms',
+                    opacity: loading ? 0.5 : 1,
                   }}
                   onFocus={e => { e.currentTarget.style.borderColor = 'var(--accent)'; }}
                   onBlur={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; }}
                 />
+                {error && (
+                  <p style={{ gridColumn: 'span 2', fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--accent)', margin: '4px 0 0' }}>
+                    {error}
+                  </p>
+                )}
                 <div style={{ gridColumn: 'span 2', display: 'flex', justifyContent: 'flex-start', marginTop: '6px' }}>
-                  <button type="submit" style={{
+                  <button type="submit" disabled={loading} style={{
                     fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 700,
                     letterSpacing: '0.28em', textTransform: 'uppercase',
                     padding: '16px 44px', background: 'var(--accent)', color: '#fff',
-                    border: 'none', cursor: 'pointer',
+                    border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
                     display: 'inline-flex', alignItems: 'center', gap: '8px',
                     transition: 'box-shadow 400ms, opacity 300ms',
+                    opacity: loading ? 0.6 : 1,
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 0 50px rgba(232,23,106,0.4)'; }}
+                  onMouseEnter={e => { if (!loading) e.currentTarget.style.boxShadow = '0 0 50px rgba(232,23,106,0.4)'; }}
                   onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
-                  >Send Inquiry →</button>
+                  >{loading ? 'Sending…' : 'Send Inquiry →'}</button>
                 </div>
               </form>
             )}

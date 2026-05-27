@@ -232,14 +232,20 @@ const AI_VIDEOS = [
 
 function VideoSlide({ video, isActive }: { video: typeof AI_VIDEOS[0]; isActive: boolean }) {
   const vidRef = useRef<HTMLVideoElement>(null);
+  const playPromise = useRef<Promise<void> | null>(null);
   useEffect(() => {
     const v = vidRef.current;
     if (!v) return;
     if (isActive) {
       v.currentTime = 0;
-      v.play().catch(() => {});
+      playPromise.current = v.play().catch(() => {});
     } else {
-      v.pause();
+      if (playPromise.current) {
+        playPromise.current.then(() => v.pause()).catch(() => v.pause());
+        playPromise.current = null;
+      } else {
+        v.pause();
+      }
     }
   }, [isActive]);
   return (

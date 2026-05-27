@@ -111,12 +111,6 @@ export function WorkWithUs() {
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
                   onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
                 >ashna@cameraonrollproduction.com</a>
-                <br />
-                <a href="mailto:welcometo101world@gmail.com"
-                  style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
-                  onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'var(--white-70)'; }}
-                >welcometo101world@gmail.com</a>
               </div>
               <div>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Instagram</p>

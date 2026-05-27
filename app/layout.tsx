@@ -1,7 +1,6 @@
 ﻿import type { Metadata } from "next";
 import { Anton, Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -31,17 +30,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
-      <html lang="en" className={`${anton.variable} ${inter.variable}`}>
-        <body>
-          <div className="film-grain" aria-hidden="true" />
-          <SmoothScroll>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </SmoothScroll>
-        </body>
-      </html>
-    </AuthProvider>
+    <html lang="en" className={`${anton.variable} ${inter.variable}`}>
+      <body>
+        <div className="film-grain" aria-hidden="true" />
+        <SmoothScroll>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </SmoothScroll>
+      </body>
+    </html>
   );
 }

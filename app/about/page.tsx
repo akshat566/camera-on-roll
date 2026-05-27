@@ -36,7 +36,13 @@ export default function AboutPage() {
                     onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
                   />
                 </div>
-                <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'6px', lineHeight:1 }}>Akshat Bhardwaj</h3>
+                <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'6px', lineHeight:1 }}>
+                  <a href="https://www.linkedin.com/in/akshat-bhardwaj-08995b17a/" target="_blank" rel="noopener noreferrer"
+                    style={{ color:'inherit', textDecoration:'none', transition:'color 300ms' }}
+                    onMouseEnter={e => { e.currentTarget.style.color='var(--accent)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color='var(--white)'; }}
+                  >Akshat Bhardwaj</a>
+                </h3>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>Founder & Producer</p>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', lineHeight:1.7, color:'var(--white-70)', maxWidth:'360px', margin:'0 auto' }}>
                   Akshat Bhardwaj is the Founder, CEO and Producer at Camera On Roll Production. With experience across advertising and production, he has worked with multiple agencies and leading brands across campaigns, branded content, travel, fashion, automotive, and commercial productions.
@@ -54,7 +60,13 @@ export default function AboutPage() {
                     onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
                   />
                 </div>
-                <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'6px', lineHeight:1 }}>Ashna Chhabra</h3>
+                <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'6px', lineHeight:1 }}>
+                  <a href="https://www.linkedin.com/in/ashnachhabra/" target="_blank" rel="noopener noreferrer"
+                    style={{ color:'inherit', textDecoration:'none', transition:'color 300ms' }}
+                    onMouseEnter={e => { e.currentTarget.style.color='var(--accent)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color='var(--white)'; }}
+                  >Ashna Chhabra</a>
+                </h3>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>Co-Founder & Creative Director</p>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', lineHeight:1.7, color:'var(--white-70)', maxWidth:'360px', margin:'0 auto' }}>
                   Ashna is the Co-Founder and Creative Director at Camera On Roll Production, bringing together a strategy-first mindset shaped by her consulting background at KPMG and 7+ years of experience across production and advertising.

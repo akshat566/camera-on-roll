@@ -214,14 +214,327 @@ function ClientBadge({ name, domain }: { name: string; domain: string }) {
   );
 }
 
-const AI_SHOWCASE = [
-  'https://images.unsplash.com/photo-1635776062764-e025521e3df3?w=800&q=80',
-  'https://images.unsplash.com/photo-1684391961335-5f54123b8f2a?w=800&q=80',
-  'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80',
-  'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
-  'https://images.unsplash.com/photo-1675270714610-11a5cadcc7b3?w=800&q=80',
-  'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=800&q=80',
+// AI Video Slideshow — replace src URLs with actual AI video assets
+const AI_VIDEOS = [
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4.jpg',
+    title: 'AI Film Showcase',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Bombay_99_Mixers.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Bombay_99_Mixers.mp4.jpg',
+    title: 'AI Product Film',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Emaar%20Final.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Emaar%20Final.mp4.jpg',
+    title: 'AI Real Estate Visual',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/HSBCv2.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/HSBCv2.mp4.jpg',
+    title: 'AI Brand Film',
+  },
 ];
+
+function VideoSlide({ video, isActive }: { video: typeof AI_VIDEOS[0]; isActive: boolean }) {
+  const vidRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = vidRef.current;
+    if (!v) return;
+    if (isActive) {
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    } else {
+      v.pause();
+    }
+  }, [isActive]);
+  return (
+    <motion.video
+      ref={vidRef}
+      key={video.src}
+      src={video.src}
+      poster={video.poster}
+      muted
+      playsInline
+      loop
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isActive ? 1 : 0 }}
+      transition={{ duration: 0.8, ease: EASE }}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+      }}
+    />
+  );
+}
+
+function AISection() {
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setIdx(i => (i + 1) % AI_VIDEOS.length), 6000);
+    return () => clearInterval(t);
+  }, [paused]);
+
+  return (
+    <section
+      className="ai-split"
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        borderTop: '1px solid var(--white-08)',
+        overflow: 'hidden',
+      }}
+    >
+      <style>{`
+        @media (max-width: 768px) {
+          .ai-split { grid-template-columns: 1fr !important; min-height: auto !important; }
+          .ai-split > div:first-child { height: 50vh; }
+        }
+      `}</style>
+      {/* LEFT — Video Slideshow */}
+      <div
+        style={{ position: 'relative', overflow: 'hidden', background: 'var(--black)' }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {AI_VIDEOS.map((v, i) => (
+          <VideoSlide key={v.src} video={v} isActive={i === idx} />
+        ))}
+
+        {/* Overlay gradient for text legibility if needed */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, transparent 60%, rgba(9,9,8,0.4))', pointerEvents:'none' }} />
+
+        {/* Slide indicators */}
+        <div style={{ position:'absolute', bottom:'28px', left:'28px', display:'flex', gap:'8px', zIndex:2 }}>
+          {AI_VIDEOS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setIdx(i)}
+              style={{
+                width: i === idx ? '32px' : '8px',
+                height: '4px',
+                borderRadius: '2px',
+                border: 'none',
+                background: i === idx ? 'var(--accent)' : 'rgba(255,255,255,0.3)',
+                transition: 'all 400ms cubic-bezier(0.76,0,0.24,1)',
+                cursor: 'pointer',
+              }}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+
+        {/* Current slide label */}
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          style={{
+            position: 'absolute',
+            bottom: '28px',
+            right: '28px',
+            zIndex: 2,
+            fontFamily: 'var(--font-body)',
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.7)',
+          }}
+        >
+          {AI_VIDEOS[idx].title}
+        </motion.div>
+      </div>
+
+      {/* RIGHT — Content */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          padding: 'clamp(40px, 5vw, 80px) clamp(32px, 4vw, 64px)',
+          background: 'var(--black)',
+          position: 'relative',
+        }}
+      >
+        {/* Accent glow */}
+        <div style={{
+          position: 'absolute',
+          top: '-20%',
+          right: '-10%',
+          width: '50vw',
+          height: '50vw',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(232,23,106,0.08) 0%, transparent 60%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+        }} />
+
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: EASE }}
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '10px',
+              fontWeight: 600,
+              letterSpacing: '0.4em',
+              textTransform: 'uppercase',
+              color: 'var(--accent)',
+              marginBottom: '20px',
+            }}
+          >
+            AI × Cinema · Proprietary Tech
+          </motion.p>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.05, ease: EASE }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(32px, 4.5vw, 64px)',
+              textTransform: 'uppercase',
+              lineHeight: 0.92,
+              letterSpacing: '-0.02em',
+              color: 'var(--white)',
+              margin: '0 0 24px',
+            }}
+          >
+            Our <span style={{ color: 'var(--accent)' }}>AI</span> Engine.<br />
+            Where Cinema Meets Intelligence.
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.12, ease: EASE }}
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: 1.85,
+              color: 'var(--white-70)',
+              marginBottom: '32px',
+              maxWidth: '460px',
+            }}
+          >
+            An in-house generative platform for photo and video — trained on thousands of brand visuals and refined through real production cycles. Faster timelines, expanded creative possibilities, AI that understands creative intent.
+          </motion.p>
+
+          {/* Capability list */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.18, ease: EASE }}
+            style={{ marginBottom: '32px' }}
+          >
+            {[
+              'AI Photo Gen — On-brand imagery at scale',
+              'AI Video Enhance — Upscaling & color grading',
+              'Style Transfer — Consistent aesthetics',
+              'Generative Video — Text-to-video pipelines',
+            ].map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '8px 0',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '12px',
+                  color: 'var(--white-70)',
+                  borderBottom: i < 3 ? '1px solid var(--white-08)' : 'none',
+                }}
+              >
+                <span style={{ color: 'var(--accent)', fontSize: '10px' }}>▸</span>
+                {item}
+              </div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.24, ease: EASE }}
+            style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}
+          >
+            <Link
+              href="/contact"
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.24em',
+                textTransform: 'uppercase',
+                padding: '14px 32px',
+                background: 'var(--accent)',
+                color: '#fff',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'opacity 300ms, box-shadow 400ms',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 50px rgba(232,23,106,0.35)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
+              }}
+            >
+              Get in Touch →
+            </Link>
+            <Link
+              href="/atom"
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '11px',
+                fontWeight: 700,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                padding: '14px 32px',
+                border: '1px solid var(--white-20)',
+                color: 'var(--white-70)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                transition: 'border-color 300ms, color 300ms',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = 'var(--accent)';
+                e.currentTarget.style.color = 'var(--white)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--white-20)';
+                e.currentTarget.style.color = 'var(--white-70)';
+              }}
+            >
+              Explore Our AI →
+            </Link>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 // Showreel — ONLY our own work (pulled from FEATURED above so it's a single source of truth)
 const SHOWREEL = FEATURED.map(f => ({ img: f.img, client: f.client, cat: f.cat, title: f.title }));
@@ -545,78 +858,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ AI × CINEMA — single compact section (merged with engine teaser) ══ */}
-      <section style={{ position:'relative', padding:'clamp(56px,6vw,96px) 0', borderTop:'1px solid var(--white-08)', overflow:'hidden' }}>
-        {/* Soft AI mosaic behind */}
-        <div aria-hidden="true" style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <div style={{ position:'absolute', inset:0, display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridTemplateRows:'repeat(2, 1fr)', gap:'2px', opacity:0.18 }}>
-            {AI_SHOWCASE.map((src, i) => (
-              <div key={i} style={{ position:'relative', overflow:'hidden' }}>
-                <motion.img src={src} alt="" loading="lazy"
-                  animate={{ scale:[1, 1.06, 1] }} transition={{ duration:18 + i, repeat:Infinity, ease:'easeInOut' }}
-                  style={{ width:'100%', height:'100%', objectFit:'cover', filter:'brightness(0.7)' }} />
-              </div>
-            ))}
-          </div>
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(9,9,8,0.94) 0%, rgba(9,9,8,0.78) 50%, rgba(9,9,8,0.94) 100%)' }} />
-          <div style={{ position:'absolute', top:'10%', left:'-15%', width:'45vw', height:'45vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.10) 0%, transparent 70%)', filter:'blur(60px)' }} />
-        </div>
-
-        <div className="cx" style={{ position:'relative', zIndex:1 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1.1fr 1fr', gap:'clamp(32px,5vw,72px)', alignItems:'center', marginBottom:'clamp(36px,4vw,56px)' }}>
-            <Reveal>
-              <div>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>AI × Cinema · Proprietary Tech</p>
-                <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(34px,5.5vw,80px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>
-                  Our <span style={{ color:'var(--accent)' }}>AI</span> Engine.<br/>Where Cinema Meets Intelligence.
-                </h2>
-              </div>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <div>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', fontWeight:400, lineHeight:1.85, color:'var(--white-70)', marginBottom:'24px' }}>
-                  An in-house generative platform for photo and video — trained on thousands of brand visuals and refined through real production cycles. Faster timelines, expanded creative possibilities, AI that understands creative intent.
-                </p>
-                <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
-                  <Link href="/atom" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.28em', textTransform:'uppercase', padding:'14px 28px', background:'var(--accent)', color:'#fff', display:'inline-flex', alignItems:'center', gap:'8px', transition:'opacity 300ms, box-shadow 400ms' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow='0 0 50px rgba(232,23,106,0.35)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.boxShadow='none'; }}>
-                    Explore Our AI →
-                  </Link>
-                  <Link href="/work" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'14px 28px', border:'1px solid var(--white-20)', color:'var(--white-70)', display:'inline-flex', alignItems:'center', gap:'6px', transition:'border-color 300ms, color 300ms' }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--white)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-70)'; }}>
-                    AI Driven Content →
-                  </Link>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-
-          {/* 4 capability chips — compact strip */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:'2px', background:'var(--white-08)', border:'1px solid var(--white-08)' }}>
-            {[
-              { icon:'▶', n:'AI Photo Gen',    d:'Photorealistic product and lifestyle imagery generated at scale, on-brand.' },
-              { icon:'◆', n:'AI Video Enhance', d:'Frame interpolation, upscaling, and AI color grading for any footage.' },
-              { icon:'▲', n:'Style Transfer',   d:'Apply any visual aesthetic consistently across entire content libraries.' },
-              { icon:'✦', n:'Generative Video', d:'Text-to-video and image-to-video pipelines for campaign concepts.' },
-            ].map((c, i) => (
-              <motion.div key={i}
-                initial={{ opacity:0, y:12 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-30px' }}
-                transition={{ duration:0.4, delay:i*0.08, ease:EASE }}
-                whileHover={{ y:-3 }}
-                style={{ background:'rgba(9,9,8,0.7)', padding:'22px 20px 24px', cursor:'pointer', transition:'background 250ms' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(232,23,106,0.08)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(9,9,8,0.7)'; }}
-              >
-                <div style={{ fontSize:'16px', color:'var(--accent)', marginBottom:'12px' }}>{c.icon}</div>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--white)', margin:'0 0 8px' }}>{c.n}</p>
-                <p style={{ fontFamily:'var(--font-body)', fontSize:'11px', lineHeight:1.7, color:'var(--white-70)', margin:0 }}>{c.d}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ══ AI × CINEMA — split screen: video slideshow left, content right ══ */}
+      <AISection />
 
       {/* ══ CLIENTS — single sliding marquee with real logos ═══ */}
       <section style={{ padding:'clamp(24px,2.5vw,36px) 0', borderTop:'1px solid var(--white-08)' }}>

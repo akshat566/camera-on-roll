@@ -18,13 +18,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     }
 
     const lenis = new Lenis({
-      duration: 1.8,                                              // longer = more glide, cinematic
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),    // expoOut
+      duration: 1.0,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 0.85,                                       // gentler wheel pace
-      touchMultiplier: 1.4,                                       // crisper touch
-      lerp: 0.075,                                                // a bit more inertia
-      syncTouch: true,                                            // unified momentum on touch devices
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+      lerp: 0.12,
+      syncTouch: true,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       infinite: false,
@@ -32,14 +32,15 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     lenisRef.current = lenis;
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    const id = requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
-      cancelAnimationFrame(id);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);

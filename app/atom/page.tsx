@@ -1,4 +1,5 @@
 ﻿'use client';
+import { useRef } from 'react';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
 
@@ -19,6 +20,48 @@ const SHOWCASE_VIDEOS = [
   { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1gsdfh_fdggh_hg3_.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1gsdfh_fdggh_hg3_.mp4.jpg', title:'AI Generated', cat:'UGC' },
   { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1qerqer3_.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1qerqer3_.mp4.jpg', title:'AI Production', cat:'Music' },
 ];
+
+function VideoCard({ video, delay }: { video: typeof SHOWCASE_VIDEOS[0]; delay: number }) {
+  const vidRef = useRef<HTMLVideoElement>(null);
+  const playPromise = useRef<Promise<void> | null>(null);
+
+  const handleEnter = () => {
+    const v = vidRef.current;
+    if (!v) return;
+    playPromise.current = v.play().catch(() => {});
+  };
+
+  const handleLeave = () => {
+    const v = vidRef.current;
+    if (!v) return;
+    if (playPromise.current) {
+      playPromise.current.then(() => { v.pause(); }).catch(() => { v.pause(); });
+      playPromise.current = null;
+    } else {
+      v.pause();
+    }
+  };
+
+  return (
+    <Reveal delay={delay}>
+      <div style={{ position:'relative', overflow:'hidden', aspectRatio:'3/4', background:'var(--surface)', cursor:'pointer' }}
+        onMouseEnter={handleEnter}
+        onMouseLeave={handleLeave}
+      >
+        <video ref={vidRef} src={video.src} poster={video.poster} muted loop playsInline preload="metadata"
+          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms ease' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1.04)'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1)'; }}
+        />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.5) 0%, transparent 50%)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', bottom:'16px', left:'16px', right:'16px', pointerEvents:'none' }}>
+          <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 6px' }}>{video.cat}</p>
+          <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:0, lineHeight:1.1 }}>{video.title}</p>
+        </div>
+      </div>
+    </Reveal>
+  );
+}
 
 export default function AtomPage() {
   return (
@@ -125,44 +168,12 @@ export default function AtomPage() {
           {/* Full-width video grid */}
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'4px', marginBottom:'4px' }}>
             {SHOWCASE_VIDEOS.slice(0,3).map((v,i) => (
-              <Reveal key={v.src} delay={i*0.08}>
-                <div style={{ position:'relative', overflow:'hidden', aspectRatio:'3/4', background:'var(--surface)', cursor:'pointer' }}
-                  onMouseEnter={e => { const vid = e.currentTarget.querySelector('video'); if(vid) { (vid as HTMLVideoElement).play(); } }}
-                  onMouseLeave={e => { const vid = e.currentTarget.querySelector('video'); if(vid) { (vid as HTMLVideoElement).pause(); } }}
-                >
-                  <video src={v.src} poster={v.poster} muted loop playsInline
-                    style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms ease' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1.04)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1)'; }}
-                  />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.5) 0%, transparent 50%)', pointerEvents:'none' }} />
-                  <div style={{ position:'absolute', bottom:'16px', left:'16px', right:'16px', pointerEvents:'none' }}>
-                    <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 6px' }}>{v.cat}</p>
-                    <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:0, lineHeight:1.1 }}>{v.title}</p>
-                  </div>
-                </div>
-              </Reveal>
+              <VideoCard key={v.src} video={v} delay={i*0.08} />
             ))}
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'4px' }}>
             {SHOWCASE_VIDEOS.slice(3,6).map((v,i) => (
-              <Reveal key={v.src} delay={0.1 + i*0.08}>
-                <div style={{ position:'relative', overflow:'hidden', aspectRatio:'3/4', background:'var(--surface)', cursor:'pointer' }}
-                  onMouseEnter={e => { const vid = e.currentTarget.querySelector('video'); if(vid) { (vid as HTMLVideoElement).play(); } }}
-                  onMouseLeave={e => { const vid = e.currentTarget.querySelector('video'); if(vid) { (vid as HTMLVideoElement).pause(); } }}
-                >
-                  <video src={v.src} poster={v.poster} muted loop playsInline
-                    style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms ease' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1.04)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1)'; }}
-                  />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.5) 0%, transparent 50%)', pointerEvents:'none' }} />
-                  <div style={{ position:'absolute', bottom:'16px', left:'16px', right:'16px', pointerEvents:'none' }}>
-                    <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 6px' }}>{v.cat}</p>
-                    <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:0, lineHeight:1.1 }}>{v.title}</p>
-                  </div>
-                </div>
-              </Reveal>
+              <VideoCard key={v.src} video={v} delay={0.1 + i*0.08} />
             ))}
           </div>
         </div>

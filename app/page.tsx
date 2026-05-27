@@ -154,9 +154,25 @@ const CLIENTS: { name: string; domain: string }[] = [
   { name:'Ghar',                      domain:'gharsoaps.com' },
 ];
 
-// Single brand circle that tries to load a real logo and falls back to wordmark text
+// Single brand circle that tries multiple logo sources and falls back to wordmark text
 function ClientBadge({ name, domain }: { name: string; domain: string }) {
   const [imgError, setImgError] = useState(false);
+  const [srcIdx, setSrcIdx] = useState(0);
+
+  const sources = [
+    `https://logo.clearbit.com/${domain}?size=80`,
+    `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
+    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+  ];
+
+  const handleError = () => {
+    if (srcIdx < sources.length - 1) {
+      setSrcIdx(srcIdx + 1);
+    } else {
+      setImgError(true);
+    }
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.04, y: -2 }}
@@ -178,10 +194,11 @@ function ClientBadge({ name, domain }: { name: string; domain: string }) {
     >
       {!imgError ? (
         <img
-          src={`https://logo.clearbit.com/${domain}?size=80`}
+          key={srcIdx}
+          src={sources[srcIdx]}
           alt={name}
           loading="lazy"
-          onError={() => setImgError(true)}
+          onError={handleError}
           style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', display: 'block' }}
         />
       ) : (

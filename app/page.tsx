@@ -275,12 +275,15 @@ function AISection() {
     return () => clearInterval(t);
   }, [paused]);
 
+  const next = () => setIdx(i => (i + 1) % AI_VIDEOS.length);
+  const prev = () => setIdx(i => (i - 1 + AI_VIDEOS.length) % AI_VIDEOS.length);
+
   return (
     <section
       className="ai-split"
       style={{
         position: 'relative',
-        minHeight: '70vh',
+        minHeight: '60vh',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         borderTop: '1px solid var(--white-08)',
@@ -290,9 +293,19 @@ function AISection() {
       <style>{`
         @media (max-width: 768px) {
           .ai-split { grid-template-columns: 1fr !important; min-height: auto !important; }
-          .ai-split > div:first-child { height: 45vh; }
+          .ai-split > div:first-child { height: 42vh; }
         }
+        .ai-cap { position:relative; overflow:hidden; cursor:pointer; }
+        .ai-cap .cap-d { max-height:0; opacity:0; overflow:hidden; transition: max-height 500ms ease, opacity 400ms ease, margin 400ms ease; }
+        .ai-cap:hover .cap-d { max-height:60px; opacity:1; margin-top:6px; }
+        .ai-cap::before {
+          content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
+          background: var(--accent); transform: scaleY(0); transform-origin: top;
+          transition: transform 400ms cubic-bezier(0.76,0,0.24,1);
+        }
+        .ai-cap:hover::before { transform: scaleY(1); }
       `}</style>
+
       {/* LEFT — Video Slideshow */}
       <div
         style={{ position: 'relative', overflow: 'hidden', background: 'var(--black)' }}
@@ -303,104 +316,77 @@ function AISection() {
           <VideoSlide key={v.src} video={v} isActive={i === idx} />
         ))}
 
-        {/* Overlay gradient */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, transparent 60%, rgba(9,9,8,0.4))', pointerEvents:'none' }} />
+        {/* Vignette edges */}
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 90% 80% at 50% 50%, transparent 40%, rgba(9,9,8,0.5))', pointerEvents:'none', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(9,9,8,0.3) 0%, transparent 30%, transparent 70%, rgba(9,9,8,0.5) 100%)', pointerEvents:'none' }} />
 
-        {/* Prev / Next arrows */}
-        <button
-          onClick={() => setIdx(i => (i - 1 + AI_VIDEOS.length) % AI_VIDEOS.length)}
-          style={{
-            position: 'absolute',
-            left: '16px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 3,
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            border: '1px solid rgba(255,255,255,0.2)',
-            background: 'rgba(0,0,0,0.4)',
-            color: '#fff',
-            fontSize: '18px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(4px)',
-            transition: 'background 200ms, border-color 200ms',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,23,106,0.6)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
-          aria-label="Previous slide"
-        >‹</button>
-        <button
-          onClick={() => setIdx(i => (i + 1) % AI_VIDEOS.length)}
-          style={{
-            position: 'absolute',
-            right: '16px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            zIndex: 3,
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            border: '1px solid rgba(255,255,255,0.2)',
-            background: 'rgba(0,0,0,0.4)',
-            color: '#fff',
-            fontSize: '18px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(4px)',
-            transition: 'background 200ms, border-color 200ms',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,23,106,0.6)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
-          aria-label="Next slide"
-        >›</button>
+        {/* Minimal arrows */}
+        {[
+          { side:'left', on:prev },
+          { side:'right', on:next },
+        ].map(a => (
+          <motion.button
+            key={a.side}
+            onClick={a.on}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              position: 'absolute',
+              [a.side]: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 3,
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.15)',
+              background: 'rgba(0,0,0,0.25)',
+              color: 'rgba(255,255,255,0.7)',
+              fontSize: '16px',
+              fontFamily: 'var(--font-display)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backdropFilter: 'blur(6px)',
+              transition: 'all 300ms',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,23,106,0.5)'; e.currentTarget.style.borderColor = 'var(--accent)'; e.currentTarget.style.color = '#fff'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.25)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
+            aria-label={a.side === 'left' ? 'Previous' : 'Next'}
+          >{a.side === 'left' ? '‹' : '›'}</motion.button>
+        ))}
 
-        {/* Slide indicators */}
-        <div style={{ position:'absolute', bottom:'20px', left:'50%', transform:'translateX(-50%)', display:'flex', gap:'6px', zIndex:2 }}>
+        {/* Dots */}
+        <div style={{ position:'absolute', bottom:'22px', left:'50%', transform:'translateX(-50%)', display:'flex', gap:'5px', zIndex:2 }}>
           {AI_VIDEOS.map((_, i) => (
             <button
               key={i}
               onClick={() => setIdx(i)}
               style={{
-                width: i === idx ? '28px' : '6px',
-                height: '4px',
+                width: i === idx ? '24px' : '5px',
+                height: '3px',
                 borderRadius: '2px',
                 border: 'none',
-                background: i === idx ? 'var(--accent)' : 'rgba(255,255,255,0.3)',
-                transition: 'all 400ms cubic-bezier(0.76,0,0.24,1)',
+                background: i === idx ? 'var(--accent)' : 'rgba(255,255,255,0.25)',
+                transition: 'all 500ms cubic-bezier(0.76,0,0.24,1)',
                 cursor: 'pointer',
               }}
-              aria-label={`Go to slide ${i + 1}`}
+              aria-label={`Slide ${i + 1}`}
             />
           ))}
         </div>
 
-        {/* Current slide label */}
-        <motion.div
-          key={idx}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: EASE }}
-          style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '20px',
-            zIndex: 2,
-            fontFamily: 'var(--font-body)',
-            fontSize: '9px',
-            fontWeight: 600,
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.6)',
-          }}
-        >
-          {idx + 1} / {AI_VIDEOS.length}
-        </motion.div>
+        {/* Slide counter */}
+        <div style={{
+          position:'absolute', bottom:'22px', right:'22px', zIndex:2,
+          fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:500,
+          letterSpacing:'0.12em', color:'rgba(255,255,255,0.4)',
+        }}>
+          <span style={{ color:'var(--accent)', fontWeight:700 }}>{String(idx + 1).padStart(2,'0')}</span>
+          <span style={{ margin:'0 3px' }}>/</span>
+          {String(AI_VIDEOS.length).padStart(2,'0')}
+        </div>
       </div>
 
       {/* RIGHT — Content */}
@@ -409,171 +395,168 @@ function AISection() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          padding: 'clamp(40px, 5vw, 80px) clamp(32px, 4vw, 64px)',
+          padding: 'clamp(32px, 4vw, 64px) clamp(28px, 3.5vw, 52px)',
           background: 'var(--black)',
           position: 'relative',
         }}
       >
-        {/* Accent glow */}
+        {/* Soft glow */}
         <div style={{
-          position: 'absolute',
-          top: '-20%',
-          right: '-10%',
-          width: '50vw',
-          height: '50vw',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(232,23,106,0.08) 0%, transparent 60%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
+          position:'absolute', top:'-30%', right:'-20%', width:'55vw', height:'55vw',
+          borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.06) 0%, transparent 55%)',
+          filter:'blur(100px)', pointerEvents:'none',
         }} />
 
-        <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ position: 'relative', zIndex: 1, maxWidth:'460px' }}>
+          {/* Label */}
+          <motion.div
+            initial={{ opacity: 0, x: -12 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE }}
+            style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'18px' }}
+          >
+            <span style={{ width:'20px', height:'1px', background:'var(--accent)' }} />
+            <span style={{
+              fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600,
+              letterSpacing:'0.35em', textTransform:'uppercase', color:'var(--accent)',
+            }}>AI Cinema Engine</span>
+          </motion.div>
+
+          {/* Headline */}
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.75, delay: 0.04, ease: EASE }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(28px, 3.8vw, 52px)',
+              textTransform: 'uppercase',
+              lineHeight: 0.94,
+              letterSpacing: '-0.025em',
+              color: 'var(--white)',
+              margin: '0 0 16px',
+            }}
+          >
+            Our <span style={{ color: 'var(--accent)' }}>AI</span> Engine<br />
+            Meets Cinema
+          </motion.h2>
+
+          {/* Short description */}
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: EASE }}
+            transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: '10px',
-              fontWeight: 600,
-              letterSpacing: '0.4em',
-              textTransform: 'uppercase',
-              color: 'var(--accent)',
-              marginBottom: '20px',
-            }}
-          >
-            AI × Cinema · Proprietary Tech
-          </motion.p>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.05, ease: EASE }}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(32px, 4.5vw, 64px)',
-              textTransform: 'uppercase',
-              lineHeight: 0.92,
-              letterSpacing: '-0.02em',
-              color: 'var(--white)',
-              margin: '0 0 24px',
-            }}
-          >
-            Our <span style={{ color: 'var(--accent)' }}>AI</span> Engine.<br />
-            Where Cinema Meets Intelligence.
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.12, ease: EASE }}
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '14px',
+              fontSize: '13px',
               fontWeight: 400,
-              lineHeight: 1.85,
-              color: 'var(--white-70)',
-              marginBottom: '32px',
-              maxWidth: '460px',
+              lineHeight: 1.7,
+              color: 'var(--white-50)',
+              marginBottom: '28px',
             }}
           >
-            A creative tech studio with access to a private audio and video engine. Our core team of developers curates workflows and pipelines for brands and studios — building AI-driven ads, films, music videos, and content at scale. We combine production expertise with proprietary tech to deliver faster timelines and creative that hits.
+            Private audio & video engine. Core dev team curating pipelines for brands — AI ads, films, music videos, at scale.
           </motion.p>
 
-          {/* Capability list */}
+          {/* Capability cards with hover reveal */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.18, ease: EASE }}
-            style={{ marginBottom: '32px' }}
+            transition={{ duration: 0.6, delay: 0.16, ease: EASE }}
+            style={{ display:'flex', flexDirection:'column', gap:'2px', marginBottom:'28px' }}
           >
             {[
-              'AI Photo Gen — On-brand imagery at scale',
-              'AI Video Enhance — Upscaling & color grading',
-              'Style Transfer — Consistent aesthetics',
-              'Generative Video — Text-to-video pipelines',
-            ].map((item, i) => (
-              <div
-                key={i}
+              { n:'AI Photo Gen',    d:'Photorealistic brand imagery, generated at scale' },
+              { n:'AI Video',        d:'Frame interpolation, upscaling & color grading' },
+              { n:'Style Transfer',  d:'Apply any aesthetic across entire libraries' },
+              { n:'Generative Film', d:'Text-to-video & image-to-video pipelines' },
+            ].map((c, i) => (
+              <div key={i} className="ai-cap"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  padding: '8px 0',
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '12px',
-                  color: 'var(--white-70)',
-                  borderBottom: i < 3 ? '1px solid var(--white-08)' : 'none',
+                  padding: '12px 16px',
+                  background: 'rgba(255,255,255,0.02)',
+                  borderBottom: '1px solid rgba(242,235,224,0.06)',
+                  transition: 'background 300ms, padding-left 300ms',
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(232,23,106,0.04)';
+                  (e.currentTarget as HTMLElement).style.paddingLeft = '20px';
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)';
+                  (e.currentTarget as HTMLElement).style.paddingLeft = '16px';
                 }}
               >
-                <span style={{ color: 'var(--accent)', fontSize: '10px' }}>▸</span>
-                {item}
+                <div style={{
+                  display:'flex', alignItems:'center', justifyContent:'space-between',
+                  fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:600,
+                  letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white-80)',
+                }}>
+                  <span>{c.n}</span>
+                  <span style={{ color:'var(--accent)', fontSize:'10px', opacity:0.6, transition:'opacity 300ms' }}
+                    className="cap-arrow">→</span>
+                </div>
+                <div className="cap-d" style={{
+                  fontFamily:'var(--font-body)', fontSize:'11px', lineHeight:1.6,
+                  color:'var(--white-40)',
+                }}>
+                  {c.d}
+                </div>
               </div>
             ))}
           </motion.div>
 
+          {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.24, ease: EASE }}
-            style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}
+            transition={{ duration: 0.6, delay: 0.22, ease: EASE }}
+            style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}
           >
-            <Link
-              href="/contact"
+            <Link href="/contact"
               style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.24em',
-                textTransform: 'uppercase',
-                padding: '14px 32px',
-                background: 'var(--accent)',
-                color: '#fff',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                transition: 'opacity 300ms, box-shadow 400ms',
+                fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700,
+                letterSpacing:'0.22em', textTransform:'uppercase',
+                padding:'12px 28px', background:'var(--accent)', color:'#fff',
+                display:'inline-flex', alignItems:'center', gap:'8px',
+                transition:'all 350ms',
               }}
               onMouseEnter={e => {
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 50px rgba(232,23,106,0.35)';
+                (e.currentTarget as HTMLElement).style.boxShadow='0 0 40px rgba(232,23,106,0.3)';
+                (e.currentTarget as HTMLElement).style.transform='translateY(-1px)';
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLAnchorElement).style.boxShadow = 'none';
+                (e.currentTarget as HTMLElement).style.boxShadow='none';
+                (e.currentTarget as HTMLElement).style.transform='translateY(0)';
               }}
             >
               Get in Touch →
             </Link>
-            <Link
-              href="/atom"
+            <Link href="/atom"
               style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '11px',
-                fontWeight: 700,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                padding: '14px 32px',
-                border: '1px solid var(--white-20)',
-                color: 'var(--white-70)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                transition: 'border-color 300ms, color 300ms',
+                fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700,
+                letterSpacing:'0.18em', textTransform:'uppercase',
+                padding:'12px 28px', border:'1px solid rgba(242,235,224,0.15)', color:'rgba(242,235,224,0.55)',
+                display:'inline-flex', alignItems:'center', gap:'6px',
+                transition:'all 350ms',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'var(--accent)';
-                e.currentTarget.style.color = 'var(--white)';
+                e.currentTarget.style.borderColor='var(--accent)';
+                e.currentTarget.style.color='var(--white)';
+                e.currentTarget.style.transform='translateY(-1px)';
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'var(--white-20)';
-                e.currentTarget.style.color = 'var(--white-70)';
+                e.currentTarget.style.borderColor='rgba(242,235,224,0.15)';
+                e.currentTarget.style.color='rgba(242,235,224,0.55)';
+                e.currentTarget.style.transform='translateY(0)';
               }}
             >
-              Explore Our AI →
+              Explore AI →
             </Link>
           </motion.div>
         </div>

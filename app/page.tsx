@@ -126,85 +126,67 @@ const SERVICES_DATA = [
   { n:'AI Visual Content',        num:'08', img:'https://images.unsplash.com/photo-1555255707-c07966088b7b?w=600&q=80', d:'AI-enabled storytelling and generative visuals that push creative boundaries.' },
 ];
 
-// Real client list — brand + domain for live logo fetching (Clearbit)
-const CLIENTS: { name: string; domain: string }[] = [
-  { name:'Engage',                    domain:'engage.itcportal.com' },
-  { name:'Maybelline',                domain:'maybelline.com' },
-  { name:'Artize',                    domain:'artize.in' },
-  { name:'Cornetto',                  domain:'cornetto.com' },
-  { name:'Homegrown',                 domain:'homegrown.co.in' },
-  { name:'Renée',                     domain:'reneecosmetics.com' },
-  { name:'Sony LIV',                  domain:'sonyliv.com' },
-  { name:'Flipkart',                  domain:'flipkart.com' },
-  { name:"L'Oréal Paris",              domain:'lorealparis.com' },
-  { name:'Breezer',                   domain:'bacardi.com' },
-  { name:'Sofy',                      domain:'sofy.in' },
-  { name:'Lotto',                     domain:'lottosport.com' },
-  { name:'Matrix',                    domain:'matrixprofessional.in' },
-  { name:'TRESemmé',                  domain:'tresemme.com' },
-  { name:'Lavie',                     domain:'lavieworld.com' },
-  { name:'Bombay Times Fashion Week', domain:'bombaytimesfashionweek.com' },
-  { name:'Emaar India',               domain:'emaar-india.com' },
-  { name:'Deconstruct',               domain:'deconstruct.in' },
-  { name:'Savlon',                    domain:'savlon.in' },
-  { name:'Nimyle',                    domain:'nimyle.com' },
-  { name:'NPCI',                      domain:'npci.org.in' },
-  { name:'Tata AIA',                  domain:'tataaia.com' },
-  { name:'Pillsbury',                 domain:'pillsbury.in' },
-  { name:'Ghar',                      domain:'gharsoaps.com' },
+// Client logos — local files in public/logos/, fallback to wordmark text
+const CLIENTS: { name: string; logo: string | null }[] = [
+  { name:'Engage',                    logo:null },
+  { name:'Maybelline',                logo:'/logos/Maybelline.png' },
+  { name:'Artize',                    logo:'/logos/Artize.png' },
+  { name:'Cornetto',                  logo:null },
+  { name:'Homegrown',                 logo:'/logos/Homegrown.png' },
+  { name:'Renée',                     logo:null },
+  { name:'Sony LIV',                  logo:'/logos/Sony_LIV.png' },
+  { name:'Flipkart',                  logo:'/logos/Flipkart.png' },
+  { name:"L'Oréal Paris",             logo:'/logos/L_Or_al_Paris.png' },
+  { name:'Breezer',                   logo:'/logos/Breezer.png' },
+  { name:'Sofy',                      logo:'/logos/Sofy.png' },
+  { name:'Lotto',                     logo:'/logos/Lotto.png' },
+  { name:'Matrix',                    logo:'/logos/Matrix.png' },
+  { name:'TRESemmé',                  logo:'/logos/TRESemm_.png' },
+  { name:'Lavie',                     logo:'/logos/Lavie.png' },
+  { name:'Bombay Times Fashion Week', logo:null },
+  { name:'Emaar India',               logo:null },
+  { name:'Deconstruct',               logo:'/logos/Deconstruct.png' },
+  { name:'Savlon',                    logo:'/logos/Savlon.png' },
+  { name:'Nimyle',                    logo:'/logos/Nimyle.png' },
+  { name:'NPCI',                      logo:'/logos/NPCI.png' },
+  { name:'Tata AIA',                  logo:'/logos/Tata_AIA.png' },
+  { name:'Pillsbury',                 logo:'/logos/Pillsbury.png' },
+  { name:'Ghar',                      logo:null },
 ];
 
-// Single brand circle that tries multiple logo sources and falls back to wordmark text
-function ClientBadge({ name, domain }: { name: string; domain: string }) {
+function ClientBadge({ name, logo }: { name: string; logo: string | null }) {
   const [imgError, setImgError] = useState(false);
-  const [srcIdx, setSrcIdx] = useState(0);
-
-  const sources = [
-    `https://logo.clearbit.com/${domain}?size=80`,
-    `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
-    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-  ];
-
-  const handleError = () => {
-    if (srcIdx < sources.length - 1) {
-      setSrcIdx(srcIdx + 1);
-    } else {
-      setImgError(true);
-    }
-  };
-
   return (
     <motion.div
       whileHover={{ scale: 1.04, y: -2 }}
       transition={{ duration: 0.3, ease: EASE }}
       style={{
         flexShrink: 0,
-        width: 'clamp(52px, 5vw, 72px)',
-        height: 'clamp(52px, 5vw, 72px)',
+        width: 'clamp(44px, 4.5vw, 64px)',
+        height: 'clamp(44px, 4.5vw, 64px)',
         borderRadius: '50%',
         background: '#fff',
         border: '1px solid var(--white-08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '8px', overflow: 'hidden',
+        padding: '7px', overflow: 'hidden',
         boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
         transition: 'box-shadow 350ms, border-color 350ms',
       }}
       onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(232,23,106,0.18)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
       onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; }}
     >
-      {!imgError ? (
+      {logo && !imgError ? (
         <img
-          key={srcIdx}
-          src={sources[srcIdx]}
+          src={logo}
           alt={name}
           loading="lazy"
-          onError={handleError}
+          onError={() => setImgError(true)}
           style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', display: 'block' }}
         />
       ) : (
         <span style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(8px, 0.7vw, 11px)',
+          fontSize: 'clamp(7px, 0.6vw, 10px)',
           letterSpacing: '0.02em', lineHeight: 1.05,
           textAlign: 'center', textTransform: 'uppercase',
           color: '#0a0a0a',
@@ -214,27 +196,37 @@ function ClientBadge({ name, domain }: { name: string; domain: string }) {
   );
 }
 
-// AI Video Slideshow — replace src URLs with actual AI video assets
+// AI Video Slideshow — actual AI-generated videos from R2
 const AI_VIDEOS = [
   {
-    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4',
-    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4.jpg',
-    title: 'AI Film Showcase',
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4.jpg',
+    title: 'AI Film',
   },
   {
-    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Bombay_99_Mixers.mp4',
-    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Bombay_99_Mixers.mp4.jpg',
-    title: 'AI Product Film',
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__133134253456_.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__133134253456_.mp4.jpg',
+    title: 'AI Visual',
   },
   {
-    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Emaar%20Final.mp4',
-    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/Emaar%20Final.mp4.jpg',
-    title: 'AI Real Estate Visual',
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__136_.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__136_.mp4.jpg',
+    title: 'AI Motion',
   },
   {
-    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/HSBCv2.mp4',
-    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/horizontal/HSBCv2.mp4.jpg',
-    title: 'AI Brand Film',
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1433_.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1433_.mp4.jpg',
+    title: 'AI Campaign',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1gsdfh_fdggh_hg3_.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1gsdfh_fdggh_hg3_.mp4.jpg',
+    title: 'AI Generated',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1qerqer3_.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1qerqer3_.mp4.jpg',
+    title: 'AI Production',
   },
 ];
 
@@ -288,7 +280,7 @@ function AISection() {
       className="ai-split"
       style={{
         position: 'relative',
-        minHeight: '100vh',
+        minHeight: '70vh',
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
         borderTop: '1px solid var(--white-08)',
@@ -298,7 +290,7 @@ function AISection() {
       <style>{`
         @media (max-width: 768px) {
           .ai-split { grid-template-columns: 1fr !important; min-height: auto !important; }
-          .ai-split > div:first-child { height: 50vh; }
+          .ai-split > div:first-child { height: 45vh; }
         }
       `}</style>
       {/* LEFT — Video Slideshow */}
@@ -311,17 +303,71 @@ function AISection() {
           <VideoSlide key={v.src} video={v} isActive={i === idx} />
         ))}
 
-        {/* Overlay gradient for text legibility if needed */}
+        {/* Overlay gradient */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, transparent 60%, rgba(9,9,8,0.4))', pointerEvents:'none' }} />
 
+        {/* Prev / Next arrows */}
+        <button
+          onClick={() => setIdx(i => (i - 1 + AI_VIDEOS.length) % AI_VIDEOS.length)}
+          style={{
+            position: 'absolute',
+            left: '16px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 3,
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            border: '1px solid rgba(255,255,255,0.2)',
+            background: 'rgba(0,0,0,0.4)',
+            color: '#fff',
+            fontSize: '18px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(4px)',
+            transition: 'background 200ms, border-color 200ms',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,23,106,0.6)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
+          aria-label="Previous slide"
+        >‹</button>
+        <button
+          onClick={() => setIdx(i => (i + 1) % AI_VIDEOS.length)}
+          style={{
+            position: 'absolute',
+            right: '16px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            zIndex: 3,
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            border: '1px solid rgba(255,255,255,0.2)',
+            background: 'rgba(0,0,0,0.4)',
+            color: '#fff',
+            fontSize: '18px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backdropFilter: 'blur(4px)',
+            transition: 'background 200ms, border-color 200ms',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(232,23,106,0.6)'; e.currentTarget.style.borderColor = 'var(--accent)'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.4)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; }}
+          aria-label="Next slide"
+        >›</button>
+
         {/* Slide indicators */}
-        <div style={{ position:'absolute', bottom:'28px', left:'28px', display:'flex', gap:'8px', zIndex:2 }}>
+        <div style={{ position:'absolute', bottom:'20px', left:'50%', transform:'translateX(-50%)', display:'flex', gap:'6px', zIndex:2 }}>
           {AI_VIDEOS.map((_, i) => (
             <button
               key={i}
               onClick={() => setIdx(i)}
               style={{
-                width: i === idx ? '32px' : '8px',
+                width: i === idx ? '28px' : '6px',
                 height: '4px',
                 borderRadius: '2px',
                 border: 'none',
@@ -342,18 +388,18 @@ function AISection() {
           transition={{ duration: 0.5, ease: EASE }}
           style={{
             position: 'absolute',
-            bottom: '28px',
-            right: '28px',
+            bottom: '20px',
+            right: '20px',
             zIndex: 2,
             fontFamily: 'var(--font-body)',
-            fontSize: '10px',
+            fontSize: '9px',
             fontWeight: 600,
-            letterSpacing: '0.2em',
+            letterSpacing: '0.15em',
             textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.7)',
+            color: 'rgba(255,255,255,0.6)',
           }}
         >
-          {AI_VIDEOS[idx].title}
+          {idx + 1} / {AI_VIDEOS.length}
         </motion.div>
       </div>
 
@@ -434,7 +480,7 @@ function AISection() {
               maxWidth: '460px',
             }}
           >
-            An in-house generative platform for photo and video — trained on thousands of brand visuals and refined through real production cycles. Faster timelines, expanded creative possibilities, AI that understands creative intent.
+            A creative tech studio with access to a private audio and video engine. Our core team of developers curates workflows and pipelines for brands and studios — building AI-driven ads, films, music videos, and content at scale. We combine production expertise with proprietary tech to deliver faster timelines and creative that hits.
           </motion.p>
 
           {/* Capability list */}
@@ -878,7 +924,7 @@ export default function Home() {
 
           <div className="marquee" style={{ gap:'clamp(10px,1vw,16px)', paddingLeft:'clamp(10px,1vw,16px)' }}>
             {[...CLIENTS, ...CLIENTS].map((c, i) => (
-              <ClientBadge key={`${c.name}-${i}`} name={c.name} domain={c.domain} />
+              <ClientBadge key={`${c.name}-${i}`} name={c.name} logo={c.logo} />
             ))}
           </div>
         </div>

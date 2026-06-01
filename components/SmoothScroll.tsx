@@ -17,13 +17,14 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Snappier, more responsive smoothing to remove the laggy/floaty feel.
+    // A single higher `lerp` tracks wheel input closely (no `duration` conflict),
+    // and native touch scrolling avoids jank on mobile.
     const lenis = new Lenis({
-      duration: 0.5,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+      lerp: 0.12,
       smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 2.0,
-      lerp: 0.25,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 1.5,
       syncTouch: false,
       orientation: 'vertical',
       gestureOrientation: 'vertical',

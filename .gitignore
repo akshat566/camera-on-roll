@@ -36,6 +36,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# Large local source videos — host these on R2, never commit to git
+# (GitHub rejects >100MB; these belong on the CDN, compressed)
+/public/*.mp4
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

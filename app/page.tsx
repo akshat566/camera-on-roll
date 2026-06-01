@@ -6,9 +6,12 @@ import { Reveal } from '@/components/Reveal';
 import { FEATURED_HOME as FEATURED_HOME_DATA, getEmbedUrl } from '@/lib/work-data';
 import { WorkWithUs } from '@/components/WorkWithUs';
 import { ServicesGrid } from '@/components/ServicesGrid';
+import { ClientsMarquee } from '@/components/ClientsMarquee';
+import { LazyVideo } from '@/components/LazyVideo';
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 const POP_EASE = [0.34, 1.56, 0.64, 1] as const;
+const SHOWREEL_URL = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4';
 
 /**
  * YouTube thumbnail. `maxresdefault.jpg` is true 16:9 (1280×720) when available;
@@ -93,76 +96,6 @@ const FEATURED: FeaturedProject[] = FEATURED_HOME_DATA.map((proj, i) => ({
 
 const FEATURED_HOME = FEATURED.slice(0, 8);
 
-// Client logos — local files in public/logos/, fallback to wordmark text
-const CLIENTS: { name: string; logo: string | null }[] = [
-  { name:'Engage',                    logo:null },
-  { name:'Maybelline',                logo:'/logos/Maybelline.png' },
-  { name:'Artize',                    logo:'/logos/Artize.png' },
-  { name:'Cornetto',                  logo:null },
-  { name:'Homegrown',                 logo:'/logos/Homegrown.png' },
-  { name:'Renée',                     logo:null },
-  { name:'Sony LIV',                  logo:'/logos/Sony_LIV.png' },
-  { name:'Flipkart',                  logo:'/logos/Flipkart.png' },
-  { name:"L'Oréal Paris",             logo:'/logos/L_Or_al_Paris.png' },
-  { name:'Breezer',                   logo:'/logos/Breezer.png' },
-  { name:'Sofy',                      logo:'/logos/Sofy.png' },
-  { name:'Lotto',                     logo:'/logos/Lotto.png' },
-  { name:'Matrix',                    logo:'/logos/Matrix.png' },
-  { name:'TRESemmé',                  logo:'/logos/TRESemm_.png' },
-  { name:'Lavie',                     logo:'/logos/Lavie.png' },
-  { name:'Bombay Times Fashion Week', logo:null },
-  { name:'Emaar India',               logo:null },
-  { name:'Deconstruct',               logo:'/logos/Deconstruct.png' },
-  { name:'Savlon',                    logo:'/logos/Savlon.png' },
-  { name:'Nimyle',                    logo:'/logos/Nimyle.png' },
-  { name:'NPCI',                      logo:'/logos/NPCI.png' },
-  { name:'Tata AIA',                  logo:'/logos/Tata_AIA.png' },
-  { name:'Pillsbury',                 logo:'/logos/Pillsbury.png' },
-  { name:'Ghar',                      logo:null },
-];
-
-function ClientBadge({ name, logo }: { name: string; logo: string | null }) {
-  const [imgError, setImgError] = useState(false);
-  return (
-    <motion.div
-      whileHover={{ scale: 1.04, y: -2 }}
-      transition={{ duration: 0.3, ease: EASE }}
-      style={{
-        flexShrink: 0,
-        width: 'clamp(44px, 4.5vw, 64px)',
-        height: 'clamp(44px, 4.5vw, 64px)',
-        borderRadius: '50%',
-        background: '#fff',
-        border: '1px solid var(--white-08)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '7px', overflow: 'hidden',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
-        transition: 'box-shadow 350ms, border-color 350ms',
-      }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(232,23,106,0.18)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; }}
-    >
-      {logo && !imgError ? (
-        <img
-          src={logo}
-          alt={name}
-          loading="lazy"
-          onError={() => setImgError(true)}
-          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', display: 'block' }}
-        />
-      ) : (
-        <span style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(7px, 0.6vw, 10px)',
-          letterSpacing: '0.02em', lineHeight: 1.05,
-          textAlign: 'center', textTransform: 'uppercase',
-          color: '#0a0a0a',
-        }}>{name}</span>
-      )}
-    </motion.div>
-  );
-}
-
 // AI Video Slideshow — actual AI-generated videos from R2
 const AI_VIDEOS = [
   {
@@ -197,33 +130,40 @@ const AI_VIDEOS = [
   },
 ];
 
-function VideoSlide({ video, isActive }: { video: typeof AI_VIDEOS[0]; isActive: boolean }) {
+function VideoSlide({ video, isActive, play, load }: { video: typeof AI_VIDEOS[0]; isActive: boolean; play: boolean; load: boolean }) {
   const vidRef = useRef<HTMLVideoElement>(null);
   const playPromise = useRef<Promise<void> | null>(null);
+
+  // Restart from the top whenever this slide becomes the active one.
   useEffect(() => {
     const v = vidRef.current;
-    if (!v) return;
-    if (isActive) {
-      v.currentTime = 0;
+    if (v && isActive && load) v.currentTime = 0;
+  }, [isActive, load]);
+
+  // Only decode/play the active slide while the section is on-screen.
+  useEffect(() => {
+    const v = vidRef.current;
+    if (!v || !load) return;
+    if (isActive && play) {
       playPromise.current = v.play().catch(() => {});
+    } else if (playPromise.current) {
+      playPromise.current.then(() => v.pause()).catch(() => v.pause());
+      playPromise.current = null;
     } else {
-      if (playPromise.current) {
-        playPromise.current.then(() => v.pause()).catch(() => v.pause());
-        playPromise.current = null;
-      } else {
-        v.pause();
-      }
+      v.pause();
     }
-  }, [isActive]);
+  }, [isActive, play, load]);
+
   return (
     <motion.video
       ref={vidRef}
       key={video.src}
-      src={video.src}
+      src={load ? video.src : undefined}
       poster={video.poster}
       muted
       playsInline
       loop
+      preload="none"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
       transition={{ duration: 0.8, ease: EASE }}
@@ -241,18 +181,37 @@ function VideoSlide({ video, isActive }: { video: typeof AI_VIDEOS[0]; isActive:
 function AISection() {
   const [idx, setIdx] = useState(0);
   const [paused, setPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Gate the slideshow on viewport visibility — no decoding when off-screen.
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+        if (entry.isIntersecting) setLoaded(true);
+      },
+      { rootMargin: '200px', threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   useEffect(() => {
-    if (paused) return;
+    if (paused || !inView) return;
     const t = setInterval(() => setIdx(i => (i + 1) % AI_VIDEOS.length), 6000);
     return () => clearInterval(t);
-  }, [paused]);
+  }, [paused, inView]);
 
   const next = () => setIdx(i => (i + 1) % AI_VIDEOS.length);
   const prev = () => setIdx(i => (i - 1 + AI_VIDEOS.length) % AI_VIDEOS.length);
 
   return (
     <section
+      ref={sectionRef}
       className="ai-split"
       style={{
         position: 'relative',
@@ -286,7 +245,7 @@ function AISection() {
         onMouseLeave={() => setPaused(false)}
       >
         {AI_VIDEOS.map((v, i) => (
-          <VideoSlide key={v.src} video={v} isActive={i === idx} />
+          <VideoSlide key={v.src} video={v} isActive={i === idx} play={inView} load={loaded} />
         ))}
 
         {/* Vignette edges */}
@@ -607,14 +566,9 @@ export default function Home() {
 
       {/* ══ HERO ═══════════════════════════════════════ */}
       <section style={{ position:'relative', height:'100svh', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
-        {/* Full-bleed showreel video */}
+        {/* Full-bleed showreel video — buffers eagerly, pauses when scrolled past */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <video
-            autoPlay loop muted playsInline
-            style={{ width:'100%', height:'100%', objectFit:'cover' }}
-          >
-            <source src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4" type="video/mp4" />
-          </video>
+          <LazyVideo src={SHOWREEL_URL} eager style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
           <div style={{ position:'absolute', inset:0, background:'rgba(9,9,8,0.55)' }} />
           <div style={{ position:'absolute', top:0, left:0, right:0, height:'25%', background:'linear-gradient(to bottom, var(--black), transparent)' }} />
           <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, var(--black), transparent)' }} />
@@ -670,7 +624,7 @@ export default function Home() {
         <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(10px,1.2vw,18px)', flexWrap:'wrap', gap:'12px' }}>
           <Reveal>
             <div>
-              <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Work.</h2>
+              <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Work</h2>
             </div>
           </Reveal>
           <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
@@ -763,7 +717,9 @@ export default function Home() {
                       <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 10px', background:'rgba(9,9,8,0.85)', color:'var(--accent)', opacity:0, transition:'opacity 300ms', borderRadius:'2px', border:'1px solid rgba(232,23,106,0.3)' }}>{p.cat}</span>
                       <div className="tile-info" style={{ position:'absolute', bottom:'14px', left:'14px', right:'14px', opacity:0, transition:'opacity 300ms' }}>
                         <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 4px', lineHeight:1.1, letterSpacing:'0.01em', textShadow:'0 2px 8px rgba(0,0,0,0.6)' }}>{p.title}</p>
-                        <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
+                        {p.client && p.client !== 'Camera On Roll' && (
+                          <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
+                        )}
                       </div>
                     </div>
                   </button>
@@ -795,7 +751,9 @@ export default function Home() {
                     <div style={{ padding:'0 28px' }}>
                       <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.28em', textTransform:'uppercase', color:'var(--accent)', display:'block', marginBottom:'6px' }}>{p.cat}</span>
                       <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,1.6vw,20px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 4px' }}>{p.title}</p>
+                      {p.client && p.client !== 'Camera On Roll' && (
                       <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-40)', margin:0 }}>{p.client}</p>
+                    )}
                     </div>
                     <div style={{ padding:'0 24px', color:'var(--white-30)' }}>
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
@@ -813,7 +771,7 @@ export default function Home() {
       <section style={{ padding:'clamp(40px,5vw,60px) 0 0', borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
         <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(20px,2.5vw,32px)', flexWrap:'wrap', gap:'12px' }}>
           <Reveal>
-            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Services.</h2>
+            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Services</h2>
           </Reveal>
           <Reveal delay={0.1}>
             <Link href="/services" style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', padding:'10px 24px', border:'1px solid var(--white-20)', color:'var(--white-40)', display:'inline-flex', alignItems:'center', gap:'6px', transition:'border-color 300ms, color 300ms' }}
@@ -840,17 +798,7 @@ export default function Home() {
         </div>
 
         {/* Edge-to-edge marquee — one continuous sliding row */}
-        <div style={{ position:'relative', overflow:'hidden', padding:'clamp(6px,0.8vw,10px) 0' }}>
-          {/* Edge fades for clean blend with background */}
-          <div aria-hidden="true" style={{ position:'absolute', top:0, bottom:0, left:0, width:'clamp(40px,5vw,80px)', background:'linear-gradient(to right, var(--black), transparent)', zIndex:2, pointerEvents:'none' }} />
-          <div aria-hidden="true" style={{ position:'absolute', top:0, bottom:0, right:0, width:'clamp(40px,5vw,80px)', background:'linear-gradient(to left, var(--black), transparent)', zIndex:2, pointerEvents:'none' }} />
-
-          <div className="marquee" style={{ gap:'clamp(10px,1vw,16px)', paddingLeft:'clamp(10px,1vw,16px)' }}>
-            {[...CLIENTS, ...CLIENTS].map((c, i) => (
-              <ClientBadge key={`${c.name}-${i}`} name={c.name} logo={c.logo} />
-            ))}
-          </div>
-        </div>
+        <ClientsMarquee />
       </section>
 
       {/* ══ WORK WITH US ════════════════ */}
@@ -919,7 +867,9 @@ function ProjectModal({ project, onClose }: { project: FeaturedProject; onClose:
               {project.cat}{isImage ? ' · Photo' : platform === 'youtube' ? ' · YouTube' : platform === 'instagram' ? ' · Instagram' : ''}
             </p>
             <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2vw,26px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 2px', lineHeight:1.05, letterSpacing:'0.01em' }}>{project.title}</h3>
-            <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{project.client}</p>
+            {project.client && project.client !== 'Camera On Roll' && (
+              <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', letterSpacing:'0.22em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{project.client}</p>
+            )}
           </div>
           <div style={{ display:'flex', gap:'8px' }}>
             {!isImage && (

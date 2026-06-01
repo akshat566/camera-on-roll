@@ -1,5 +1,6 @@
 ﻿'use client';
 import { Reveal } from '@/components/Reveal';
+import { ClientsMarquee } from '@/components/ClientsMarquee';
 
 const STATS = [
   { v:'8+',   l:'years of experience' },
@@ -7,8 +8,6 @@ const STATS = [
   { v:'40+',  l:'Brand Partners' },
   { v:'20+',  l:'Artists Collaborated' },
 ];
-
-const CLIENTS = ["L'Or\u00e9al Paris",'Sony Liv','Maybelline','Engage \u00b7 ITC','Flipkart','Matrix','Tresemm\u00e9','Lavie World','Artize','Cornetto','Breezer','Sofy','Lotto','Bombay Times'];
 
 export default function AboutPage() {
   return (
@@ -94,18 +93,13 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* ══ CLIENTS MARQUEE ═════════════════════════ */}
-      <div style={{ borderBottom:'1px solid var(--white-08)', overflow:'hidden', padding:'clamp(20px,2.5vw,36px) 0' }}>
-        <div className="cx" style={{ display:'flex', alignItems:'center', gap:'24px' }}>
-          <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:500, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', flexShrink:0 }}>Trusted By</span>
-          <div style={{ overflow:'hidden', flex:1, minWidth:0 }}>
-            <div className="marquee">
-              {[...CLIENTS,...CLIENTS].map((c,i) => (
-                <span key={i} style={{ fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:500, letterSpacing:'0.14em', textTransform:'uppercase', color:'var(--white-40)', padding:'0 24px', flexShrink:0 }}>{c}</span>
-              ))}
-            </div>
-          </div>
+      {/* ══ CLIENTS MARQUEE — logo badges (same as homepage) ════════ */}
+      <div style={{ borderBottom:'1px solid var(--white-08)', padding:'clamp(20px,2.5vw,36px) 0' }}>
+        <div className="cx" style={{ marginBottom:'clamp(12px,1.2vw,18px)' }}>
+          <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'6px' }}>Trusted By</p>
+          <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.01em', color:'var(--white)', margin:0 }}>Clients</h2>
         </div>
+        <ClientsMarquee />
       </div>
 
     </>

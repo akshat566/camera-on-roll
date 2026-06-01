@@ -1,7 +1,7 @@
 ﻿'use client';
-import { useRef } from 'react';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
+import { LazyVideo } from '@/components/LazyVideo';
 
 const CAPABILITIES = [
   { n:'AI Films',                  d:'Cinematic brand films and campaigns built with AI — from concept to final cut.' },
@@ -22,43 +22,20 @@ const SHOWCASE_VIDEOS = [
 ];
 
 function VideoCard({ video, delay }: { video: typeof SHOWCASE_VIDEOS[0]; delay: number }) {
-  const vidRef = useRef<HTMLVideoElement>(null);
-  const playPromise = useRef<Promise<void> | null>(null);
-
-  const handleEnter = () => {
-    const v = vidRef.current;
-    if (!v) return;
-    playPromise.current = v.play().catch(() => {});
-  };
-
-  const handleLeave = () => {
-    const v = vidRef.current;
-    if (!v) return;
-    if (playPromise.current) {
-      playPromise.current.then(() => { v.pause(); }).catch(() => { v.pause(); });
-      playPromise.current = null;
-    } else {
-      v.pause();
-    }
-  };
-
   return (
     <Reveal delay={delay}>
-      <div style={{ position:'relative', overflow:'hidden', aspectRatio:'3/4', background:'var(--surface)', cursor:'pointer' }}
-        onMouseEnter={handleEnter}
-        onMouseLeave={handleLeave}
+      <LazyVideo
+        src={video.src}
+        poster={video.poster}
+        playMode="hover"
+        style={{ aspectRatio:'3/4', background:'var(--surface)', cursor:'pointer' }}
       >
-        <video ref={vidRef} src={video.src} poster={video.poster} muted loop playsInline preload="metadata"
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms ease' }}
-          onMouseEnter={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1.04)'; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLVideoElement).style.transform='scale(1)'; }}
-        />
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.5) 0%, transparent 50%)', pointerEvents:'none' }} />
         <div style={{ position:'absolute', bottom:'16px', left:'16px', right:'16px', pointerEvents:'none' }}>
           <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 6px' }}>{video.cat}</p>
           <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:0, lineHeight:1.1 }}>{video.title}</p>
         </div>
-      </div>
+      </LazyVideo>
     </Reveal>
   );
 }
@@ -119,33 +96,27 @@ export default function AtomPage() {
             {/* Right — video mosaic with real AI videos */}
             <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
               <Reveal delay={0.1}>
-                <div style={{ position:'relative', overflow:'hidden', aspectRatio:'16/9', background:'var(--surface)' }}>
-                  <video src={SHOWCASE_VIDEOS[0].src} poster={SHOWCASE_VIDEOS[0].poster} muted loop playsInline autoPlay
-                    style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
-                  />
+                <LazyVideo src={SHOWCASE_VIDEOS[0].src} poster={SHOWCASE_VIDEOS[0].poster} eager
+                  style={{ aspectRatio:'16/9', background:'var(--surface)' }}>
                   <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.4), transparent 60%)' }} />
                   <span style={{ position:'absolute', top:'12px', right:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'6px 12px', background:'var(--accent)', color:'#fff' }}>ATOM AI</span>
                   <span style={{ position:'absolute', bottom:'12px', left:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white)', background:'rgba(9,9,8,0.6)', padding:'4px 8px' }}>{SHOWCASE_VIDEOS[0].cat}</span>
-                </div>
+                </LazyVideo>
               </Reveal>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'4px' }}>
                 <Reveal delay={0.2}>
-                  <div style={{ position:'relative', overflow:'hidden', aspectRatio:'1/1', background:'var(--surface)' }}>
-                    <video src={SHOWCASE_VIDEOS[1].src} poster={SHOWCASE_VIDEOS[1].poster} muted loop playsInline autoPlay
-                      style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
-                    />
+                  <LazyVideo src={SHOWCASE_VIDEOS[1].src} poster={SHOWCASE_VIDEOS[1].poster}
+                    style={{ aspectRatio:'1/1', background:'var(--surface)' }}>
                     <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.35), transparent 60%)' }} />
                     <span style={{ position:'absolute', bottom:'12px', left:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white)', background:'rgba(9,9,8,0.6)', padding:'4px 8px' }}>{SHOWCASE_VIDEOS[1].cat}</span>
-                  </div>
+                  </LazyVideo>
                 </Reveal>
                 <Reveal delay={0.3}>
-                  <div style={{ position:'relative', overflow:'hidden', aspectRatio:'1/1', background:'var(--surface)' }}>
-                    <video src={SHOWCASE_VIDEOS[2].src} poster={SHOWCASE_VIDEOS[2].poster} muted loop playsInline autoPlay
-                      style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
-                    />
+                  <LazyVideo src={SHOWCASE_VIDEOS[2].src} poster={SHOWCASE_VIDEOS[2].poster}
+                    style={{ aspectRatio:'1/1', background:'var(--surface)' }}>
                     <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.35), transparent 60%)' }} />
                     <span style={{ position:'absolute', bottom:'12px', left:'12px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white)', background:'rgba(9,9,8,0.6)', padding:'4px 8px' }}>{SHOWCASE_VIDEOS[2].cat}</span>
-                  </div>
+                  </LazyVideo>
                 </Reveal>
               </div>
             </div>

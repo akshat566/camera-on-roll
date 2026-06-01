@@ -99,7 +99,7 @@ export function WorkWithUs() {
                 >+91 99107 97771</a>
               </div>
               <div>
-                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Email IDs</p>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Email Us at</p>
                 <a href="mailto:akshat@cameraonrollproduction.com"
                   style={{ fontFamily: 'var(--font-body)', fontSize: '15px', fontWeight: 400, color: 'var(--white-70)', wordBreak: 'break-all', transition: 'color 200ms' }}
                   onMouseEnter={e => { e.currentTarget.style.color = 'var(--accent)'; }}

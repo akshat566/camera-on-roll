@@ -60,7 +60,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               {project.cat}{isImage ? ' · Photo' : project.platform === 'youtube' ? ' · YouTube' : project.platform === 'instagram' ? ' · Instagram' : ''}
             </p>
             <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(18px,2vw,26px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.05, letterSpacing: '0.01em' }}>{project.title}</h3>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
+            {project.client && project.client !== 'Camera On Roll' && (
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
+            )}
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
             {!isImage && (
@@ -366,7 +368,9 @@ export default function WorkV2Page() {
                         {/* Info overlay */}
                         <div className="tile-info" style={{ position: 'absolute', bottom: '12px', left: '12px', right: '48px', opacity: 0, transition: 'opacity 300ms' }}>
                           <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(12px,1.25vw,16px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.1, letterSpacing: '0.01em' }}>{project.title}</p>
-                          <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
+                          {project.client && project.client !== 'Camera On Roll' && (
+                            <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
+                          )}
                         </div>
                       </div>
                     </button>
@@ -374,81 +378,6 @@ export default function WorkV2Page() {
                 );
               })}
             </AnimatePresence>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Watch on YouTube ── */}
-      <section style={{ paddingBottom: '80px', paddingLeft: 'clamp(20px,4vw,64px)', paddingRight: 'clamp(20px,4vw,64px)' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: E }}
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(22px,3vw,36px)',
-              textTransform: 'uppercase',
-              color: 'var(--white)',
-              margin: '0 0 24px',
-              letterSpacing: '0.01em',
-            }}
-          >
-            Watch on YouTube
-          </motion.h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px' }}>
-            {[
-              { label: 'All AI Videos', href: 'https://youtube.com/playlist?list=PLG-syaA8JTVSuD4tT7jowF09G74Hrhhbt&si=_AEGU_Ndq0CAnlDF' },
-              { label: 'UGC', href: 'https://youtube.com/playlist?list=PLG-syaA8JTVQ8X0BgkggPsSmK_gORhMh7&si=KAp_n920rllE_o1o' },
-              { label: 'Music Videos', href: 'https://youtube.com/playlist?list=PLG-syaA8JTVSVgpPzfRmvVwRyRNTb-nud&si=gEvluH0BhEwKaTNg' },
-              { label: 'Trailers', href: 'https://youtube.com/playlist?list=PLG-syaA8JTVSVcKe2yOz4RZzSO1uU5B-u&si=n9G0j8W9bWuus8xw' },
-              { label: 'Ads', href: 'https://youtube.com/playlist?list=PLG-syaA8JTVRcHscxlQSDw8mnTNnURXz_&si=brVIFPIS0LjNfJk1' },
-            ].map((pl, i) => (
-              <motion.a
-                key={pl.label}
-                href={pl.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06, ease: E }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '16px 20px',
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid var(--white-08)',
-                  borderRadius: '4px',
-                  textDecoration: 'none',
-                  transition: 'all 200ms ease',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = 'var(--accent)';
-                  e.currentTarget.style.background = 'rgba(232,23,106,0.05)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = 'var(--white-08)';
-                  e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                }}
-              >
-                <span style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  color: 'var(--white)',
-                }}>
-                  {pl.label}
-                </span>
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'var(--accent)', flexShrink: 0 }}>
-                  <path d="M2 12L12 2M12 2H5M12 2V9"/>
-                </svg>
-              </motion.a>
-            ))}
           </div>
         </div>
       </section>

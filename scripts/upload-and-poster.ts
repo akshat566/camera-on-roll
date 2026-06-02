@@ -3,22 +3,12 @@
  * always extract a poster JPG at ~1s via ffmpeg and upload it as `${r2Key}.jpg`.
  * Skips work that already exists in R2 unless --force is given.
  */
-import { S3Client, PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, HeadObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
 import { execFileSync } from 'child_process';
 import os from 'os';
-
-const r2Client = new S3Client({
-  region: 'auto',
-  endpoint: 'https://44dd7b2e5cb6abb4d7b8d649124d1f36.r2.cloudflarestorage.com',
-  credentials: {
-    accessKeyId: '269c6bd1778e2bbf1360b9f0691f01c5',
-    secretAccessKey: 'fe60c58785937539a4640d83261fe95511dcf7d7999b1e897ba87680c379537a',
-  },
-});
-const BUCKET = 'cameraonrollproductiondata';
-const PUBLIC_URL = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev';
+import { r2Client, R2_BUCKET as BUCKET, R2_PUBLIC_URL as PUBLIC_URL } from './r2-client';
 
 const FORCE = process.argv.includes('--force');
 const SKIP_VIDEO = process.argv.includes('--posters-only');

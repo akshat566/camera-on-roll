@@ -1,17 +1,7 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import path from 'path';
-
-const r2Client = new S3Client({
-  region: 'auto',
-  endpoint: 'https://44dd7b2e5cb6abb4d7b8d649124d1f36.r2.cloudflarestorage.com',
-  credentials: {
-    accessKeyId: '269c6bd1778e2bbf1360b9f0691f01c5',
-    secretAccessKey: 'fe60c58785937539a4640d83261fe95511dcf7d7999b1e897ba87680c379537a',
-  },
-});
-const BUCKET = 'cameraonrollproductiondata';
-const PUBLIC_URL = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev';
+import { r2Client, R2_BUCKET as BUCKET, R2_PUBLIC_URL as PUBLIC_URL } from './r2-client';
 
 async function uploadToR2(key: string, body: Buffer, contentType: string) {
   await r2Client.send(new PutObjectCommand({

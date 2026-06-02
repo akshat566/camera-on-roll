@@ -13,6 +13,9 @@ const CAPABILITIES = [
 ];
 
 const SHOWCASE_VIDEOS = [
+  { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/cadbury-dairymilk.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/cadbury-dairymilk.mp4.jpg', title:'Cadbury Dairy Milk', cat:'Brand' },
+  { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/ysl.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/ysl.mp4.jpg', title:'YSL', cat:'Beauty' },
+  { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/simple.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/simple.mp4.jpg', title:'Simple', cat:'Skincare' },
   { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4.jpg', title:'AI Film', cat:'Cinematic' },
   { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__133134253456_.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__133134253456_.mp4.jpg', title:'AI Visual', cat:'Brand' },
   { src:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__136_.mp4', poster:'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__136_.mp4.jpg', title:'AI Motion', cat:'Product' },

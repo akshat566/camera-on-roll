@@ -11,7 +11,7 @@ import { LazyVideo } from '@/components/LazyVideo';
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 const POP_EASE = [0.34, 1.56, 0.64, 1] as const;
-const SHOWREEL_URL = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4';
+const SHOWREEL_URL = 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel-v2.mp4';
 
 /**
  * YouTube thumbnail. `maxresdefault.jpg` is true 16:9 (1280×720) when available;
@@ -96,8 +96,23 @@ const FEATURED: FeaturedProject[] = FEATURED_HOME_DATA.map((proj, i) => ({
 
 const FEATURED_HOME = FEATURED.slice(0, 8);
 
-// AI Video Slideshow — actual AI-generated videos from R2
+// AI Video Slideshow — brand edits + AI-generated videos from R2
 const AI_VIDEOS = [
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/cadbury-dairymilk.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/cadbury-dairymilk.mp4.jpg',
+    title: 'Cadbury Dairy Milk',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/ysl.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/ysl.mp4.jpg',
+    title: 'YSL',
+  },
+  {
+    src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/simple.mp4',
+    poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/simple.mp4.jpg',
+    title: 'Simple',
+  },
   {
     src: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4',
     poster: 'https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4.jpg',
@@ -546,7 +561,7 @@ export default function Home() {
               autoPlay loop playsInline controls
               style={{ width:'100%', height:'100%', objectFit:'contain' }}
             >
-              <source src="https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/videos/showreel.mp4" type="video/mp4" />
+              <source src={SHOWREEL_URL} type="video/mp4" />
             </motion.video>
             <button onClick={() => setVideoOpen(false)} style={{
               position:'absolute', top:'28px', right:'28px', zIndex:10000,

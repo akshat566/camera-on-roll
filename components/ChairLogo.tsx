@@ -2,9 +2,8 @@ import type { CSSProperties } from 'react';
 
 /**
  * Camera On Roll Production — director's chair brand mark.
- * Renders the user-supplied chair PNG from `/public/favicon.png`.
- * The `style.color` prop is no longer respected (PNG is fixed-colour);
- * use a white-on-dark version of the asset for dark backgrounds.
+ * Renders the transparent chair PNG from `/public/chair.png` (cropped, no background).
+ * The `style.color` prop is not respected (PNG is fixed-colour).
  */
 export function ChairLogo({
   size = 24,
@@ -19,7 +18,7 @@ export function ChairLogo({
 }) {
   return (
     <img
-      src="/favicon.png"
+      src="/chair.png"
       alt={ariaLabel}
       width={typeof size === 'number' ? size : undefined}
       height={typeof size === 'number' ? size : undefined}

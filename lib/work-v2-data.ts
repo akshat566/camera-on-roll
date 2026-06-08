@@ -90,7 +90,7 @@ export const ALL_V2_PROJECTS: Project[] = [
     id: 102,
     owner: "akshat",
     cat: "Fashion",
-    title: "Ethnic Menswear Campaign",
+    title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/work/horizontal/11.mp4_-_bubble_shot_.mp4",
     poster: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/work/horizontal/11.mp4_-_bubble_shot_.mp4.jpg",

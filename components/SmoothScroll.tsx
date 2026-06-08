@@ -2,24 +2,32 @@
 
 import { useEffect, useRef } from 'react';
 import Lenis from 'lenis';
+import { frame, cancelFrame } from 'framer-motion';
+import 'lenis/dist/lenis.css';
 
 /**
- * Global smooth scroll wrapper. Cinematic glide tuned for a
- * "3D scroll" feel that pairs with framer-motion parallax + scale-in
- * effects on sections (see Scroll3D component).
+ * Global scroll wrapper.
+ *
+ * IMPORTANT: On a video-heavy site, JS-driven smooth scroll (Lenis) runs on the
+ * MAIN THREAD and competes with video decoding, which causes scroll stutter.
+ * Native browser scrolling runs on the COMPOSITOR THREAD and stays buttery
+ * smooth even while videos decode. Since nothing here depends on Lenis
+ * (the Scroll3D parallax helper is unused), we default to native scrolling.
+ *
+ * Flip `ENABLE_LENIS` to true to bring the cinematic Lenis glide back.
  */
+const ENABLE_LENIS = false;
+
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    if (!ENABLE_LENIS) return;
     // Skip on prefers-reduced-motion
     if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
-    // Snappier, more responsive smoothing to remove the laggy/floaty feel.
-    // A single higher `lerp` tracks wheel input closely (no `duration` conflict),
-    // and native touch scrolling avoids jank on mobile.
     const lenis = new Lenis({
       lerp: 0.12,
       smoothWheel: true,
@@ -33,15 +41,13 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
 
     lenisRef.current = lenis;
 
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
+    function update(data: { timestamp: number }) {
+      lenis.raf(data.timestamp);
     }
-    rafId = requestAnimationFrame(raf);
+    frame.update(update, true);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      cancelFrame(update);
       lenis.destroy();
     };
   }, []);

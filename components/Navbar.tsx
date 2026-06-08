@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const LINKS = [
   { href: '/',         label: 'Home',        exact: true  },
@@ -19,12 +19,12 @@ const MOBILE_LINKS = [
   { href: '/services', label: 'Services', exact: false },
   { href: '/atom',     label: 'AI',       exact: false },
   { href: '/about',    label: 'About',    exact: false },
-  { href: '/contact',  label: 'Contact',  exact: false },
+  { href: '/contact',  label: 'Contact',   exact: false },
 ];
 
 export function Navbar() {
   const path = usePathname();
-  const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   // Close mobile menu on route change + lock body scroll while open
@@ -34,17 +34,24 @@ export function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
+  // Scroll detection: mutate the DOM directly instead of React state.
+  // Using setState here previously caused the entire Navbar to re-render
+  // on every RAF frame during scroll — a full component tree diff 60×/sec.
   useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
     let ticking = false;
     const fn = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 24);
+          header.classList.toggle('nav-scrolled', window.scrollY > 24);
           ticking = false;
         });
         ticking = true;
       }
     };
+    // Set initial state immediately
+    header.classList.toggle('nav-scrolled', window.scrollY > 24);
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
@@ -54,13 +61,14 @@ export function Navbar() {
 
   return (
     <header
+      ref={headerRef}
+      className="site-nav"
       style={{
         position: 'fixed', insetInline: 0, top: 0, zIndex: 50,
         height: 'var(--nav-h)',
-        background: scrolled ? 'rgba(9,9,8,0.92)' : 'var(--black)',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
         borderBottom: '1px solid var(--white-08)',
-        transition: 'background 600ms, backdrop-filter 600ms',
+        transition: 'background 600ms',
+        contain: 'layout paint',
       }}
     >
       <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 0, paddingRight: 0 }}>

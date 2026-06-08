@@ -17,7 +17,7 @@ export default function ServicesPage() {
           />
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(90deg, var(--black) 45%, rgba(9,9,8,0.6) 100%)' }} />
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, var(--black) 0%, transparent 70%)' }} />
-          <div style={{ position:'absolute', top:'10%', right:'10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 70%)', filter:'blur(60px)' }} />
+          <div style={{ position:'absolute', top:'10%', right:'10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 72%)' }} />
         </div>
 
         <div className="cx split-hero" style={{ position:'relative', zIndex:1, display:'grid', alignItems:'center', paddingTop:'clamp(40px,6vw,52px)', paddingBottom:'clamp(40px,6vw,52px)', minHeight:'260px' }}>

@@ -47,7 +47,7 @@ export default function AtomPage() {
   return (
     <>
       {/* ══ OUR AI ENGINE ═════════════════════════════ */}
-      <section style={{ position:'relative', borderTop:'1px solid var(--white-08)', background:'var(--black)', minHeight:'80vh', display:'flex', alignItems:'center', overflow:'hidden' }}>
+      <section className="cv-section" style={{ position:'relative', borderTop:'1px solid var(--white-08)', background:'var(--black)', minHeight:'80vh', display:'flex', alignItems:'center', overflow:'hidden' }}>
         <div className="cx" style={{ width:'100%', paddingTop:'calc(var(--nav-h) + 40px)', paddingBottom:'clamp(40px,5vw,64px)' }}>
           <div className="grid-2-1" style={{ gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
             {/* Left — copy */}
@@ -128,7 +128,7 @@ export default function AtomPage() {
       </section>
 
       {/* ══ SHOWCASE ══════════════════════════════════ */}
-      <section id="showcase" style={{ borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
+      <section id="showcase" className="cv-section" style={{ borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
         <div className="cx" style={{ paddingTop:'clamp(48px,6vw,80px)', paddingBottom:'clamp(48px,6vw,80px)' }}>
           <Reveal>
             <div style={{ textAlign:'center', marginBottom:'clamp(36px,5vw,56px)' }}>

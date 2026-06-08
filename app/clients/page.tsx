@@ -84,7 +84,7 @@ export default function ClientsPage() {
     <>
       {/* ── HEADER ─────────────────────────────────── */}
       <section style={{ position:'relative', paddingTop:'calc(var(--nav-h) + clamp(48px,6vw,96px))', paddingBottom:'clamp(48px,5vw,80px)', overflow:'hidden', borderBottom:'1px solid var(--white-08)' }}>
-        <div style={{ position:'absolute', top:'15%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 70%)', filter:'blur(60px)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', top:'15%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 72%)', pointerEvents:'none' }} />
         <div className="cx" style={{ position:'relative', zIndex:1, textAlign:'center' }}>
           <Reveal>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>Trusted By</p>

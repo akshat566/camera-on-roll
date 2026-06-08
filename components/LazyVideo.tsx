@@ -41,29 +41,52 @@ export function LazyVideo({
   playMode = 'inview',
   eager = false,
   children,
-  rootMargin = '300px',
+  rootMargin = '100px',
   objectFit = 'cover',
 }: LazyVideoProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const vidRef = useRef<HTMLVideoElement>(null);
   const playPromise = useRef<Promise<void> | null>(null);
+  const loadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [load, setLoad] = useState(eager);
   const [inView, setInView] = useState(false);
   const [hover, setHover] = useState(false);
 
-  // Observe viewport intersection for lazy-load + play gating.
+  // Debounced intersection observer.
+  // During fast scroll elements enter+exit rapidly; without debounce every one
+  // fires setLoad(true), play(), and a network fetch simultaneously — a decoder
+  // thundering herd that stutters the page. We only commit load if the element
+  // stays in view for 150ms.
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
+
     const io = new IntersectionObserver(
       ([entry]) => {
-        setInView(entry.isIntersecting);
-        if (entry.isIntersecting) setLoad(true);
+        const intersecting = entry.isIntersecting;
+        if (intersecting) {
+          // Start grace period — only load if we stay here.
+          loadTimer.current = setTimeout(() => {
+            setLoad(true);
+            setInView(true);
+          }, 150);
+        } else {
+          // Exited quickly — cancel pending load and pause immediately.
+          if (loadTimer.current) {
+            clearTimeout(loadTimer.current);
+            loadTimer.current = null;
+          }
+          setInView(false);
+        }
       },
       { rootMargin, threshold: 0.15 },
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    return () => {
+      io.disconnect();
+      if (loadTimer.current) clearTimeout(loadTimer.current);
+    };
   }, [rootMargin]);
 
   // Play / pause based on visibility and hover intent.
@@ -96,7 +119,9 @@ export function LazyVideo({
         muted
         loop
         playsInline
-        preload={eager ? 'auto' : 'none'}
+        // 'metadata' for eager (hero) avoids buffering the entire showreel
+        // upfront; 'none' for lazy cards defers everything until load=true.
+        preload={eager ? 'metadata' : 'none'}
         style={{ width: '100%', height: '100%', objectFit, display: 'block', ...videoStyle }}
       />
       {children}

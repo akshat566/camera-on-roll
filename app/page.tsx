@@ -228,7 +228,7 @@ function AISection() {
   return (
     <section
       ref={sectionRef}
-      className="ai-split"
+      className="ai-split cv-section"
       style={{
         position: 'relative',
         minHeight: '60vh',
@@ -268,7 +268,10 @@ function AISection() {
         onMouseLeave={() => setPaused(false)}
       >
         {AI_VIDEOS.map((v, i) => (
-          <VideoSlide key={v.src} video={v} isActive={i === idx} play={inView} load={loaded} />
+          // Only fetch/decode the active slide (poster shows for the rest).
+          // Loading all 9 at once caused a heavy network+decode spike — and
+          // stutter — the moment this section scrolled into view.
+          <VideoSlide key={v.src} video={v} isActive={i === idx} play={inView} load={loaded && i === idx} />
         ))}
 
         {/* Vignette edges */}
@@ -358,8 +361,8 @@ function AISection() {
         {/* Soft glow */}
         <div style={{
           position:'absolute', top:'-30%', right:'-20%', width:'55vw', height:'55vw',
-          borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.06) 0%, transparent 55%)',
-          filter:'blur(100px)', pointerEvents:'none',
+          borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.06) 0%, transparent 60%)',
+          pointerEvents:'none',
         }} />
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth:'460px' }}>
@@ -585,7 +588,7 @@ export default function Home() {
           <div style={{ position:'absolute', inset:0, background:'rgba(9,9,8,0.45)' }} />
           <div style={{ position:'absolute', top:0, left:0, right:0, height:'25%', background:'linear-gradient(to bottom, var(--black), transparent)' }} />
           <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, var(--black), transparent)' }} />
-          <div style={{ position:'absolute', top:'20%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.10) 0%, transparent 70%)', filter:'blur(60px)' }} />
+          <div style={{ position:'absolute', top:'20%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.10) 0%, transparent 72%)' }} />
         </div>
 
         <div className="hero-copy" style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', width:'100%', maxWidth:'min(90%, 900px)', margin:'0 auto' }}>
@@ -635,7 +638,7 @@ export default function Home() {
       </section>
 
       {/* ══ WORK PREVIEW ═══════════════════════════════ */}
-      <section style={{ borderTop:'1px solid var(--white-08)', paddingTop:'var(--section-gap)' }}>
+      <section className="cv-section" style={{ borderTop:'1px solid var(--white-08)', paddingTop:'var(--section-gap)' }}>
         {/* Header */}
         <div className="cx sec-head">
           <Reveal>
@@ -666,7 +669,7 @@ export default function Home() {
         <AnimatePresence mode="wait">
           {workLayout === 'grid' ? (
             <motion.div key="grid" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.25 }}
-              className="cx work-grid"
+              className="work-grid"
             >
               {FEATURED_HOME.map((p, i) => {
                 const ytId_ = ytId(p.link);
@@ -678,11 +681,8 @@ export default function Home() {
                   className={`work-tile ${tileClass}`}
                   initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-40px' }}
                   transition={{ duration:0.5, delay:(i%3)*0.08, ease:EASE }}
-                  whileHover={{ y:-6, zIndex:5, transition:{ duration:0.3, ease:POP_EASE } }}>
-                  <button onClick={() => setModal(p)} style={{ display:'block', width:'100%', height:'100%', textDecoration:'none', background:'#111', position:'relative', transition:'box-shadow 350ms', border:'none', padding:0, cursor:'pointer', overflow:'hidden' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 60px rgba(232,23,106,0.35), 0 0 0 1px rgba(232,23,106,0.5)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
-                  >
+                  whileHover={{ y:-6, zIndex:5, boxShadow:'0 30px 100px rgba(232,23,106,0.55), 0 0 80px rgba(232,23,106,0.25), 0 0 0 1.5px rgba(232,23,106,0.6)', transition:{ duration:0.3, ease:POP_EASE } }}>
+                  <button onClick={() => setModal(p)} style={{ display:'block', width:'100%', height:'100%', textDecoration:'none', background:'#111', position:'relative', border:'none', padding:0, cursor:'pointer', overflow:'hidden' }}>
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden', background:'linear-gradient(135deg, #1a0a10 0%, #0d0d0c 50%, #1a0a10 100%)' }}>
                       <img src={p.img} alt={p.title} loading="lazy"
                           onError={(e) => {

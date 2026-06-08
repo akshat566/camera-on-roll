@@ -265,7 +265,7 @@ export default function WorkV2Page() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.4, delay: (i % 4) * 0.05, ease: E }}
-                    whileHover={{ y: -6, zIndex: 5, transition: { duration: 0.3, ease: POP_EASE } }}
+                    whileHover={{ y: -6, zIndex: 5, boxShadow: '0 30px 100px rgba(232,23,106,0.55), 0 0 80px rgba(232,23,106,0.25), 0 0 0 1.5px rgba(232,23,106,0.6)', transition: { duration: 0.3, ease: POP_EASE } }}
                   >
                     <button
                       type="button"
@@ -274,11 +274,10 @@ export default function WorkV2Page() {
                       style={{
                         display: 'block', width: '100%', height: '100%', padding: 0, border: 'none',
                         textAlign: 'left', textDecoration: 'none', position: 'relative',
-                        background: '#111', cursor: 'pointer', transition: 'box-shadow 350ms',
+                        background: '#111', cursor: 'pointer',
                       }}
                       onMouseEnter={e => {
                         const el = e.currentTarget as HTMLElement;
-                        el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.45), 0 0 0 1.5px rgba(232,23,106,0.7), 0 0 60px rgba(232,23,106,0.2)';
                         const play = el.querySelector('.tile-play') as HTMLElement | null;
                         if (play) { play.style.opacity = '1'; play.style.transform = 'translate(-50%,-50%) scale(1)'; }
                         const info = el.querySelector('.tile-info') as HTMLElement | null;
@@ -288,7 +287,6 @@ export default function WorkV2Page() {
                       }}
                       onMouseLeave={e => {
                         const el = e.currentTarget as HTMLElement;
-                        el.style.boxShadow = 'none';
                         const play = el.querySelector('.tile-play') as HTMLElement | null;
                         if (play) { play.style.opacity = '0'; play.style.transform = 'translate(-50%,-50%) scale(0.6)'; }
                         const info = el.querySelector('.tile-info') as HTMLElement | null;

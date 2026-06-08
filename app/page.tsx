@@ -592,12 +592,6 @@ export default function Home() {
         </div>
 
         <div className="hero-copy" style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', width:'100%', maxWidth:'min(90%, 900px)', margin:'0 auto' }}>
-          <motion.span initial={{ opacity:0 }} animate={{ opacity:1 }}
-            transition={{ duration:1, delay:0.3, ease:EASE }}
-            className="eyebrow" style={{ display:'block', marginBottom:'18px', color:'var(--accent)' }}>
-            Camera On Roll · Mumbai
-          </motion.span>
-
           <motion.h1 initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }}
             transition={{ duration:1.2, delay:0.4, ease:EASE }}
             style={{ fontFamily:'var(--font-display)', fontSize:'var(--fs-hero)', textTransform:'uppercase', lineHeight:0.92, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(16px,1.8vw,22px)' }}>
@@ -607,7 +601,7 @@ export default function Home() {
           <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }}
             transition={{ duration:1, delay:0.7, ease:EASE }}
             style={{ fontFamily:'var(--font-body)', fontSize:'var(--fs-body)', fontWeight:400, lineHeight:1.6, color:'var(--white-70)', margin:'0 auto clamp(28px,3vw,44px)', maxWidth:'42ch' }}>
-            A creative tech studio built for modern brands — cinema, design, and AI.
+            A creative tech studio built for modern brands, cinema, design, and AI.
           </motion.p>
 
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}

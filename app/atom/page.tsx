@@ -153,6 +153,50 @@ export default function AtomPage() {
         </div>
       </section>
 
+      {/* ══ WATCH ON YOUTUBE — playlist cards ═══════ */}
+      <section style={{ borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
+        <div className="cx" style={{ paddingTop:'clamp(48px,6vw,80px)', paddingBottom:'clamp(48px,6vw,80px)' }}>
+          <Reveal>
+            <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'clamp(28px,3vw,44px)' }}>
+              Watch on YouTube
+            </p>
+          </Reveal>
+
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap:'clamp(12px,1.5vw,20px)' }}>
+            {[
+              { tag:'AI', title:'All AI Videos', href:'https://youtube.com/playlist?list=PLG-syaA8JTVSuD4tT7jowF09G74Hrhhbt' },
+              { tag:'AI', title:'UGC', href:'https://youtube.com/playlist?list=PLG-syaA8JTVQ8X0BgkggPsSmK_gORhMh7' },
+              { tag:'MUSIC VIDEO', title:'Music Videos', href:'https://youtube.com/playlist?list=PLG-syaA8JTVSVgpPzfRmvVwRyRNTb-nud' },
+              { tag:'AI', title:'Trailers', href:'https://youtube.com/playlist?list=PLG-syaA8JTVSVcKe2yOz4RZzSO1uU5B-u' },
+              { tag:'AI', title:'Ads', href:'https://youtube.com/playlist?list=PLG-syaA8JTVRcHscxlQSDw8mnTNnURXz_' },
+            ].map((pl, i) => (
+              <Reveal key={pl.title} delay={i * 0.06}>
+                <a href={pl.href} target="_blank" rel="noopener noreferrer"
+                  style={{
+                    display:'block',
+                    padding:'clamp(20px,2vw,28px)',
+                    border:'1px solid var(--white-08)',
+                    background:'var(--surface)',
+                    transition:'border-color 350ms, box-shadow 350ms',
+                    textDecoration:'none',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.boxShadow='0 0 40px rgba(232,23,106,0.08)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-08)'; e.currentTarget.style.boxShadow='none'; }}
+                >
+                  <p style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:600, letterSpacing:'0.3em', textTransform:'uppercase', color:'var(--accent)', margin:'0 0 clamp(12px,1.2vw,18px)' }}>{pl.tag}</p>
+                  <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(14px,1.2vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 clamp(16px,1.5vw,24px)', lineHeight:1.1 }}>{pl.title}</h3>
+                  <span style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white-40)', transition:'color 350ms' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color='var(--accent)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color='var(--white-40)'; }}>
+                    View Playlist →
+                  </span>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ CAPABILITIES ════════════════════════════ */}
       <section style={{ borderTop:'1px solid var(--white-08)', background:'var(--surface)' }}>
         <div className="cx" style={{ paddingTop:'clamp(48px,6vw,80px)', paddingBottom:'clamp(48px,6vw,80px)' }}>

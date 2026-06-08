@@ -20,16 +20,16 @@ export default function ServicesPage() {
           <div style={{ position:'absolute', top:'10%', right:'10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 70%)', filter:'blur(60px)' }} />
         </div>
 
-        <div className="cx" style={{ position:'relative', zIndex:1, display:'grid', gridTemplateColumns:'1fr 1px 1fr', gap:'0', alignItems:'center', paddingTop:'52px', paddingBottom:'52px', minHeight:'260px' }}>
-          <div style={{ paddingRight:'clamp(24px,4vw,64px)' }}>
+        <div className="cx split-hero" style={{ position:'relative', zIndex:1, display:'grid', alignItems:'center', paddingTop:'clamp(40px,6vw,52px)', paddingBottom:'clamp(40px,6vw,52px)', minHeight:'260px' }}>
+          <div style={{ paddingRight:'clamp(0px,4vw,64px)' }}>
             <Reveal>
-              <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(44px,7vw,96px)', textTransform:'uppercase', lineHeight:0.85, letterSpacing:'-0.02em', color:'var(--white)' }}>
+              <h1 style={{ fontFamily:'var(--font-display)', fontSize:'var(--fs-display)', textTransform:'uppercase', lineHeight:0.85, letterSpacing:'-0.02em', color:'var(--white)' }}>
                 Our Services
               </h1>
             </Reveal>
           </div>
-          <div style={{ background:'var(--white-08)', height:'100px', alignSelf:'center' }} />
-          <div style={{ paddingLeft:'clamp(24px,4vw,64px)' }}>
+          <div className="split-divider" style={{ background:'var(--white-08)', height:'100px', alignSelf:'center' }} />
+          <div style={{ paddingLeft:'clamp(0px,4vw,64px)' }}>
             <Reveal delay={0.15}>
               <p style={{ fontFamily:'var(--font-body)', fontSize:'14px', fontWeight:400, lineHeight:1.9, color:'var(--white-70)', maxWidth:'380px' }}>
                 End-to-end creative production powered by technology, imagination, and storytelling. From concept to final frame, we bring ideas to life with precision and purpose.
@@ -64,16 +64,7 @@ export default function ServicesPage() {
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <Link href="/contact" style={{
-              fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700,
-              letterSpacing:'0.24em', textTransform:'uppercase',
-              padding:'14px 36px', background:'var(--accent)', color:'#ffffff',
-              display:'inline-flex', alignItems:'center', gap:'10px',
-              transition:'box-shadow 400ms',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow='0 0 60px rgba(232,23,106,0.4)'; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow='none'; }}
-            >{"Let\u2019s Work Together \u2192"}</Link>
+            <Link href="/contact" className="btn btn-primary">{"Let\u2019s Work Together \u2192"}</Link>
           </Reveal>
         </div>
       </section>

@@ -251,30 +251,21 @@ export default function WorkV2Page() {
 
         {/* Visual grid — masonry style (matches og work page) */}
         <div style={{ maxWidth: '1400px', margin: '0 auto', marginTop: 'clamp(24px,3vw,40px)' }}>
-          <div
-            className="work-masonry"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gridAutoFlow: 'dense',
-              gap: '3px',
-            }}
-          >
+          <div className="wgrid">
             <AnimatePresence>
               {filtered.map((project, i) => {
                 const isV = project.orientation === 'v';
                 const isH = project.orientation === 'h';
-                const colSpan = isV ? 1 : (isH ? 2 : 1);
-                const aspect = isV ? '3/4' : (isH ? '2/1' : '1/1');
+                const tileClass = isV ? 'wtile-v' : (isH ? 'wtile-h' : 'wtile-s');
                 return (
                   <motion.div
                     key={project.id}
+                    className={`wtile ${tileClass}`}
                     initial={{ opacity: 0, y: 14 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.4, delay: (i % 4) * 0.05, ease: E }}
                     whileHover={{ y: -6, zIndex: 5, transition: { duration: 0.3, ease: POP_EASE } }}
-                    style={{ gridColumn: `span ${colSpan}`, aspectRatio: aspect, position: 'relative' }}
                   >
                     <button
                       type="button"

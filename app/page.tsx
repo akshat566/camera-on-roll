@@ -199,6 +199,7 @@ function AISection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [openCap, setOpenCap] = useState<number | null>(0);
 
   // Gate the slideshow on viewport visibility — no decoding when off-screen.
   useEffect(() => {
@@ -242,15 +243,22 @@ function AISection() {
           .ai-split { grid-template-columns: 1fr !important; min-height: auto !important; }
           .ai-split > div:first-child { height: 42vh; }
         }
-        .ai-cap { position:relative; overflow:hidden; cursor:pointer; }
-        .ai-cap .cap-d { max-height:0; opacity:0; overflow:hidden; transition: max-height 500ms ease, opacity 400ms ease, margin 400ms ease; }
-        .ai-cap:hover .cap-d { max-height:60px; opacity:1; margin-top:6px; }
-        .ai-cap::before {
-          content:''; position:absolute; left:0; top:0; bottom:0; width:2px;
-          background: var(--accent); transform: scaleY(0); transform-origin: top;
-          transition: transform 400ms cubic-bezier(0.76,0,0.24,1);
+        .ai-cap {
+          position:relative; overflow:hidden; cursor:pointer; width:100%; text-align:left;
+          border-radius:16px; border:1px solid rgba(242,235,224,0.07);
+          background:rgba(255,255,255,0.02); padding:16px 18px;
+          transition: background 300ms, box-shadow 400ms, border-color 300ms;
         }
-        .ai-cap:hover::before { transform: scaleY(1); }
+        .ai-cap:hover { border-color: rgba(232,23,106,0.3); }
+        .ai-cap[data-open="true"] {
+          background: rgba(232,23,106,0.06);
+          border-color: rgba(232,23,106,0.35);
+          box-shadow: 0 0 0 1px rgba(255,0,102,0.15), 0 12px 50px rgba(255,0,102,0.15);
+        }
+        .ai-cap .cap-d { max-height:0; opacity:0; overflow:hidden; transition: max-height 500ms ease, opacity 400ms ease, margin 400ms ease; }
+        .ai-cap[data-open="true"] .cap-d { max-height:80px; opacity:1; margin-top:8px; }
+        .ai-cap .cap-arrow { transition: transform 350ms cubic-bezier(0.76,0,0.24,1); }
+        .ai-cap[data-open="true"] .cap-arrow { transform: rotate(90deg); }
       `}</style>
 
       {/* LEFT — Video Slideshow */}
@@ -414,47 +422,36 @@ function AISection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.16, ease: EASE }}
-            style={{ display:'flex', flexDirection:'column', gap:'2px', marginBottom:'28px' }}
+            style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'28px' }}
           >
             {[
               { n:'AI Photo Gen',    d:'Photorealistic brand imagery, generated at scale' },
               { n:'AI Video',        d:'Frame interpolation, upscaling & color grading' },
               { n:'Style Transfer',  d:'Apply any aesthetic across entire libraries' },
               { n:'Generative Film', d:'Text-to-video & image-to-video pipelines' },
-            ].map((c, i) => (
-              <div key={i} className="ai-cap"
-                style={{
-                  padding: '12px 16px',
-                  background: 'rgba(255,255,255,0.02)',
-                  borderBottom: '1px solid rgba(242,235,224,0.06)',
-                  transition: 'background 300ms, padding-left 300ms',
-                }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(232,23,106,0.04)';
-                  (e.currentTarget as HTMLElement).style.paddingLeft = '20px';
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)';
-                  (e.currentTarget as HTMLElement).style.paddingLeft = '16px';
-                }}
+            ].map((c, i) => {
+              const isOpen = openCap === i;
+              return (
+              <button key={i} type="button" className="ai-cap" data-open={isOpen}
+                aria-expanded={isOpen}
+                onClick={() => setOpenCap(isOpen ? null : i)}
               >
                 <div style={{
                   display:'flex', alignItems:'center', justifyContent:'space-between',
-                  fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:600,
+                  fontFamily:'var(--font-body)', fontSize:'12px', fontWeight:600,
                   letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white-80)',
                 }}>
                   <span>{c.n}</span>
-                  <span style={{ color:'var(--accent)', fontSize:'10px', opacity:0.6, transition:'opacity 300ms' }}
-                    className="cap-arrow">→</span>
+                  <span style={{ color:'var(--accent)', fontSize:'12px' }} className="cap-arrow">→</span>
                 </div>
                 <div className="cap-d" style={{
-                  fontFamily:'var(--font-body)', fontSize:'11px', lineHeight:1.6,
-                  color:'var(--white-40)',
+                  fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.6,
+                  color:'var(--white-60)',
                 }}>
                   {c.d}
                 </div>
-              </div>
-            ))}
+              </button>
+            )})}
           </motion.div>
 
           {/* CTAs */}
@@ -580,52 +577,56 @@ export default function Home() {
       </AnimatePresence>
 
       {/* ══ HERO ═══════════════════════════════════════ */}
-      <section style={{ position:'relative', height:'100svh', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <section className="hero" style={{ position:'relative', minHeight:'100svh', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
         {/* Full-bleed showreel video — buffers eagerly, pauses when scrolled past */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
           <LazyVideo src={SHOWREEL_URL} eager style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
-          <div style={{ position:'absolute', inset:0, background:'rgba(9,9,8,0.55)' }} />
+          {/* 40% dark overlay for legibility */}
+          <div style={{ position:'absolute', inset:0, background:'rgba(9,9,8,0.45)' }} />
           <div style={{ position:'absolute', top:0, left:0, right:0, height:'25%', background:'linear-gradient(to bottom, var(--black), transparent)' }} />
           <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'55%', background:'linear-gradient(to top, var(--black), transparent)' }} />
           <div style={{ position:'absolute', top:'20%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.10) 0%, transparent 70%)', filter:'blur(60px)' }} />
         </div>
 
-        <div style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', maxWidth:'900px' }}>
+        <div className="hero-copy" style={{ position:'relative', zIndex:1, textAlign:'center', padding:'0 var(--pad-x)', width:'100%', maxWidth:'min(90%, 900px)', margin:'0 auto' }}>
+          <motion.span initial={{ opacity:0 }} animate={{ opacity:1 }}
+            transition={{ duration:1, delay:0.3, ease:EASE }}
+            className="eyebrow" style={{ display:'block', marginBottom:'18px', color:'var(--accent)' }}>
+            Camera On Roll · Mumbai
+          </motion.span>
+
           <motion.h1 initial={{ opacity:0, y:40 }} animate={{ opacity:1, y:0 }}
             transition={{ duration:1.2, delay:0.4, ease:EASE }}
-            style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,6vw,80px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(12px,1.5vw,20px)', whiteSpace:'nowrap' }}>
+            style={{ fontFamily:'var(--font-display)', fontSize:'var(--fs-hero)', textTransform:'uppercase', lineHeight:0.92, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'clamp(16px,1.8vw,22px)' }}>
             Camera On Roll Production
           </motion.h1>
 
           <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }}
             transition={{ duration:1, delay:0.7, ease:EASE }}
-            style={{ fontFamily:'var(--font-body)', fontSize:'11px', fontWeight:500, letterSpacing:'0.18em', textTransform:'uppercase', color:'var(--white-50)', marginBottom:'clamp(28px,3vw,48px)' }}>
-            A creative tech studio built for modern brands
+            style={{ fontFamily:'var(--font-body)', fontSize:'var(--fs-body)', fontWeight:400, lineHeight:1.6, color:'var(--white-70)', margin:'0 auto clamp(28px,3vw,44px)', maxWidth:'42ch' }}>
+            A creative tech studio built for modern brands — cinema, design, and AI.
           </motion.p>
 
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
             transition={{ duration:0.8, delay:1, ease:EASE }}
-            style={{ display:'flex', gap:'clamp(8px,1.5vw,14px)', justifyContent:'center', flexWrap:'wrap' }}>
+            className="cta-group hero-cta">
 
-            {/* Intro Video — opens fullscreen overlay */}
-            <button onClick={() => setVideoOpen(true)} style={{ ...BTN_BASE, border:'1px solid var(--white-20)', color:'var(--white-70)', background:'transparent', cursor:'pointer' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--white)'; e.currentTarget.style.boxShadow='0 0 40px rgba(232,23,106,0.2)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-70)'; e.currentTarget.style.boxShadow='none'; }}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              Intro Video
-            </button>
-
-            <Link href="/contact" style={{ ...BTN_BASE, border:'1px solid var(--accent-dim)', color:'var(--accent)' }}
-              onMouseEnter={e => { e.currentTarget.style.background='var(--accent)'; e.currentTarget.style.color='#fff'; e.currentTarget.style.boxShadow='0 0 60px rgba(232,23,106,0.3)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.boxShadow='none'; }}>
+            <Link href="/contact" className="btn btn-primary">
               Start a Project
             </Link>
+
+            {/* Watch Showreel — opens fullscreen overlay */}
+            <button onClick={() => setVideoOpen(true)} className="btn btn-ghost">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              Watch Showreel
+            </button>
           </motion.div>
         </div>
 
         <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:2, duration:1 }}
-          style={{ position:'absolute', bottom:'40px', left:'50%', transform:'translateX(-50%)', display:'flex', flexDirection:'column', alignItems:'center', gap:'12px' }}>
-          <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:500, letterSpacing:'0.44em', textTransform:'uppercase', color:'var(--white-20)' }}>Scroll</span>
+          className="hero-scroll"
+          style={{ position:'absolute', bottom:'32px', left:'50%', transform:'translateX(-50%)', display:'flex', flexDirection:'column', alignItems:'center', gap:'12px' }}>
+          <span style={{ fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:500, letterSpacing:'0.44em', textTransform:'uppercase', color:'var(--white-40)' }}>Scroll</span>
           <div style={{ width:'1px', height:'40px', background:'linear-gradient(to bottom, var(--white-20), transparent)', position:'relative' }}>
             <motion.div animate={{ y:[0,40,0] }} transition={{ duration:2, repeat:Infinity, ease:'easeInOut' }}
               style={{ position:'absolute', top:0, left:'-2px', width:'5px', height:'5px', borderRadius:'50%', background:'var(--accent)', boxShadow:'0 0 8px var(--accent)' }} />
@@ -634,16 +635,14 @@ export default function Home() {
       </section>
 
       {/* ══ WORK PREVIEW ═══════════════════════════════ */}
-      <section style={{ borderTop:'1px solid var(--white-08)', padding:'clamp(20px,2.5vw,32px) 0 0' }}>
+      <section style={{ borderTop:'1px solid var(--white-08)', paddingTop:'var(--section-gap)' }}>
         {/* Header */}
-        <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(10px,1.2vw,18px)', flexWrap:'wrap', gap:'12px' }}>
+        <div className="cx sec-head">
           <Reveal>
-            <div>
-              <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Work</h2>
-            </div>
+            <h2 className="h-section">Our Work</h2>
           </Reveal>
-          <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-            {/* Layout toggle */}
+          <div className="only-desktop" style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+            {/* Layout toggle (desktop only) */}
             <div style={{ display:'flex', border:'1px solid var(--accent)', overflow:'hidden' }}>
               {(['grid','list'] as const).map(l => (
                 <button key={l} onClick={() => setWorkLayout(l)} style={{
@@ -659,64 +658,30 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <Link href="/work" style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'12px 28px', background:'transparent', color:'var(--accent)', border:'1px solid var(--accent)', display:'inline-flex', alignItems:'center', gap:'8px', transition:'all 300ms' }}
-              onMouseEnter={e => { e.currentTarget.style.background='var(--accent)'; e.currentTarget.style.color='#fff'; e.currentTarget.style.boxShadow='0 0 40px rgba(232,23,106,0.3)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='var(--accent)'; e.currentTarget.style.boxShadow='none'; }}>
-              View All Work →
-            </Link>
+            <Link href="/work" className="btn btn-ghost">View All Work →</Link>
           </div>
         </div>
 
-        {/* Grid layout — true aspect ratio per tile (9:16, 16:9, 1:1) */}
+        {/* Grid layout — immersive single column on mobile, masonry on desktop */}
         <AnimatePresence mode="wait">
           {workLayout === 'grid' ? (
             <motion.div key="grid" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }} transition={{ duration:0.25 }}
-              style={{
-                padding:'0 var(--pad-x)',
-                display:'grid',
-                /* 4-col compact grid — fits all tiles on one page */
-                gridTemplateColumns:'repeat(4, 1fr)',
-                gridAutoFlow:'dense',
-                gap:'3px',
-              }}
-              className="work-masonry"
+              className="cx work-grid"
             >
               {FEATURED_HOME.map((p, i) => {
                 const ytId_ = ytId(p.link);
                 const isV = p.orientation === 'v';
                 const isH = p.orientation === 'h';
-                // Compact spans for one-page fit:
-                // Vertical (portrait)  → 1 col × 3/4 aspect (like a photo, not full 9:16)
-                // Horizontal (landscape) → 2 col × 2/1 aspect (panoramic, less height)
-                const colSpan = isV ? 1 : (isH ? 2 : 1);
-                const aspect = isV ? '3/4' : (isH ? '2/1' : '1/1');
+                const tileClass = isV ? 'tile-v' : (isH ? 'tile-h' : 'tile-s');
                 return (
                 <motion.div key={i}
+                  className={`work-tile ${tileClass}`}
                   initial={{ opacity:0, y:16 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-40px' }}
                   transition={{ duration:0.5, delay:(i%3)*0.08, ease:EASE }}
-                  whileHover={{ y:-6, zIndex:5, transition:{ duration:0.3, ease:POP_EASE } }}
-                  style={{
-                    position:'relative',
-                    gridColumn: `span ${colSpan}`,
-                    aspectRatio: aspect,
-                  }}>
-                  <button onClick={() => setModal(p)} style={{ display:'block', width:'100%', height:'100%', textDecoration:'none', background:'#111', position:'relative', transition:'box-shadow 350ms', border:'none', padding:0, cursor:'pointer', borderRadius:'2px', overflow:'hidden' }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.boxShadow = '0 20px 60px rgba(232,23,106,0.35), 0 0 0 1px rgba(232,23,106,0.5)';
-                      const info = el.querySelector('.tile-info') as HTMLElement | null;
-                      if (info) info.style.opacity = '1';
-                      const cat = el.querySelector('.tile-cat') as HTMLElement | null;
-                      if (cat) cat.style.opacity = '1';
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.boxShadow = 'none';
-                      const info = el.querySelector('.tile-info') as HTMLElement | null;
-                      if (info) info.style.opacity = '0';
-                      const cat = el.querySelector('.tile-cat') as HTMLElement | null;
-                      if (cat) cat.style.opacity = '0';
-                    }}
+                  whileHover={{ y:-6, zIndex:5, transition:{ duration:0.3, ease:POP_EASE } }}>
+                  <button onClick={() => setModal(p)} style={{ display:'block', width:'100%', height:'100%', textDecoration:'none', background:'#111', position:'relative', transition:'box-shadow 350ms', border:'none', padding:0, cursor:'pointer', overflow:'hidden' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 20px 60px rgba(232,23,106,0.35), 0 0 0 1px rgba(232,23,106,0.5)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
                   >
                     <div style={{ position:'relative', width:'100%', height:'100%', overflow:'hidden', background:'linear-gradient(135deg, #1a0a10 0%, #0d0d0c 50%, #1a0a10 100%)' }}>
                       <img src={p.img} alt={p.title} loading="lazy"
@@ -728,13 +693,14 @@ export default function Home() {
                           }}
                           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', transition:'transform 600ms, filter 400ms', filter:'brightness(0.9)' }}
                         />
-                      <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.85) 0%, rgba(9,9,8,0.15) 50%, transparent 100%)' }} />
-                      <span className="tile-cat" style={{ position:'absolute', top:'10px', left:'10px', fontFamily:'var(--font-body)', fontSize:'8px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'4px 10px', background:'rgba(9,9,8,0.85)', color:'var(--accent)', opacity:0, transition:'opacity 300ms', borderRadius:'2px', border:'1px solid rgba(232,23,106,0.3)' }}>{p.cat}</span>
-                      <div className="tile-info" style={{ position:'absolute', bottom:'14px', left:'14px', right:'14px', opacity:0, transition:'opacity 300ms' }}>
-                        <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.4vw,18px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 4px', lineHeight:1.1, letterSpacing:'0.01em', textShadow:'0 2px 8px rgba(0,0,0,0.6)' }}>{p.title}</p>
+                      <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.9) 0%, rgba(9,9,8,0.2) 55%, transparent 100%)' }} />
+                      <span className="tile-cat" style={{ position:'absolute', top:'14px', left:'14px', fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:700, letterSpacing:'0.24em', textTransform:'uppercase', padding:'5px 12px', background:'rgba(9,9,8,0.85)', color:'var(--accent)', borderRadius:'2px', border:'1px solid rgba(232,23,106,0.3)' }}>{p.cat}</span>
+                      <div className="tile-info" style={{ position:'absolute', bottom:'18px', left:'18px', right:'18px', textAlign:'left' }}>
+                        <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,1.4vw,22px)', textTransform:'uppercase', color:'var(--white)', margin:'0 0 4px', lineHeight:1.05, letterSpacing:'0.01em', textShadow:'0 2px 8px rgba(0,0,0,0.6)' }}>{p.title}</p>
                         {p.client && p.client !== 'Camera On Roll' && (
-                          <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
+                          <p style={{ fontFamily:'var(--font-body)', fontSize:'11px', letterSpacing:'0.2em', textTransform:'uppercase', color:'var(--white-70)', margin:0 }}>{p.client}</p>
                         )}
+                        <span className="tile-view">View Project →</span>
                       </div>
                     </div>
                   </button>
@@ -780,24 +746,32 @@ export default function Home() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Mobile: full-width view-all CTA */}
+        <div className="cx only-mobile" style={{ marginTop: '24px' }}>
+          <Link href="/work" className="btn btn-ghost btn-block">View All Work →</Link>
+        </div>
       </section>
 
       {/* ══ SERVICES PREVIEW ═══════════════════════════ */}
-      <section style={{ padding:'clamp(40px,5vw,60px) 0 0', borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
-        <div style={{ padding:'0 var(--pad-x)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:'clamp(20px,2.5vw,32px)', flexWrap:'wrap', gap:'12px' }}>
+      <section style={{ paddingTop:'var(--section-gap)', borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
+        <div className="cx sec-head">
           <Reveal>
-            <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(28px,4.5vw,56px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:0 }}>Our Services</h2>
+            <h2 className="h-section">Our Services</h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <Link href="/services" style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.24em', textTransform:'uppercase', padding:'10px 24px', border:'1px solid var(--white-20)', color:'var(--white-40)', display:'inline-flex', alignItems:'center', gap:'6px', transition:'border-color 300ms, color 300ms' }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='var(--accent)'; e.currentTarget.style.color='var(--white)'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--white-20)'; e.currentTarget.style.color='var(--white-40)'; }}>
-              Explore Services →
-            </Link>
+            <span className="only-desktop">
+              <Link href="/services" className="btn btn-ghost">Explore Services →</Link>
+            </span>
           </Reveal>
         </div>
 
         <ServicesGrid />
+
+        {/* Mobile: full-width explore CTA */}
+        <div className="cx only-mobile" style={{ marginTop: '24px' }}>
+          <Link href="/services" className="btn btn-ghost btn-block">Explore Services →</Link>
+        </div>
       </section>
 
       {/* ══ AI × CINEMA — split screen: video slideshow left, content right ══ */}

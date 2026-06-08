@@ -15,10 +15,10 @@ export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer style={{ borderTop: '1px solid var(--white-08)', background: 'var(--black)' }}>
-      <div className="cx" style={{ paddingTop: '56px', paddingBottom: '56px' }}>
+      <div className="cx" style={{ paddingTop: 'clamp(40px,6vw,56px)', paddingBottom: 'clamp(40px,6vw,56px)' }}>
 
         {/* Top row */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-10 md:gap-0" style={{ marginBottom: '48px' }}>
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 md:gap-0" style={{ marginBottom: 'clamp(28px,4vw,48px)' }}>
           <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
             <ChairLogo size={28} style={{ color: 'var(--white)' }} />
             <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1 }}>

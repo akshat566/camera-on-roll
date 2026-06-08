@@ -49,7 +49,7 @@ export default function AtomPage() {
       {/* ══ OUR AI ENGINE ═════════════════════════════ */}
       <section style={{ position:'relative', borderTop:'1px solid var(--white-08)', background:'var(--black)', minHeight:'80vh', display:'flex', alignItems:'center', overflow:'hidden' }}>
         <div className="cx" style={{ width:'100%', paddingTop:'calc(var(--nav-h) + 40px)', paddingBottom:'clamp(40px,5vw,64px)' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
+          <div className="grid-2-1" style={{ gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
             {/* Left — copy */}
             <div style={{ maxWidth:'520px' }}>
               <Reveal>
@@ -140,12 +140,12 @@ export default function AtomPage() {
           </Reveal>
 
           {/* Full-width video grid */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'4px', marginBottom:'4px' }}>
+          <div className="grid-vid3" style={{ gap:'4px', marginBottom:'4px' }}>
             {SHOWCASE_VIDEOS.slice(0,3).map((v,i) => (
               <VideoCard key={v.src} video={v} delay={i*0.08} />
             ))}
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'4px' }}>
+          <div className="grid-vid3" style={{ gap:'4px' }}>
             {SHOWCASE_VIDEOS.slice(3,6).map((v,i) => (
               <VideoCard key={v.src} video={v} delay={0.1 + i*0.08} />
             ))}
@@ -167,7 +167,7 @@ export default function AtomPage() {
               </p>
             </Reveal>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'1px', background:'var(--white-08)' }}>
+          <div className="grid-cap3" style={{ gap:'1px', background:'var(--white-08)' }}>
             {CAPABILITIES.map((s,i) => (
               <Reveal key={s.n} delay={i*0.06}>
                 <div style={{ background:'var(--black)', padding:'clamp(24px,3vw,40px)', height:'100%', transition:'background 350ms' }}

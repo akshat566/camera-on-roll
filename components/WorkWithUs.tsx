@@ -61,12 +61,12 @@ export function WorkWithUs() {
         className="wwu-grid"
       >
         {/* ── LEFT: title + contact info ───────────── */}
-        <div style={{ paddingRight: 'clamp(0px,1vw,16px)' }}>
+        <div className="wwu-info" style={{ paddingRight: 'clamp(0px,1vw,16px)' }}>
           <Reveal>
             <h2 style={{
               fontFamily: 'var(--font-display)', textTransform: 'uppercase',
-              fontSize: 'clamp(52px,8.5vw,128px)', lineHeight: 0.86, letterSpacing: '-0.03em',
-              color: 'var(--accent)', margin: '0 0 clamp(28px,3vw,40px)',
+              fontSize: 'clamp(60px,16vw,128px)', lineHeight: 0.86, letterSpacing: '-0.03em',
+              color: 'var(--accent)', margin: '0 0 clamp(24px,3vw,40px)',
               textShadow: '0 0 60px rgba(232,23,106,0.22)',
             }}>
               Work<br/>with Us
@@ -83,7 +83,7 @@ export function WorkWithUs() {
           </Reveal>
 
           <Reveal delay={0.15}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px,2.5vw,28px)' }}>
+            <div className="wwu-contact" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(20px,2.5vw,28px)' }}>
               <div>
                 <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 8px' }}>Contact Numbers</p>
                 <a href="tel:+917791048704"
@@ -168,61 +168,32 @@ export function WorkWithUs() {
                 </p>
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit}
-                style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}
-              >
+              <form onSubmit={handleSubmit} className="wwu-form">
                 {[
-                  { name: 'name',    placeholder: 'Your Name *',        type: 'text',  span: 1, req: true  },
-                  { name: 'company', placeholder: 'Company / Brand',     type: 'text',  span: 1, req: false },
-                  { name: 'email',   placeholder: 'Email Address *',     type: 'email', span: 1, req: true  },
-                  { name: 'phone',   placeholder: 'Phone Number *',      type: 'tel',   span: 1, req: true  },
-                  { name: 'budget',  placeholder: 'Project Budget (optional)', type: 'text', span: 2, req: false },
+                  { name: 'name',    placeholder: 'Your Name *',        type: 'text',  wide: false, req: true  },
+                  { name: 'company', placeholder: 'Company / Brand',     type: 'text',  wide: false, req: false },
+                  { name: 'email',   placeholder: 'Email Address *',     type: 'email', wide: false, req: true  },
+                  { name: 'phone',   placeholder: 'Phone Number *',      type: 'tel',   wide: false, req: true  },
+                  { name: 'budget',  placeholder: 'Project Budget (optional)', type: 'text', wide: true, req: false },
                 ].map((f) => (
                   <input key={f.name} name={f.name} type={f.type} placeholder={f.placeholder} required={f.req}
                     disabled={loading}
-                    style={{
-                      gridColumn: `span ${f.span}`,
-                      background: 'transparent', border: '1px solid var(--white-20)',
-                      fontFamily: 'var(--font-body)', fontSize: '12px', letterSpacing: '0.04em',
-                      color: 'var(--white)', padding: '14px 16px', outline: 'none',
-                      transition: 'border-color 200ms',
-                      opacity: loading ? 0.5 : 1,
-                    }}
-                    onFocus={e => { e.currentTarget.style.borderColor = 'var(--accent)'; }}
-                    onBlur={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; }}
+                    className={`field${f.wide ? ' col-2' : ''}`}
                   />
                 ))}
-                <textarea name="message" placeholder="Tell us about your project… *" required rows={5}
+                <textarea name="message" placeholder="Tell us about your project… *" required
                   disabled={loading}
-                  style={{
-                    gridColumn: 'span 2',
-                    background: 'transparent', border: '1px solid var(--white-20)',
-                    fontFamily: 'var(--font-body)', fontSize: '12px', letterSpacing: '0.04em',
-                    color: 'var(--white)', padding: '14px 16px', outline: 'none', resize: 'vertical',
-                    transition: 'border-color 200ms',
-                    opacity: loading ? 0.5 : 1,
-                  }}
-                  onFocus={e => { e.currentTarget.style.borderColor = 'var(--accent)'; }}
-                  onBlur={e => { e.currentTarget.style.borderColor = 'var(--white-20)'; }}
+                  className="field field-area col-2"
                 />
                 {error && (
-                  <p style={{ gridColumn: 'span 2', fontFamily: 'var(--font-body)', fontSize: '12px', color: 'var(--accent)', margin: '4px 0 0' }}>
+                  <p className="col-2" style={{ fontFamily: 'var(--font-body)', fontSize: '13px', color: 'var(--accent)', margin: '4px 0 0' }}>
                     {error}
                   </p>
                 )}
-                <div style={{ gridColumn: 'span 2', display: 'flex', justifyContent: 'flex-start', marginTop: '6px' }}>
-                  <button type="submit" disabled={loading} style={{
-                    fontFamily: 'var(--font-body)', fontSize: '10px', fontWeight: 700,
-                    letterSpacing: '0.28em', textTransform: 'uppercase',
-                    padding: '16px 44px', background: 'var(--accent)', color: '#fff',
-                    border: 'none', cursor: loading ? 'not-allowed' : 'pointer',
-                    display: 'inline-flex', alignItems: 'center', gap: '8px',
-                    transition: 'box-shadow 400ms, opacity 300ms',
-                    opacity: loading ? 0.6 : 1,
-                  }}
-                  onMouseEnter={e => { if (!loading) e.currentTarget.style.boxShadow = '0 0 50px rgba(232,23,106,0.4)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+                <div className="col-2">
+                  <button type="submit" disabled={loading}
+                    className="btn btn-primary btn-block"
+                    style={{ height: '60px', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.6 : 1 }}
                   >{loading ? 'Sending…' : 'Send Inquiry →'}</button>
                 </div>
               </form>
@@ -231,12 +202,24 @@ export function WorkWithUs() {
         </Reveal>
       </div>
 
-      {/* Mobile: collapse to single column */}
+      {/* Mobile: collapse to single column + center the info column */}
       <style jsx>{`
         @media (max-width: 860px) {
           :global(.wwu-grid) {
             grid-template-columns: 1fr !important;
             gap: clamp(40px, 6vw, 56px) !important;
+          }
+          :global(.wwu-info) {
+            text-align: center !important;
+            padding-right: 0 !important;
+          }
+          :global(.wwu-info) :global(p),
+          :global(.wwu-info) :global(h2) {
+            margin-left: auto !important;
+            margin-right: auto !important;
+          }
+          :global(.wwu-info) :global(.wwu-contact) {
+            align-items: center !important;
           }
         }
       `}</style>

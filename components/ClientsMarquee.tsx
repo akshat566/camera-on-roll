@@ -10,22 +10,24 @@ export function ClientBadge({ name, logo }: Client) {
   const [imgError, setImgError] = useState(false);
   return (
     <motion.div
-      whileHover={{ scale: 1.04, y: -2 }}
+      whileHover={{ scale: 1.04, y: -2, opacity: 1 }}
+      whileTap={{ opacity: 1 }}
       transition={{ duration: 0.3, ease: EASE }}
       style={{
         flexShrink: 0,
-        width: 'clamp(44px, 4.5vw, 64px)',
-        height: 'clamp(44px, 4.5vw, 64px)',
+        width: 'clamp(52px, 4.5vw, 64px)',
+        height: 'clamp(52px, 4.5vw, 64px)',
         borderRadius: '50%',
         background: '#fff',
         border: '1px solid var(--white-08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '7px', overflow: 'hidden',
+        opacity: 0.6,
         boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
-        transition: 'box-shadow 350ms, border-color 350ms',
+        transition: 'box-shadow 350ms, border-color 350ms, opacity 350ms',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(232,23,106,0.18)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(232,23,106,0.18)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.opacity = '1'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; (e.currentTarget as HTMLElement).style.opacity = '0.6'; }}
     >
       {logo && !imgError ? (
         <img

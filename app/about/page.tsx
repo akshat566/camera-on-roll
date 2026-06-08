@@ -24,7 +24,7 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'clamp(40px,6vw,96px)', maxWidth:'960px', margin:'0 auto' }}>
+          <div className="founders-grid" style={{ gap:'clamp(40px,6vw,96px)', maxWidth:'960px', margin:'0 auto' }}>
             {/* Akshat */}
             <Reveal delay={0.1}>
               <div style={{ textAlign:'center' }}>
@@ -79,7 +79,7 @@ export default function AboutPage() {
       {/* ══ STATS ═════════════════════════════ */}
       <div style={{ borderBottom:'1px solid var(--white-08)' }}>
         <div className="cx">
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'1px', background:'var(--white-08)' }}>
+          <div className="stats-grid" style={{ gap:'1px', background:'var(--white-08)' }}>
             {STATS.map((s, i) => (
               <Reveal key={s.l} delay={i*0.07}>
                 <div style={{ background:'var(--black)', padding:'clamp(24px,3vw,40px) clamp(12px,1.5vw,24px)', textAlign:'center', position:'relative', overflow:'hidden' }}>

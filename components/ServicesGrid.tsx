@@ -18,33 +18,22 @@ export const SERVICES_DATA = [
 
 export function ServicesGrid() {
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:'1px', background:'var(--white-08)' }}>
+    <div className="svc-grid">
       {SERVICES_DATA.map((s, i) => (
-        <motion.div key={s.n} initial={{ opacity:0, y:12 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-30px' }}
-          transition={{ duration:0.4, delay:(i%4)*0.07, ease:EASE }}
-          style={{ background:'var(--black)', position:'relative', overflow:'hidden', cursor:'pointer', height:'100%' }}
-          onMouseEnter={e => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.boxShadow = '0 30px 80px rgba(232,23,106,0.35), inset 0 0 0 1.5px rgba(232,23,106,0.6)';
-            const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.95';img.style.transform='scale(1.08)';}
-            const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='1';
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLElement;
-            el.style.boxShadow = 'none';
-            const img = el.querySelector('img') as HTMLImageElement; if(img){img.style.opacity='0.55';img.style.transform='scale(1)';}
-            const desc = el.querySelector('.svc-desc') as HTMLElement; if(desc) desc.style.opacity='0';
-          }}>
-          <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-            <img src={s.img} alt={s.n} loading="lazy"
-              style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.55, transition:'opacity 500ms, transform 600ms' }} />
-            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,8,0.82) 25%, rgba(9,9,8,0.15) 75%)' }} />
+        <motion.div key={s.n} className="svc-card"
+          initial={{ opacity:0, y:12 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true, margin:'-30px' }}
+          transition={{ duration:0.4, delay:(i%4)*0.07, ease:EASE }}>
+          <div className="svc-media">
+            <img src={s.img} alt={s.n} loading="lazy" />
+            <div className="svc-scrim" />
           </div>
-          <div style={{ position:'relative', zIndex:1, padding:'22px', minHeight:'210px', display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
-            <div>
-              <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(13px,1.25vw,16px)', textTransform:'uppercase', color:'var(--white)', letterSpacing:'0.02em', marginBottom:'10px', lineHeight:1.1 }}>{s.n}</h3>
-              <p className="svc-desc" style={{ fontFamily:'var(--font-body)', fontSize:'12px', lineHeight:1.7, color:'var(--white-70)', margin:0, opacity:0, transition:'opacity 300ms' }}>{s.d}</p>
-            </div>
+          {/* Arrow affordance */}
+          <span className="svc-arrow" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2 12L12 2M12 2H5M12 2V9"/></svg>
+          </span>
+          <div className="svc-body">
+            <h3 className="svc-title">{s.n}</h3>
+            <p className="svc-desc">{s.d}</p>
           </div>
         </motion.div>
       ))}

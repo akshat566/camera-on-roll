@@ -13,6 +13,15 @@ const LINKS = [
   { href: '/contact',  label: 'Contact',     exact: false },
 ];
 
+// Fullscreen mobile menu order (per spec): WORK · SERVICES · AI · ABOUT · CONTACT
+const MOBILE_LINKS = [
+  { href: '/work',     label: 'Work',     exact: false },
+  { href: '/services', label: 'Services', exact: false },
+  { href: '/atom',     label: 'AI',       exact: false },
+  { href: '/about',    label: 'About',    exact: false },
+  { href: '/contact',  label: 'Contact',  exact: false },
+];
+
 export function Navbar() {
   const path = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -106,8 +115,9 @@ export function Navbar() {
           onClick={() => setMenuOpen(o => !o)}
           style={{
             display: 'none', alignItems: 'center', justifyContent: 'center',
-            width: '40px', height: '40px', flexShrink: 0,
+            width: '48px', height: '48px', flexShrink: 0, marginRight: '-12px',
             color: 'var(--white)', background: 'transparent', border: 'none', cursor: 'pointer',
+            position: 'relative', zIndex: 51,
           }}
         >
           {menuOpen ? (
@@ -118,40 +128,19 @@ export function Navbar() {
         </button>
       </div>
 
-      {/* Mobile drawer */}
-      <div
-        className="show-mobile"
-        style={{
-          display: 'none',
-          position: 'fixed', insetInline: 0, top: 'var(--nav-h)', bottom: 0, zIndex: 49,
-          flexDirection: 'column',
-          background: 'rgba(9,9,8,0.98)', backdropFilter: 'blur(20px)',
-          padding: 'clamp(24px,6vw,40px) var(--pad-x)',
-          gap: '4px',
-          transform: menuOpen ? 'translateX(0)' : 'translateX(100%)',
-          opacity: menuOpen ? 1 : 0,
-          pointerEvents: menuOpen ? 'auto' : 'none',
-          transition: 'transform 380ms cubic-bezier(0.76,0,0.24,1), opacity 300ms',
-        }}
-      >
-        {LINKS.map(l => (
+      {/* Fullscreen mobile menu */}
+      <div className="nav-fs only-mobile" data-open={menuOpen} aria-hidden={!menuOpen}>
+        {MOBILE_LINKS.map(l => (
           <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
-            style={{
-              fontFamily: 'var(--font-display)', fontSize: '26px', textTransform: 'uppercase',
-              letterSpacing: '0.01em', padding: '14px 0',
-              color: isActive(l) ? 'var(--accent)' : 'var(--white)',
-              borderBottom: '1px solid var(--white-08)',
-            }}
-          >
+            className="nav-fs-link" data-active={isActive(l)}>
             {l.label}
+            <span aria-hidden="true" style={{ fontSize: '0.4em', color: 'var(--accent)' }}>→</span>
           </Link>
         ))}
-        <Link href="/contact" onClick={() => setMenuOpen(false)} style={{
-          marginTop: '28px',
-          fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 600,
-          letterSpacing: '0.14em', textTransform: 'uppercase', textAlign: 'center',
-          padding: '16px 18px', background: 'var(--accent)', color: '#fff',
-        }}>Work With Us</Link>
+        <Link href="/contact" onClick={() => setMenuOpen(false)}
+          className="btn btn-primary" style={{ marginTop: 'auto', width: '100%' }}>
+          Start a Project
+        </Link>
       </div>
 
     </header>

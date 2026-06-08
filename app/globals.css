@@ -28,12 +28,12 @@
   --font-display: var(--font-anton), 'Anton', 'Impact', 'Arial Narrow', sans-serif;
   --font-body:    var(--font-inter), 'Inter', system-ui, sans-serif;
 
-  /* ─── Nav ────────────────────────────────── */
-  --nav-h: 72px;
+  /* ─── Nav (mobile-first) ─────────────────── */
+  --nav-h: 64px;
 
-  /* ─── Container ──────────────────────────── */
+  /* ─── Container (mobile-first) ───────────── */
   --max-w:   1440px;
-  --pad-x:   clamp(20px, 5vw, 96px);
+  --pad-x:   24px;
 
   /* ─── Spacing Scale ──────────────────────── */
   --sp-1:  8px;
@@ -46,8 +46,22 @@
   --sp-16: 128px;
   --sp-24: 192px;
 
-  /* ─── Section Padding ────────────────────── */
-  --section: clamp(80px, 11vw, 160px);
+  /* ─── Vertical Rhythm (mobile-first) ─────── */
+  --section-gap: 80px;   /* gap between major sections */
+  --card-gap:    16px;   /* gap between cards          */
+  --content-gap: 24px;   /* gap between content blocks */
+
+  /* ─── Section Padding (mobile-first) ─────── */
+  --section: var(--section-gap);
+
+  /* ─── Fluid Type Scale (mobile-first) ────── */
+  --fs-hero:    clamp(40px, 12vw, 48px);  /* hero headline    */
+  --fs-display: clamp(40px, 11vw, 64px);  /* big display      */
+  --fs-h2:      clamp(30px, 8vw, 40px);   /* section heading  */
+  --fs-h3:      20px;                      /* card title       */
+  --fs-body:    16px;                      /* body copy        */
+  --fs-small:   14px;                      /* sub / button     */
+  --fs-label:   11px;                      /* eyebrow label    */
 
   /* ─── Easing Curves ──────────────────────── */
   --ease-out:    cubic-bezier(0.22, 0.58, 0.32, 1.00);
@@ -60,6 +74,40 @@
   --t-base:   340ms var(--ease-out);
   --t-slow:   640ms var(--ease-out);
   --t-enter:  900ms var(--ease-expo);
+}
+
+/* ══════════════════════════════════════════════
+   BREAKPOINT SYSTEM (mobile-first)
+   320–480  small mobile   (base / no query)
+   481–768  large mobile
+   769–1024 tablet
+   1025+    desktop
+   Tokens scale UP from the mobile baseline.
+══════════════════════════════════════════════ */
+@media (min-width: 481px) {
+  :root {
+    --pad-x: 32px;
+    --fs-hero: clamp(46px, 8vw, 56px);
+  }
+}
+@media (min-width: 769px) {
+  :root {
+    --nav-h: 72px;
+    --pad-x: clamp(40px, 5vw, 72px);
+    --section-gap: 120px;
+    --content-gap: 32px;
+    --fs-hero:    clamp(56px, 7vw, 80px);
+    --fs-display: clamp(72px, 9vw, 128px);
+    --fs-h2:      clamp(40px, 4.5vw, 56px);
+    --fs-h3:      clamp(16px, 1.4vw, 20px);
+    --fs-body:    15px;
+  }
+}
+@media (min-width: 1025px) {
+  :root {
+    --pad-x: clamp(64px, 5vw, 96px);
+    --section-gap: 160px;
+  }
 }
 
 /* ─── Reset ──────────────────────────────────── */
@@ -137,6 +185,273 @@ input, textarea, select { font: inherit; color: inherit; }
   text-transform: uppercase;
   color: var(--accent);
 }
+
+/* ══════════════════════════════════════════════
+   MOBILE-FIRST COMPONENT SYSTEM
+══════════════════════════════════════════════ */
+
+/* ── Section rhythm ─────────────────────────── */
+.section      { padding-top: var(--section-gap); padding-bottom: var(--section-gap); }
+.section-top  { padding-top: var(--section-gap); }
+
+/* ── Section header (eyebrow + title + action) ─ */
+.sec-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: var(--content-gap);
+}
+.sec-head .eyebrow { margin-bottom: 2px; }
+@media (min-width: 769px) {
+  .sec-head {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.h-section {
+  font-family: var(--font-display);
+  font-size: var(--fs-h2);
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin: 0;
+}
+
+/* ── Buttons ────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  height: 56px;
+  padding: 0 30px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition: all 300ms var(--ease-out);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 48px; /* touch target */
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { box-shadow: 0 0 50px rgba(232,23,106,0.35); transform: translateY(-1px); }
+.btn-ghost { background: transparent; border-color: var(--white-20); color: var(--white-70); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--white); }
+.btn-block { width: 100%; }
+@media (min-width: 769px) {
+  .btn { height: 52px; font-size: 13px; }
+}
+
+/* CTA group — stacked + full width on mobile, inline on larger */
+.cta-group { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.cta-group .btn { width: 100%; }
+@media (min-width: 481px) {
+  .cta-group { flex-direction: row; flex-wrap: wrap; width: auto; }
+  .cta-group .btn { width: auto; }
+}
+
+/* ── Visibility helpers (mobile-first) ──────── */
+.only-mobile  { display: block; }
+.only-desktop { display: none; }
+@media (min-width: 769px) {
+  .only-mobile  { display: none !important; }
+  .only-desktop { display: block; }
+}
+
+/* ── Form system ────────────────────────────── */
+.field {
+  width: 100%;
+  height: 56px;
+  background: transparent;
+  border: 1px solid var(--white-20);
+  border-radius: 12px;
+  padding: 0 18px;
+  font-family: var(--font-body);
+  font-size: 16px; /* >=16px prevents iOS zoom-on-focus */
+  letter-spacing: 0.02em;
+  color: var(--white);
+  outline: none;
+  transition: border-color 200ms;
+}
+.field::placeholder { color: var(--white-40); }
+.field:focus { border-color: var(--accent); }
+.field:disabled { opacity: 0.5; }
+.field-area { height: 180px; padding: 16px 18px; resize: vertical; }
+
+/* Inquiry form grid: single column mobile → two columns ≥481px */
+.wwu-form { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.wwu-form .col-2 { grid-column: 1 / -1; }
+@media (min-width: 481px) { .wwu-form { grid-template-columns: 1fr 1fr; } }
+
+/* Contact ("Work With Us") — center the info column on mobile for balance */
+@media (max-width: 860px) {
+  .wwu-info { text-align: center; padding-right: 0 !important; }
+  .wwu-info p { margin-left: auto !important; margin-right: auto !important; }
+}
+
+/* ── Card grids ─────────────────────────────── */
+/* Work: 1 immersive column on mobile → masonry on desktop */
+.work-grid { display: grid; grid-template-columns: 1fr; gap: var(--card-gap); }
+@media (min-width: 769px) {
+  .work-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: dense;
+    gap: 3px;
+  }
+}
+.work-tile { position: relative; height: 420px; border-radius: 4px; overflow: hidden; }
+@media (min-width: 769px) {
+  .work-tile { height: auto; border-radius: 2px; }
+  .work-tile.tile-v { grid-column: span 1; aspect-ratio: 3 / 4; }
+  .work-tile.tile-h { grid-column: span 2; aspect-ratio: 2 / 1; }
+  .work-tile.tile-s { grid-column: span 1; aspect-ratio: 1 / 1; }
+}
+/* Info: always visible on mobile, hover-reveal on desktop pointer devices */
+.tile-cat, .tile-info { opacity: 1; }
+.tile-view { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px;
+  font-family: var(--font-body); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); }
+@media (min-width: 769px) and (hover: hover) {
+  .tile-cat, .tile-info { opacity: 0; transition: opacity 300ms; }
+  .work-tile:hover .tile-cat, .work-tile:hover .tile-info { opacity: 1; }
+  .tile-view { display: none; }
+}
+
+/* Services: 1 card/row mobile → 2 tablet → 4 desktop */
+.svc-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--white-08); }
+@media (min-width: 481px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1025px) { .svc-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.svc-card {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background: var(--black);
+  cursor: pointer;
+  transition: box-shadow 350ms;
+}
+.svc-media { position: absolute; inset: 0; z-index: 0; }
+.svc-media img { width: 100%; height: 100%; object-fit: cover; opacity: 0.55; transition: opacity 500ms, transform 600ms; }
+.svc-scrim { position: absolute; inset: 0; background: linear-gradient(to top, rgba(9,9,8,0.88) 25%, rgba(9,9,8,0.2) 75%); }
+.svc-arrow { position: absolute; top: 18px; right: 18px; z-index: 2; color: var(--accent); display: inline-flex; }
+.svc-body { position: relative; z-index: 1; height: 100%; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; }
+.svc-title { font-family: var(--font-display); font-size: clamp(16px, 1.25vw, 18px); text-transform: uppercase; color: var(--white); letter-spacing: 0.02em; line-height: 1.1; margin: 0 0 8px; }
+.svc-desc {
+  font-family: var(--font-body);
+  font-size: 13px; line-height: 1.6; color: var(--white-70); margin: 0;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+@media (min-width: 769px) and (hover: hover) {
+  .svc-desc { opacity: 0; transition: opacity 300ms; }
+  .svc-card:hover .svc-desc { opacity: 1; }
+  .svc-card:hover .svc-media img { opacity: 0.95; transform: scale(1.08); }
+  .svc-card:hover { box-shadow: 0 30px 80px rgba(232,23,106,0.35), inset 0 0 0 1.5px rgba(232,23,106,0.6); }
+}
+
+/* ── Sticky mobile CTA bar ──────────────────── */
+.sticky-cta {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 60;
+  padding: 12px var(--pad-x) calc(12px + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--black) 60%, rgba(9,9,8,0.0));
+  display: block;
+}
+.sticky-cta .btn { width: 100%; box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
+@media (min-width: 769px) { .sticky-cta { display: none; } }
+/* Reserve space so the fixed CTA never covers footer content on mobile */
+@media (max-width: 768px) { body { padding-bottom: calc(72px + env(safe-area-inset-bottom)); } }
+
+/* ── Fullscreen mobile nav ──────────────────── */
+.nav-fs {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  display: flex;
+  flex-direction: column;
+  background: var(--black);
+  padding: calc(var(--nav-h) + 24px) var(--pad-x) 40px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+.nav-fs[data-open="true"] { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.nav-fs-link {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 11vw, 52px);
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--white-08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-fs-link[data-active="true"] { color: var(--accent); }
+
+/* ── Split hero (heading | divider | copy) ──── */
+.split-hero { grid-template-columns: 1fr !important; gap: 20px !important; }
+.split-hero .split-divider { display: none; }
+@media (min-width: 769px) {
+  .split-hero { grid-template-columns: 1fr 1px 1fr !important; gap: 0 !important; }
+  .split-hero .split-divider { display: block; }
+}
+
+/* ── Founders / stats responsive grids ──────── */
+.founders-grid { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 769px) { .founders-grid { grid-template-columns: repeat(2, 1fr); } }
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 769px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* ── /work gallery — 2-col collage mobile → 4-col masonry desktop ── */
+.wgrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+.wtile { position: relative; }
+.wtile-v { grid-column: span 1; aspect-ratio: 9 / 16; }
+.wtile-h { grid-column: span 2; aspect-ratio: 16 / 9; }
+.wtile-s { grid-column: span 1; aspect-ratio: 1 / 1; }
+@media (min-width: 769px) {
+  .wgrid { grid-template-columns: repeat(4, 1fr); gap: 3px; grid-auto-flow: dense; }
+  .wtile-v { grid-column: span 1; aspect-ratio: 3 / 4; }
+  .wtile-h { grid-column: span 2; aspect-ratio: 2 / 1; }
+  .wtile-s { grid-column: span 1; aspect-ratio: 1 / 1; }
+}
+
+/* ── Generic responsive grids ───────────────── */
+/* stack on mobile → 2 columns on tablet+ */
+.grid-2-1 { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 769px) { .grid-2-1 { grid-template-columns: 1fr 1fr; } }
+/* 2 columns mobile → 3 columns desktop (video mosaics) */
+.grid-vid3 { display: grid; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 769px) { .grid-vid3 { grid-template-columns: repeat(3, 1fr); } }
+/* 1 → 2 → 3 columns (capability cards) */
+.grid-cap3 { display: grid; grid-template-columns: 1fr; }
+@media (min-width: 481px) { .grid-cap3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1025px) { .grid-cap3 { grid-template-columns: repeat(3, 1fr); } }
+
+/* ── Hero ───────────────────────────────────── */
+.hero-cta { justify-content: center; }
+/* Scroll indicator clashes with the sticky CTA on phones */
+@media (max-width: 768px) { .hero-scroll { display: none; } }
 
 /* ─── Scrollbar ──────────────────────────────── */
 ::-webkit-scrollbar { width: 3px; }

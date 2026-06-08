@@ -62,11 +62,8 @@ export function Navbar() {
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.85'; }}
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1'; }}
         >
-          <img src="/chair.png" alt=""
+          <img src="/chair.png" alt="Camera On Roll Production"
             style={{ height: 'clamp(28px, 3.4vw, 38px)', width: 'auto', display: 'block', objectFit: 'contain' }}
-          />
-          <img src="/logo.png" alt="Camera On Roll Production"
-            style={{ height: 'clamp(32px, 4vw, 44px)', width: 'auto', display: 'block', objectFit: 'contain' }}
           />
         </Link>
 

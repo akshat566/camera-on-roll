@@ -401,7 +401,7 @@ export const ALL_V2_PROJECTS: Project[] = [
         {
     id: 143,
     owner: "akshat",
-    cat: "Fashion",
+    cat: "AI",
     title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__13__1.mp4",
@@ -413,7 +413,7 @@ export const ALL_V2_PROJECTS: Project[] = [
   {
     id: 144,
     owner: "akshat",
-    cat: "Fashion",
+    cat: "AI",
     title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__133134253456_.mp4",
@@ -425,7 +425,7 @@ export const ALL_V2_PROJECTS: Project[] = [
     {
     id: 146,
     owner: "akshat",
-    cat: "Fashion",
+    cat: "AI",
     title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__136_.mp4",
@@ -437,7 +437,7 @@ export const ALL_V2_PROJECTS: Project[] = [
   {
     id: 147,
     owner: "akshat",
-    cat: "AI Videos",
+    cat: "AI",
     title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1433_.mp4",
@@ -449,7 +449,7 @@ export const ALL_V2_PROJECTS: Project[] = [
   {
     id: 148,
     owner: "akshat",
-    cat: "AI Videos",
+    cat: "AI",
     title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1gsdfh_fdggh_hg3_.mp4",
@@ -461,7 +461,7 @@ export const ALL_V2_PROJECTS: Project[] = [
   {
     id: 149,
     owner: "akshat",
-    cat: "AI Videos",
+    cat: "AI",
     title: "Fashion Campaign",
     client: "Camera On Roll",
     link: "https://pub-4d3cad9469854486ab973729b0a3541b.r2.dev/akshat/vertical/default__1qerqer3_.mp4",

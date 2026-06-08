@@ -601,7 +601,7 @@ export default function Home() {
           <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }}
             transition={{ duration:1, delay:0.7, ease:EASE }}
             style={{ fontFamily:'var(--font-body)', fontSize:'var(--fs-body)', fontWeight:400, lineHeight:1.6, color:'var(--white-70)', margin:'0 auto clamp(28px,3vw,44px)', maxWidth:'42ch' }}>
-            A creative tech studio built for modern brands, cinema, design, and AI.
+            An AI powered creative production studio built for modern brands
           </motion.p>
 
           <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}

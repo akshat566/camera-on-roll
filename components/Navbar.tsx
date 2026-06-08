@@ -60,7 +60,8 @@ export function Navbar() {
     l.exact ? path === l.href : (path.startsWith(l.href) && l.href !== '/');
 
   return (
-    <header
+    <>
+      <header
       ref={headerRef}
       className="site-nav"
       style={{
@@ -135,22 +136,22 @@ export function Navbar() {
           )}
         </button>
       </div>
-
-      {/* Fullscreen mobile menu */}
-      <div className="nav-fs only-mobile" data-open={menuOpen} aria-hidden={!menuOpen}>
-        {MOBILE_LINKS.map(l => (
-          <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
-            className="nav-fs-link" data-active={isActive(l)}>
-            {l.label}
-            <span aria-hidden="true" style={{ fontSize: '0.4em', color: 'var(--accent)' }}>→</span>
-          </Link>
-        ))}
-        <Link href="/contact" onClick={() => setMenuOpen(false)}
-          className="btn btn-primary" style={{ marginTop: 'auto', width: '100%' }}>
-          Start a Project
-        </Link>
-      </div>
-
     </header>
-  );
+
+    {/* Fullscreen mobile menu — rendered OUTSIDE header so it isn't trapped
+        inside the header's z-index:50 stacking context / contain boundary. */}
+    <div className="nav-fs only-mobile" data-open={menuOpen} aria-hidden={!menuOpen}>
+      {MOBILE_LINKS.map(l => (
+        <Link key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
+          className="nav-fs-link" data-active={isActive(l)}>
+          {l.label}
+          <span aria-hidden="true" style={{ fontSize: '0.4em', color: 'var(--accent)' }}>→</span>
+        </Link>
+      ))}
+      <Link href="/contact" onClick={() => setMenuOpen(false)}
+        className="btn btn-primary" style={{ marginTop: 'auto', width: '100%' }}>
+        Start a Project
+      </Link>
+    </div>
+  </>);
 }

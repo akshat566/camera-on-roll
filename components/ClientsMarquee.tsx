@@ -6,32 +6,32 @@ import { CLIENTS, type Client } from '@/lib/clients-data';
 
 const EASE = [0.76, 0, 0.24, 1] as const;
 
-export function ClientBadge({ name, logo }: Client) {
+export function ClientBadge({ name, logo, domain }: Client) {
   const [imgError, setImgError] = useState(false);
+  // Prefer local logo; if missing or broken, fall back to Clearbit
+  const src = logo && !imgError ? logo : `https://logo.clearbit.com/${domain}?size=200`;
   return (
     <motion.div
-      whileHover={{ scale: 1.04, y: -2, opacity: 1 }}
-      whileTap={{ opacity: 1 }}
+      whileHover={{ scale: 1.06, y: -2 }}
       transition={{ duration: 0.3, ease: EASE }}
       style={{
         flexShrink: 0,
-        width: 'clamp(52px, 4.5vw, 64px)',
-        height: 'clamp(52px, 4.5vw, 64px)',
+        width: 'clamp(64px, 5.5vw, 80px)',
+        height: 'clamp(64px, 5.5vw, 80px)',
         borderRadius: '50%',
         background: '#fff',
-        border: '1px solid var(--white-08)',
+        border: '1.5px solid var(--white-08)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '7px', overflow: 'hidden',
-        opacity: 0.6,
-        boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
-        transition: 'box-shadow 350ms, border-color 350ms, opacity 350ms',
+        padding: '10px', overflow: 'hidden',
+        boxShadow: '0 6px 18px rgba(0,0,0,0.30)',
+        transition: 'box-shadow 350ms, border-color 350ms',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(232,23,106,0.18)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; (e.currentTarget as HTMLElement).style.opacity = '1'; }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 12px rgba(0,0,0,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; (e.currentTarget as HTMLElement).style.opacity = '0.6'; }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 10px 28px rgba(232,23,106,0.25)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--accent)'; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 6px 18px rgba(0,0,0,0.30)'; (e.currentTarget as HTMLElement).style.borderColor = 'var(--white-08)'; }}
     >
-      {logo && !imgError ? (
+      {!imgError ? (
         <img
-          src={logo}
+          src={src}
           alt={name}
           loading="lazy"
           onError={() => setImgError(true)}
@@ -40,7 +40,7 @@ export function ClientBadge({ name, logo }: Client) {
       ) : (
         <span style={{
           fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(7px, 0.6vw, 10px)',
+          fontSize: 'clamp(8px, 0.7vw, 12px)',
           letterSpacing: '0.02em', lineHeight: 1.05,
           textAlign: 'center', textTransform: 'uppercase',
           color: '#0a0a0a',
@@ -60,7 +60,7 @@ export function ClientsMarquee() {
 
       <div className="marquee" style={{ gap: 'clamp(10px,1vw,16px)', paddingLeft: 'clamp(10px,1vw,16px)' }}>
         {[...CLIENTS, ...CLIENTS].map((c, i) => (
-          <ClientBadge key={`${c.name}-${i}`} name={c.name} logo={c.logo} />
+          <ClientBadge key={`${c.name}-${i}`} name={c.name} logo={c.logo} domain={c.domain} />
         ))}
       </div>
     </div>

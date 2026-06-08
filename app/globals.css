@@ -547,6 +547,16 @@ input, textarea, select { font: inherit; color: inherit; }
   contain-intrinsic-size: auto 500px;
 }
 
+/* ─── Client marquee badge hover (CSS, not Framer Motion gesture) ── */
+.client-badge {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.30);
+}
+.client-badge:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 10px 28px rgba(232,23,106,0.25);
+  border-color: var(--accent);
+}
+
 /* ─── Responsive nav utilities ───────────────── */
 .hidden-mobile { display: flex; }
 .show-mobile   { display: none; }

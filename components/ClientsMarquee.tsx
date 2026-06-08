@@ -5,7 +5,12 @@ import { CLIENTS, type Client } from '@/lib/clients-data';
 
 export function ClientBadge({ name, logo, domain }: Client) {
   const [imgError, setImgError] = useState(false);
-  const src = logo && !imgError ? logo : `https://logo.clearbit.com/${domain}?size=200`;
+  // Only hit Clearbit if domain is provided; empty string means "skip".
+  const src = logo && !imgError
+    ? logo
+    : domain && !imgError
+      ? `https://logo.clearbit.com/${domain}?size=200`
+      : null;
   return (
     <div className="client-badge"
       style={{
@@ -20,7 +25,7 @@ export function ClientBadge({ name, logo, domain }: Client) {
         transition: 'transform 300ms, box-shadow 350ms, border-color 350ms',
       }}
     >
-      {!imgError ? (
+      {src ? (
         <img
           src={src}
           alt={name}

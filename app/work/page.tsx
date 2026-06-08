@@ -59,7 +59,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', margin: '0 0 4px' }}>
               {project.cat}{isImage ? ' · Photo' : project.platform === 'youtube' ? ' · YouTube' : project.platform === 'instagram' ? ' · Instagram' : ''}
             </p>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(18px,2vw,26px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.05, letterSpacing: '0.01em' }}>{project.title}</h3>
+            {project.title && (
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(18px,2vw,26px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.05, letterSpacing: '0.01em' }}>{project.title}</h3>
+            )}
             {project.client && project.client !== 'Camera On Roll' && (
               <p style={{ fontFamily: 'var(--font-body)', fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
             )}
@@ -356,7 +358,9 @@ export default function WorkV2Page() {
 
                         {/* Info overlay */}
                         <div className="tile-info" style={{ position: 'absolute', bottom: '12px', left: '12px', right: '48px', opacity: 0, transition: 'opacity 300ms' }}>
-                          <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(12px,1.25vw,16px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.1, letterSpacing: '0.01em' }}>{project.title}</p>
+                          {project.title && (
+                            <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(12px,1.25vw,16px)', textTransform: 'uppercase', color: 'var(--white)', margin: '0 0 2px', lineHeight: 1.1, letterSpacing: '0.01em' }}>{project.title}</p>
+                          )}
                           {project.client && project.client !== 'Camera On Roll' && (
                             <p style={{ fontFamily: 'var(--font-body)', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--white-70)', margin: 0 }}>{project.client}</p>
                           )}

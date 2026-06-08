@@ -416,7 +416,7 @@ function AISection() {
               marginBottom: '28px',
             }}
           >
-            Private audio & video engine. Core dev team curating pipelines for brands — AI ads, films, music videos, at scale.
+            An In-house built AI workflow pipeline that curates unmatched output quality to help brands with AI Films, Music videos and more at scale.
           </motion.p>
 
           {/* Capability cards with hover reveal */}
@@ -428,10 +428,10 @@ function AISection() {
             style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'28px' }}
           >
             {[
-              { n:'AI Photo Gen',    d:'Photorealistic brand imagery, generated at scale' },
-              { n:'AI Video',        d:'Frame interpolation, upscaling & color grading' },
-              { n:'Style Transfer',  d:'Apply any aesthetic across entire libraries' },
-              { n:'Generative Film', d:'Text-to-video & image-to-video pipelines' },
+              { n:'Character Consistency',   d:'Lock identity across every frame, scene and shot' },
+              { n:'Visual Style Control',    d:'Direct the look, mood and grade end-to-end' },
+              { n:'4K Output at 50fps',      d:'Crisp, high-frame-rate delivery ready for broadcast' },
+              { n:'Agentic GenAI Workflows', d:'Autonomous pipelines orchestrating generation at scale' },
             ].map((c, i) => {
               const isOpen = openCap === i;
               return (

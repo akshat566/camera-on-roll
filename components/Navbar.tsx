@@ -71,7 +71,7 @@ export function Navbar() {
         contain: 'layout paint',
       }}
     >
-      <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 0, paddingRight: 0 }}>
+      <div className="cx" style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: 'var(--pad-x)', paddingRight: 'var(--pad-x)' }}>
 
         {/* Logo — chair mark + full wordmark */}
         <Link href="/" aria-label="Camera On Roll Production — Home"

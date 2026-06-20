@@ -1,6 +1,7 @@
 ﻿'use client';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
+import { Scroll3D } from '@/components/Scroll3D';
 import { LazyVideo } from '@/components/LazyVideo';
 
 const CAPABILITIES = [
@@ -51,6 +52,7 @@ export default function AtomPage() {
         <div className="cx" style={{ width:'100%', paddingTop:'calc(var(--nav-h) + 40px)', paddingBottom:'clamp(40px,5vw,64px)' }}>
           <div className="grid-2-1" style={{ gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
             {/* Left — copy */}
+            <Scroll3D intensity={0.5}>
             <div style={{ maxWidth:'520px' }}>
               <Reveal>
                 <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'18px' }}>
@@ -95,6 +97,7 @@ export default function AtomPage() {
                 </div>
               </Reveal>
             </div>
+            </Scroll3D>
 
             {/* Right — video mosaic with real AI videos */}
             <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
@@ -130,6 +133,7 @@ export default function AtomPage() {
       {/* ══ SHOWCASE ══════════════════════════════════ */}
       <section id="showcase" className="cv-section" style={{ borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
         <div className="cx" style={{ paddingTop:'clamp(48px,6vw,80px)', paddingBottom:'clamp(48px,6vw,80px)' }}>
+          <Scroll3D intensity={0.5}>
           <Reveal>
             <div style={{ textAlign:'center', marginBottom:'clamp(36px,5vw,56px)' }}>
               <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>Selected Work</p>
@@ -140,6 +144,7 @@ export default function AtomPage() {
           </Reveal>
 
           {/* Full-width video grid */}
+          </Scroll3D>
           <div className="grid-vid3" style={{ gap:'4px', marginBottom:'4px' }}>
             {SHOWCASE_VIDEOS.slice(0,3).map((v,i) => (
               <VideoCard key={v.src} video={v} delay={i*0.08} />
@@ -200,6 +205,7 @@ export default function AtomPage() {
       {/* ══ CAPABILITIES ════════════════════════════ */}
       <section style={{ borderTop:'1px solid var(--white-08)', background:'var(--surface)' }}>
         <div className="cx" style={{ paddingTop:'clamp(48px,6vw,80px)', paddingBottom:'clamp(48px,6vw,80px)' }}>
+          <Scroll3D intensity={0.5}>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,380px),1fr))', gap:'clamp(32px,5vw,72px)', alignItems:'start', marginBottom:'clamp(40px,5vw,64px)' }}>
             <Reveal>
               <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.38em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>What We Do</p>
@@ -225,6 +231,7 @@ export default function AtomPage() {
               </Reveal>
             ))}
           </div>
+          </Scroll3D>
         </div>
       </section>
     </>

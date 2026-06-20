@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getEmbedUrl, type Project } from '@/lib/work-data';
 import { ALL_V2_PROJECTS, V2_CATEGORIES } from '@/lib/work-v2-data';
+import { Scroll3D } from '@/components/Scroll3D';
 
 const E = [0.22, 0.58, 0.32, 1] as const;
 const POP_EASE = [0.34, 1.56, 0.64, 1] as const;
@@ -180,6 +181,7 @@ export default function WorkV2Page() {
         style={{ paddingTop: 'calc(var(--nav-h) + 32px)', paddingBottom: '80px', paddingLeft: 'clamp(20px,4vw,64px)', paddingRight: 'clamp(20px,4vw,64px)', minHeight: '100vh' }}
       >
         {/* Page header */}
+        <Scroll3D intensity={0.5}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', marginBottom: 'clamp(48px,6vw,80px)' }}>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -250,6 +252,7 @@ export default function WorkV2Page() {
             })}
           </motion.div>
         </div>
+        </Scroll3D>
 
         {/* Visual grid — masonry style (matches og work page) */}
         <div style={{ maxWidth: '1400px', margin: '0 auto', marginTop: 'clamp(24px,3vw,40px)' }}>

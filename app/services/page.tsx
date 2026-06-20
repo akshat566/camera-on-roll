@@ -1,6 +1,8 @@
 ﻿'use client';
 import Link from 'next/link';
 import { Reveal } from '@/components/Reveal';
+import { Parallax } from '@/components/Parallax';
+import { Scroll3D } from '@/components/Scroll3D';
 import { ServicesGrid } from '@/components/ServicesGrid';
 
 export default function ServicesPage() {
@@ -10,11 +12,13 @@ export default function ServicesPage() {
       <section style={{ position:'relative', paddingTop:'var(--nav-h)', overflow:'hidden', borderBottom:'1px solid var(--white-08)' }}>
         {/* Hero bg */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <img
-            src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1600&q=85"
-            alt=""
-            style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.15, filter:'grayscale(30%)' }}
-          />
+          <Parallax speed={0.3} range={120} style={{ position:'absolute', top:'-12%', left:0, right:0, height:'124%' }}>
+            <img
+              src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1600&q=85"
+              alt=""
+              style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.15, filter:'grayscale(30%)' }}
+            />
+          </Parallax>
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(90deg, var(--black) 45%, rgba(9,9,8,0.6) 100%)' }} />
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, var(--black) 0%, transparent 70%)' }} />
           <div style={{ position:'absolute', top:'10%', right:'10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 72%)' }} />
@@ -57,6 +61,7 @@ export default function ServicesPage() {
 
       {/* ── CTA ──────────────────────────────────── */}
       <section style={{ padding:'80px 0', textAlign:'center' }}>
+        <Scroll3D intensity={0.6}>
         <div className="cx-narrow">
           <Reveal>
             <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,5vw,72px)', textTransform:'uppercase', lineHeight:0.9, letterSpacing:'-0.02em', color:'var(--white)', marginBottom:'36px' }}>
@@ -67,6 +72,7 @@ export default function ServicesPage() {
             <Link href="/contact" className="btn btn-primary">{"Let\u2019s Work Together \u2192"}</Link>
           </Reveal>
         </div>
+        </Scroll3D>
       </section>
     </>
   );

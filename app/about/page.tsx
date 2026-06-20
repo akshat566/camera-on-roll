@@ -1,5 +1,6 @@
 ﻿'use client';
 import { Reveal } from '@/components/Reveal';
+import { Scroll3D } from '@/components/Scroll3D';
 import { ClientsMarquee } from '@/components/ClientsMarquee';
 
 const STATS = [
@@ -24,6 +25,7 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
+          <Scroll3D intensity={0.6}>
           <div className="founders-grid" style={{ gap:'clamp(40px,5vw,72px)', maxWidth:'1120px', margin:'0 auto' }}>
             {/* Akshat */}
             <Reveal delay={0.1}>
@@ -93,12 +95,14 @@ export default function AboutPage() {
               </div>
             </Reveal>
           </div>
+          </Scroll3D>
         </div>
       </section>
 
       {/* ══ STATS ═════════════════════════════ */}
       <div style={{ borderBottom:'1px solid var(--white-08)' }}>
         <div className="cx">
+          <Scroll3D intensity={0.5}>
           <div className="stats-grid" style={{ gap:'1px', background:'var(--white-08)' }}>
             {STATS.map((s, i) => (
               <Reveal key={s.l} delay={i*0.07}>
@@ -110,6 +114,7 @@ export default function AboutPage() {
               </Reveal>
             ))}
           </div>
+          </Scroll3D>
         </div>
       </div>
 

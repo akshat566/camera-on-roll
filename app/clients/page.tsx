@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Reveal } from '@/components/Reveal';
+import { Scroll3D } from '@/components/Scroll3D';
 
 const EASE = [0.22, 0.58, 0.32, 1] as const;
 
@@ -86,6 +87,7 @@ export default function ClientsPage() {
       <section style={{ position:'relative', paddingTop:'calc(var(--nav-h) + clamp(48px,6vw,96px))', paddingBottom:'clamp(48px,5vw,80px)', overflow:'hidden', borderBottom:'1px solid var(--white-08)' }}>
         <div style={{ position:'absolute', top:'15%', right:'-10%', width:'40vw', height:'40vw', borderRadius:'50%', background:'radial-gradient(circle, rgba(232,23,106,0.1) 0%, transparent 72%)', pointerEvents:'none' }} />
         <div className="cx" style={{ position:'relative', zIndex:1, textAlign:'center' }}>
+          <Scroll3D intensity={0.5}>
           <Reveal>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'10px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>Trusted By</p>
             <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(52px,9vw,140px)', textTransform:'uppercase', lineHeight:0.86, letterSpacing:'-0.02em', color:'var(--white)', margin:'0 0 22px' }}>
@@ -97,6 +99,7 @@ export default function ClientsPage() {
               Iconic brands and creative talent we&rsquo;ve had the privilege of partnering with across cinema, AI, and visual storytelling.
             </p>
           </Reveal>
+          </Scroll3D>
         </div>
       </section>
 
@@ -116,6 +119,7 @@ export default function ClientsPage() {
       {/* ── ARTISTS & COLLABORATORS ───────────────── */}
       <section style={{ padding:'clamp(64px,7vw,120px) 0', borderBottom:'1px solid var(--white-08)' }}>
         <div className="cx" style={{ textAlign:'center' }}>
+          <Scroll3D intensity={0.5}>
           <Reveal>
             <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.4em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'14px' }}>Artists & Collaborators</p>
             <h2 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,5vw,72px)', textTransform:'uppercase', lineHeight:0.88, letterSpacing:'-0.02em', color:'var(--white)', margin:'0 0 36px' }}>
@@ -145,6 +149,7 @@ export default function ClientsPage() {
               ))}
             </div>
           </Reveal>
+          </Scroll3D>
         </div>
       </section>
     </>

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { Reveal } from '@/components/Reveal';
+import { Parallax } from '@/components/Parallax';
+import { Scroll3D } from '@/components/Scroll3D';
 import { FEATURED_HOME as FEATURED_HOME_DATA, getEmbedUrl } from '@/lib/work-data';
 import { WorkWithUs } from '@/components/WorkWithUs';
 import { ServicesGrid } from '@/components/ServicesGrid';
@@ -583,7 +585,9 @@ export default function Home() {
       <section className="hero" style={{ position:'relative', minHeight:'100svh', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
         {/* Full-bleed showreel video — buffers eagerly, pauses when scrolled past */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <LazyVideo src={SHOWREEL_URL} eager style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
+          <Parallax speed={0.35} range={120} style={{ position:'absolute', top:'-10%', left:0, right:0, height:'120%' }}>
+            <LazyVideo src={SHOWREEL_URL} eager style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
+          </Parallax>
           {/* 40% dark overlay for legibility */}
           <div style={{ position:'absolute', inset:0, background:'rgba(9,9,8,0.45)' }} />
           <div style={{ position:'absolute', top:0, left:0, right:0, height:'25%', background:'linear-gradient(to bottom, var(--black), transparent)' }} />
@@ -634,6 +638,7 @@ export default function Home() {
       {/* ══ WORK PREVIEW ═══════════════════════════════ */}
       <section className="cv-section" style={{ borderTop:'1px solid var(--white-08)', paddingTop:'var(--section-gap)' }}>
         {/* Header */}
+        <Scroll3D intensity={0.5}>
         <div className="cx sec-head">
           <Reveal>
             <h2 className="h-section">Our Work</h2>
@@ -658,6 +663,7 @@ export default function Home() {
             <Link href="/work" className="btn btn-ghost">View All Work →</Link>
           </div>
         </div>
+        </Scroll3D>
 
         {/* Grid layout — immersive single column on mobile, masonry on desktop */}
         <AnimatePresence mode="wait">
@@ -749,6 +755,7 @@ export default function Home() {
 
       {/* ══ SERVICES PREVIEW ═══════════════════════════ */}
       <section style={{ paddingTop:'var(--section-gap)', borderTop:'1px solid var(--white-08)', background:'var(--black)' }}>
+        <Scroll3D intensity={0.5}>
         <div className="cx sec-head">
           <Reveal>
             <h2 className="h-section">Our Services</h2>
@@ -759,6 +766,7 @@ export default function Home() {
             </span>
           </Reveal>
         </div>
+        </Scroll3D>
 
         <ServicesGrid />
 

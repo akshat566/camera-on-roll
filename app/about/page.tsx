@@ -24,7 +24,7 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          <div className="founders-grid" style={{ gap:'clamp(40px,6vw,96px)', maxWidth:'960px', margin:'0 auto' }}>
+          <div className="founders-grid" style={{ gap:'clamp(40px,5vw,72px)', maxWidth:'1120px', margin:'0 auto' }}>
             {/* Akshat */}
             <Reveal delay={0.1}>
               <div style={{ textAlign:'center' }}>
@@ -69,6 +69,26 @@ export default function AboutPage() {
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>Co-Founder & Creative Director</p>
                 <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', lineHeight:1.7, color:'var(--white-70)', maxWidth:'360px', margin:'0 auto' }}>
                   Ashna is the Co-Founder and Creative Director at Camera On Roll Production, bringing together a strategy-first mindset shaped by her consulting background at KPMG and 7+ years of experience across production and advertising.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Isha */}
+            <Reveal delay={0.3}>
+              <div style={{ textAlign:'center' }}>
+                <div style={{ aspectRatio:'4/5', maxWidth:'320px', margin:'0 auto 20px', overflow:'hidden', background:'var(--surface)', border:'1px solid var(--white-08)' }}>
+                  <img src="/isha.jpeg" alt="Isha Kumar"
+                    loading="lazy" style={{ width:'100%', height:'100%', objectFit:'cover', filter:'grayscale(10%)', transition:'transform 600ms' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1)'; }}
+                  />
+                </div>
+                <h3 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(18px,2.2vw,28px)', textTransform:'uppercase', color:'var(--white)', marginBottom:'6px', lineHeight:1 }}>
+                  Isha Kumar
+                </h3>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'9px', fontWeight:600, letterSpacing:'0.32em', textTransform:'uppercase', color:'var(--accent)', marginBottom:'16px' }}>Founding Member & Head of Growth</p>
+                <p style={{ fontFamily:'var(--font-body)', fontSize:'13px', lineHeight:1.7, color:'var(--white-70)', maxWidth:'360px', margin:'0 auto' }}>
+                  Isha Kumar is a Founding Member and Head of Growth at Camera On Roll Production. Bringing together experience from KPMG, Neo Wealth & Asset Management, and luxury brand management, she drives growth and partnerships while helping brands create impactful campaigns and meaningful audience connections.
                 </p>
               </div>
             </Reveal>

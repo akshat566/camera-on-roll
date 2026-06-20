@@ -421,7 +421,8 @@ input, textarea, select { font: inherit; color: inherit; }
 
 /* ── Founders / stats responsive grids ──────── */
 .founders-grid { display: grid; grid-template-columns: 1fr; }
-@media (min-width: 769px) { .founders-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 600px) and (max-width: 900px) { .founders-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 901px) { .founders-grid { grid-template-columns: repeat(3, 1fr); } }
 .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 769px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
 
